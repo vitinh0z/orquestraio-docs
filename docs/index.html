@@ -586,7 +586,7 @@ a:hover{text-decoration:underline;}
   .status-row{grid-template-columns:48px 1fr;}
   .status-row .status-name{display:none;}
   .version-float{bottom:1rem;right:1rem;}
-  .breadcrumb{flex-wrap:wrap;gap:0.25rem;}
+  .breadcrumb{flex-wrap:wrap;}
 }
 </style>
 </head>
@@ -1542,6 +1542,10 @@ def webhook():
   → Descarta imediatamente</div>
       </div>
     </div>
+    <div class="callout callout-danger">
+      <span class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+      <div class="callout-body"><strong>Nunca logue credenciais.</strong> A descriptografia ocorre exclusivamente em memória durante o processamento da transação. Qualquer credencial nos logs constitui uma violação de segurança e deve ser rotacionada imediatamente.</div>
+    </div>
     <table class="doc-table">
       <thead><tr><th>Prática</th><th>Implementação</th></tr></thead>
       <tbody>
@@ -1854,7 +1858,7 @@ function toggleTheme(){
 
 function applyPreferredTheme(){
   const saved=localStorage.getItem('theme');
-  if(saved&&saved!=='dark'){
+  if(saved==='light'){
     document.documentElement.setAttribute('data-theme',saved);
     document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
   }
@@ -1876,6 +1880,7 @@ document.addEventListener('click',e=>{
 });
 
 // ======================== TABS ========================
+const ALLOWED_LANGUAGES=['curl','javascript','python','go','json'];
 function switchTab(e){
   const btn=e.target;
   const cb=btn.closest('.codeblock');
@@ -1905,8 +1910,7 @@ function switchTab(e){
 
 function applyPreferredLang(){
   const lang=localStorage.getItem('preferredLang');
-  const allowed=['curl','javascript','python','go','json'];
-  if(!lang||!allowed.includes(lang))return;
+  if(!lang||!ALLOWED_LANGUAGES.includes(lang))return;
   document.querySelectorAll('.lang-tab[data-lang="'+lang+'"]').forEach(t=>{
     const cb=t.closest('.codeblock');
     if(!cb)return;
