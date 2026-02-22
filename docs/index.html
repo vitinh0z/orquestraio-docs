@@ -6,7 +6,7 @@
     <title>Orquestraio — Documentação</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg:       #07070d;
@@ -20,22 +20,18 @@
             --purple-mid:    #7c3aed;
             --purple-light:  #a78bfa;
             --purple-faint:  rgba(109, 40, 217, 0.08);
-            --indigo:        #4f46e5;
             --indigo-light:  #818cf8;
-            --text:    #e8e6f0;
-            --text-2:  #9791b0;
-            --text-3:  #4a4565;
+            --text:    #e4e2ef;
+            --text-2:  #8e89aa;
+            --text-3:  #524d6e;
             --emerald: #34d399;
             --amber:   #fbbf24;
             --red:     #f87171;
-            --font-sans: 'IBM Plex Sans', sans-serif;
-            --font-mono: 'IBM Plex Mono', monospace;
-            --font-serif: 'IBM Plex Serif', serif;
+            --font-sans: 'Inter', sans-serif;
+            --font-mono: 'JetBrains Mono', monospace;
         }
-
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
         html { scroll-behavior: smooth; }
-
         body {
             background: var(--bg);
             color: var(--text-2);
@@ -45,8 +41,6 @@
             min-height: 100vh;
             overflow-x: hidden;
         }
-
-        /* Subtle grid texture */
         body::before {
             content: '';
             position: fixed;
@@ -59,702 +53,273 @@
             z-index: 0;
         }
 
-        /* ======================== LAYOUT ======================== */
-        .shell {
-            display: grid;
-            grid-template-columns: 240px 1fr 300px;
-            min-height: 100vh;
-            position: relative;
-            z-index: 1;
-        }
+        /* LAYOUT */
+        .shell { display: grid; grid-template-columns: 240px 1fr 296px; min-height: 100vh; position: relative; z-index: 1; }
 
-        /* ======================== SIDEBAR ======================== */
-        .sidebar {
-            position: fixed;
-            top: 0; left: 0;
-            width: 240px;
-            height: 100vh;
-            overflow-y: auto;
-            border-right: 1px solid var(--border);
-            background: var(--bg-1);
-            display: flex;
-            flex-direction: column;
-            z-index: 20;
-        }
+        /* SIDEBAR */
+        .sidebar { position: fixed; top: 0; left: 0; width: 240px; height: 100vh; overflow-y: auto; border-right: 1px solid var(--border); background: var(--bg-1); display: flex; flex-direction: column; z-index: 20; }
         .sidebar::-webkit-scrollbar { width: 3px; }
         .sidebar::-webkit-scrollbar-thumb { background: var(--border-2); }
+        .logo-area { padding: 1.125rem 1.25rem 1rem; border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 0.6rem; text-decoration: none; }
+        .logo-mark { width: 24px; height: 24px; border: 1px solid var(--border-3); background: var(--purple-faint); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .logo-mark svg { width: 12px; height: 12px; }
+        .logo-text { font-family: var(--font-mono); font-weight: 600; font-size: 0.8rem; color: var(--text); letter-spacing: 0.03em; }
+        .logo-version { font-family: var(--font-mono); font-size: 0.6rem; color: var(--text-3); border: 1px solid var(--border); padding: 0.1rem 0.35rem; margin-left: auto; }
 
-        .logo-area {
-            padding: 1.25rem 1.25rem 1rem;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 0.65rem;
-            text-decoration: none;
-        }
+        .search-trigger { margin: 0.75rem 0.875rem; display: flex; align-items: center; gap: 0.5rem; padding: 0.38rem 0.65rem; background: var(--bg-2); border: 1px solid var(--border); cursor: pointer; transition: border-color 0.15s; color: var(--text-3); font-size: 0.78rem; font-family: var(--font-sans); }
+        .search-trigger:hover { border-color: var(--border-2); color: var(--text-2); }
+        .search-trigger svg { width: 12px; height: 12px; opacity: 0.5; }
+        .search-kbd { margin-left: auto; font-family: var(--font-mono); font-size: 0.6rem; background: var(--bg-3); border: 1px solid var(--border-2); padding: 0.05rem 0.3rem; color: var(--text-3); }
 
-        .logo-mark {
-            width: 26px; height: 26px;
-            border: 1px solid var(--border-3);
-            background: var(--purple-faint);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-        }
-        .logo-mark svg { width: 13px; height: 13px; }
-
-        .logo-text {
-            font-family: var(--font-mono);
-            font-weight: 600;
-            font-size: 0.82rem;
-            color: var(--text);
-            letter-spacing: 0.04em;
-            text-transform: uppercase;
-        }
-        .logo-version {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            color: var(--text-3);
-            border: 1px solid var(--border);
-            padding: 0.1rem 0.4rem;
-            margin-left: auto;
-            letter-spacing: 0.03em;
-        }
-
-        .nav { padding: 1rem 0; flex: 1; }
-
-        .nav-group { margin-bottom: 0.25rem; }
-        .nav-group-label {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.12em;
-            color: var(--text-3);
-            font-weight: 500;
-            padding: 0.75rem 1.25rem 0.35rem;
-        }
-
-        .nav-item {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.3rem 1.25rem;
-            color: var(--text-3);
-            font-size: 0.82rem;
-            font-family: var(--font-sans);
-            text-decoration: none;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.12s;
-            border-left: 2px solid transparent;
-        }
+        .nav { padding: 0.25rem 0; flex: 1; }
+        .nav-group { margin-bottom: 0.1rem; }
+        .nav-group-label { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); font-weight: 600; padding: 0.65rem 1.25rem 0.3rem; }
+        .nav-item { display: flex; align-items: center; padding: 0.28rem 1.25rem; color: var(--text-3); font-size: 0.8rem; text-decoration: none; cursor: pointer; transition: color 0.12s; border-left: 2px solid transparent; font-weight: 400; }
         .nav-item:hover { color: var(--text-2); }
-        .nav-item.active {
-            color: var(--purple-light);
-            border-left-color: var(--purple-mid);
-            background: rgba(124,58,237,0.06);
-        }
-
-        .sidebar-footer {
-            padding: 0.875rem 1.25rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            gap: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-        }
+        .nav-item.active { color: var(--purple-light); border-left-color: var(--purple-mid); background: rgba(124,58,237,0.06); font-weight: 500; }
+        .sidebar-footer { padding: 0.75rem 1.25rem; border-top: 1px solid var(--border); display: flex; gap: 1rem; font-family: var(--font-mono); font-size: 0.68rem; }
         .sidebar-footer a { color: var(--text-3); text-decoration: none; }
         .sidebar-footer a:hover { color: var(--purple-light); }
 
-        /* ======================== MAIN ======================== */
-        .main {
-            grid-column: 2;
-            min-width: 0;
-            padding: 3rem 3.5rem 6rem;
-        }
+        /* COMMAND PALETTE */
+        .cmd-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6); backdrop-filter: blur(4px); z-index: 1000; align-items: flex-start; justify-content: center; padding-top: 14vh; }
+        .cmd-overlay.open { display: flex; }
+        .cmd-modal { width: 560px; max-width: calc(100vw - 2rem); background: var(--bg-2); border: 1px solid var(--border-3); box-shadow: 0 24px 64px rgba(0,0,0,0.6); overflow: hidden; }
+        .cmd-search { display: flex; align-items: center; gap: 0.65rem; padding: 0.875rem 1rem; border-bottom: 1px solid var(--border); }
+        .cmd-search svg { width: 15px; height: 15px; color: var(--text-3); flex-shrink: 0; }
+        .cmd-input { flex: 1; background: none; border: none; outline: none; color: var(--text); font-family: var(--font-sans); font-size: 0.9rem; caret-color: var(--purple-light); }
+        .cmd-input::placeholder { color: var(--text-3); }
+        .cmd-esc { font-family: var(--font-mono); font-size: 0.62rem; background: var(--bg-3); border: 1px solid var(--border-2); padding: 0.1rem 0.35rem; color: var(--text-3); cursor: pointer; flex-shrink: 0; }
+        .cmd-results { max-height: 380px; overflow-y: auto; }
+        .cmd-section-label { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3); padding: 0.6rem 1rem 0.3rem; }
+        .cmd-item { display: flex; align-items: center; gap: 0.65rem; padding: 0.5rem 1rem; cursor: pointer; transition: background 0.1s; border-left: 2px solid transparent; }
+        .cmd-item:hover, .cmd-item.focused { background: rgba(124,58,237,0.08); border-left-color: var(--purple-mid); }
+        .cmd-item-icon { width: 24px; height: 24px; border: 1px solid var(--border); background: var(--bg-3); display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+        .cmd-item-icon svg { width: 11px; height: 11px; }
+        .cmd-item-label { font-size: 0.82rem; color: var(--text); font-weight: 500; }
+        .cmd-item-sub { font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); margin-left: auto; }
+        .cmd-footer { display: flex; align-items: center; gap: 1rem; padding: 0.5rem 1rem; border-top: 1px solid var(--border); background: var(--bg-3); }
+        .cmd-hint { display: flex; align-items: center; gap: 0.35rem; font-size: 0.68rem; color: var(--text-3); }
+        .cmd-hint kbd { font-family: var(--font-mono); font-size: 0.6rem; background: var(--bg-2); border: 1px solid var(--border-2); padding: 0.05rem 0.3rem; }
 
-        /* ======================== PAGE HERO ======================== */
+        /* MAIN */
+        .main { grid-column: 2; min-width: 0; padding: 3rem 3.5rem 6rem; }
+
+        /* HERO */
         .page-hero { margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
-
-        .eyebrow {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--purple-light);
-            margin-bottom: 1rem;
-        }
-
-        .hero-title {
-            font-family: var(--font-sans);
-            font-size: 2.2rem;
-            font-weight: 600;
-            color: var(--text);
-            letter-spacing: -0.025em;
-            line-height: 1.15;
-            margin-bottom: 1rem;
-        }
-        .hero-title em {
-            font-family: var(--font-serif);
-            font-style: italic;
-            font-weight: 400;
-            color: var(--purple-light);
-        }
-
-        .hero-lead {
-            font-size: 0.95rem;
-            color: var(--text-2);
-            max-width: 520px;
-            line-height: 1.8;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
-
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.55rem 1.1rem;
-            background: var(--purple-mid);
-            color: #fff;
-            font-size: 0.8rem;
-            font-weight: 500;
-            font-family: var(--font-mono);
-            letter-spacing: 0.02em;
-            border: 1px solid var(--purple-mid);
-            text-decoration: none;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
+        .eyebrow { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple-light); margin-bottom: 1rem; }
+        .hero-title { font-size: 2.1rem; font-weight: 600; color: var(--text); letter-spacing: -0.03em; line-height: 1.15; margin-bottom: 1rem; }
+        .hero-title em { font-style: normal; background: linear-gradient(135deg, var(--purple-light) 0%, var(--indigo-light) 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .hero-lead { font-size: 0.925rem; color: var(--text-2); max-width: 520px; line-height: 1.8; margin-bottom: 1.5rem; font-weight: 400; }
+        .hero-actions { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+        .btn-primary { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: var(--purple-mid); color: #fff; font-size: 0.78rem; font-weight: 500; font-family: var(--font-sans); border: 1px solid var(--purple-mid); text-decoration: none; cursor: pointer; transition: background 0.15s; }
         .btn-primary:hover { background: var(--purple); color: #fff; }
-
-        .btn-ghost {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.55rem 1.1rem;
-            background: transparent;
-            color: var(--text-2);
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.02em;
-            border: 1px solid var(--border-2);
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.15s;
-        }
+        .btn-ghost { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.5rem 1rem; background: transparent; color: var(--text-2); font-size: 0.78rem; font-family: var(--font-sans); border: 1px solid var(--border-2); text-decoration: none; cursor: pointer; transition: all 0.15s; }
         .btn-ghost:hover { border-color: var(--purple-light); color: var(--purple-light); }
 
-        /* ======================== SECTIONS ======================== */
+        /* SECTIONS */
         .doc-section { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
         .doc-divider { height: 1px; background: var(--border); margin: 3rem 0; }
-
-        .section-label {
-            font-family: var(--font-mono);
-            font-size: 0.64rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--purple-light);
-            margin-bottom: 0.5rem;
-        }
-
-        .section-title {
-            font-family: var(--font-sans);
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text);
-            letter-spacing: -0.02em;
-            margin-bottom: 0.35rem;
-            line-height: 1.2;
-        }
-
-        .section-desc {
-            font-size: 0.875rem;
-            color: var(--text-2);
-            margin-bottom: 1.5rem;
-            max-width: 560px;
-        }
-
-        .doc-body p { margin-bottom: 1rem; color: var(--text-2); font-size: 0.875rem; }
+        .section-label { font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--purple-light); margin-bottom: 0.4rem; }
+        .section-title { font-size: 1.2rem; font-weight: 600; color: var(--text); letter-spacing: -0.02em; margin-bottom: 0.35rem; line-height: 1.25; }
+        .section-desc { font-size: 0.875rem; color: var(--text-2); margin-bottom: 1.5rem; max-width: 560px; line-height: 1.75; }
+        .doc-body p { margin-bottom: 0.875rem; color: var(--text-2); font-size: 0.875rem; line-height: 1.75; }
         .doc-body p:last-child { margin-bottom: 0; }
+        code { font-family: var(--font-mono); font-size: 0.78em; background: rgba(120,80,255,0.09); border: 1px solid var(--border-2); padding: 0.1em 0.4em; color: var(--purple-light); }
 
-        /* ======================== INLINE CODE ======================== */
-        code {
-            font-family: var(--font-mono);
-            font-size: 0.8em;
-            background: rgba(120,80,255,0.08);
-            border: 1px solid var(--border-2);
-            padding: 0.1em 0.4em;
-            color: var(--purple-light);
-        }
-
-        /* ======================== TAGS ======================== */
-        .tag {
-            display: inline-flex; align-items: center; gap: 0.25rem;
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            padding: 0.2rem 0.5rem;
-            letter-spacing: 0.03em;
-            font-weight: 500;
-        }
-        .tag-purple { background: rgba(124,58,237,0.1); color: var(--purple-light); border: 1px solid var(--border-2); }
+        /* TAGS */
+        .tag { display: inline-flex; align-items: center; font-family: var(--font-mono); font-size: 0.66rem; padding: 0.18rem 0.5rem; font-weight: 500; }
         .tag-green  { background: rgba(52,211,153,0.08); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
         .tag-amber  { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
         .tag-red    { background: rgba(248,113,113,0.08); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
-        .tag-indigo { background: rgba(99,102,241,0.08); color: var(--indigo-light); border: 1px solid rgba(99,102,241,0.2); }
+        .tag-purple { background: rgba(124,58,237,0.1); color: var(--purple-light); border: 1px solid var(--border-2); }
 
-        /* ======================== ENDPOINT CARD ======================== */
-        .endpoint-card {
-            border: 1px solid var(--border-2);
-            margin: 1.25rem 0;
-            background: var(--bg-1);
-        }
-        .endpoint-header {
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            padding: 0.75rem 1rem;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border);
-        }
-        .method-badge {
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            font-weight: 600;
-            padding: 0.18rem 0.5rem;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-        }
+        /* ENDPOINT CARD */
+        .endpoint-card { border: 1px solid var(--border-2); margin: 1.25rem 0; background: var(--bg-1); }
+        .endpoint-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.7rem 1rem; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+        .method-badge { font-family: var(--font-mono); font-size: 0.66rem; font-weight: 600; padding: 0.15rem 0.48rem; text-transform: uppercase; letter-spacing: 0.06em; }
         .method-post { background: rgba(124,58,237,0.12); color: var(--purple-light); border: 1px solid var(--border-2); }
         .method-get  { background: rgba(52,211,153,0.08); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
+        .endpoint-path { font-family: var(--font-mono); font-size: 0.8rem; color: var(--text); }
+        .endpoint-note { margin-left: auto; font-size: 0.72rem; color: var(--text-3); font-family: var(--font-mono); }
 
-        .endpoint-path {
-            font-family: var(--font-mono);
-            font-size: 0.82rem;
-            color: var(--text);
-            background: none;
-            border: none;
-            padding: 0;
-        }
-        .endpoint-note { margin-left: auto; font-size: 0.75rem; color: var(--text-3); font-family: var(--font-mono); }
-
-        /* ======================== CODE BLOCKS ======================== */
-        .codeblock {
-            border: 1px solid var(--border);
-            margin: 1.25rem 0;
-            background: var(--bg-1);
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-        }
-        .codeblock-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0.5rem 0.875rem;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border);
-        }
-        .lang-tabs { display: flex; gap: 0; }
-        .lang-tab {
-            background: none;
-            border: none;
-            color: var(--text-3);
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            padding: 0.15rem 0.65rem;
-            cursor: pointer;
-            transition: color 0.12s;
-        }
+        /* CODE BLOCKS */
+        .codeblock { border: 1px solid var(--border); margin: 1.25rem 0; background: var(--bg-1); }
+        .codeblock-header { display: flex; align-items: center; justify-content: space-between; padding: 0.45rem 0.875rem; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+        .lang-tabs { display: flex; }
+        .lang-tab { background: none; border: none; color: var(--text-3); font-family: var(--font-mono); font-size: 0.68rem; padding: 0.15rem 0.65rem; cursor: pointer; transition: color 0.12s; border-bottom: 1px solid transparent; }
         .lang-tab:hover { color: var(--text-2); }
-        .lang-tab.active { color: var(--purple-light); border-bottom: 1px solid var(--purple-light); }
-
-        .copy-btn {
-            background: none;
-            border: 1px solid var(--border);
-            color: var(--text-3);
-            font-family: var(--font-mono);
-            font-size: 0.68rem;
-            padding: 0.15rem 0.55rem;
-            cursor: pointer;
-            transition: all 0.12s;
-        }
+        .lang-tab.active { color: var(--purple-light); border-bottom-color: var(--purple-light); }
+        .copy-btn { background: none; border: 1px solid var(--border); color: var(--text-3); font-family: var(--font-mono); font-size: 0.66rem; padding: 0.12rem 0.5rem; cursor: pointer; transition: all 0.12s; }
         .copy-btn:hover { color: var(--text-2); border-color: var(--text-3); }
         .copy-btn.copied { color: var(--emerald); border-color: rgba(52,211,153,0.35); }
-
-        .codeblock-body {
-            padding: 1.1rem 1.1rem;
-            overflow-x: auto;
-            line-height: 1.8;
-            color: #b8b0d8;
-        }
-        .tab-pane { display: none; }
+        .codeblock-body { padding: 1.1rem; overflow-x: auto; line-height: 1.85; color: #b0aac8; font-family: var(--font-mono); font-size: 0.78rem; }
+        .tab-pane { display: none; white-space: pre; }
         .tab-pane.active { display: block; }
 
         /* Syntax tokens */
-        .t-key     { color: #a78bfa; }
-        .t-str     { color: #fbbf24; }
-        .t-num     { color: #818cf8; }
-        .t-nil     { color: #f87171; }
-        .t-bool    { color: #f87171; }
+        .t-key { color: #a78bfa; }
+        .t-str { color: #fbbf24; }
+        .t-num { color: #818cf8; }
+        .t-nil { color: #f87171; }
         .t-comment { color: #3d3858; font-style: italic; }
-        .t-method  { color: #7c3aed; font-weight: 500; }
-        .t-header  { color: #34d399; }
-        .t-flag    { color: #a78bfa; }
-        .t-url     { color: #818cf8; }
-        .t-punct   { color: #4a4565; }
-        .t-ok      { color: #34d399; font-weight: 600; }
-        .t-err     { color: #f87171; font-weight: 600; }
+        .t-method { color: #a78bfa; font-weight: 500; }
+        .t-flag { color: #818cf8; }
+        .t-url { color: #c4b5fd; }
+        .t-punct { color: #4a4565; }
+        .t-ok { color: #34d399; font-weight: 600; }
+        .t-err { color: #f87171; font-weight: 600; }
+        .t-header { color: #34d399; }
+        .t-bool { color: #f87171; }
 
-        /* ======================== PARAMS ======================== */
-        .params-table {
-            border: 1px solid var(--border);
-            margin: 1.25rem 0;
-            width: 100%;
-        }
-        .params-head {
-            display: grid;
-            grid-template-columns: 190px 65px 1fr;
-            gap: 1rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border);
-        }
-        .params-head span {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-3);
-            font-weight: 600;
-        }
-        .param-row {
-            display: grid;
-            grid-template-columns: 190px 65px 1fr;
-            gap: 1rem;
-            padding: 0.7rem 1rem;
-            border-bottom: 1px solid var(--border);
-            align-items: start;
-            transition: background 0.1s;
-        }
+        /* PARAMS TABLE */
+        .params-table { border: 1px solid var(--border); margin: 1.25rem 0; }
+        .params-head { display: grid; grid-template-columns: 190px 60px 1fr; gap: 1rem; padding: 0.45rem 1rem; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+        .params-head span { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); font-weight: 600; }
+        .param-row { display: grid; grid-template-columns: 190px 60px 1fr; gap: 1rem; padding: 0.65rem 1rem; border-bottom: 1px solid var(--border); align-items: start; transition: background 0.1s; }
         .param-row:last-child { border-bottom: none; }
-        .param-row:hover { background: rgba(255,255,255,0.02); }
-        .param-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--purple-light); }
-        .param-req  { font-family: var(--font-mono); font-size: 0.68rem; color: var(--red); font-weight: 600; }
-        .param-opt  { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-3); }
-        .param-desc { color: var(--text-2); font-size: 0.825rem; line-height: 1.6; }
+        .param-row:hover { background: rgba(255,255,255,0.018); }
+        .param-name { font-family: var(--font-mono); font-size: 0.76rem; color: var(--purple-light); }
+        .param-req  { font-family: var(--font-mono); font-size: 0.66rem; color: var(--red); font-weight: 600; }
+        .param-opt  { font-family: var(--font-mono); font-size: 0.66rem; color: var(--text-3); }
+        .param-desc { color: var(--text-2); font-size: 0.82rem; line-height: 1.65; }
 
-        /* ======================== TABLE ======================== */
-        .doc-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 1.25rem 0;
-            font-size: 0.825rem;
-        }
-        .doc-table thead th {
-            text-align: left;
-            padding: 0.5rem 0.875rem;
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-3);
-            font-weight: 600;
-            border-bottom: 1px solid var(--border);
-            background: var(--bg-2);
-        }
+        /* TABLE */
+        .doc-table { width: 100%; border-collapse: collapse; margin: 1.25rem 0; font-size: 0.82rem; }
+        .doc-table thead th { text-align: left; padding: 0.45rem 0.875rem; font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); font-weight: 600; border-bottom: 1px solid var(--border); background: var(--bg-2); }
         .doc-table tbody tr { border-bottom: 1px solid var(--border); }
         .doc-table tbody tr:last-child { border-bottom: none; }
-        .doc-table tbody tr:hover { background: rgba(255,255,255,0.02); }
-        .doc-table td {
-            padding: 0.65rem 0.875rem;
-            color: var(--text-2);
-            vertical-align: top;
-        }
+        .doc-table tbody tr:hover { background: rgba(255,255,255,0.018); }
+        .doc-table td { padding: 0.6rem 0.875rem; color: var(--text-2); vertical-align: top; }
         .doc-table td:first-child { color: var(--text); font-weight: 500; }
 
-        /* ======================== CALLOUT ======================== */
-        .callout {
-            display: flex;
-            gap: 0.75rem;
-            padding: 0.875rem 1rem;
-            margin: 1.25rem 0;
-            font-size: 0.825rem;
-            line-height: 1.65;
-            border-left: 2px solid;
-        }
+        /* CALLOUT */
+        .callout { display: flex; gap: 0.75rem; padding: 0.825rem 1rem; margin: 1.25rem 0; font-size: 0.825rem; line-height: 1.65; border-left: 2px solid; }
         .callout-info    { background: rgba(109,40,217,0.06); border-color: var(--purple-mid); }
         .callout-warning { background: rgba(251,191,36,0.05); border-color: var(--amber); }
         .callout-success { background: rgba(52,211,153,0.05); border-color: var(--emerald); }
-        .callout-icon { flex-shrink: 0; }
+        .callout-icon { flex-shrink: 0; font-size: 0.9rem; }
         .callout-body { color: var(--text-2); }
         .callout-body strong { color: var(--text); font-weight: 600; }
 
-        /* ======================== STATUS ROWS ======================== */
+        /* STATUS TABLE with groups */
         .status-table { border: 1px solid var(--border); margin: 1.25rem 0; }
-        .status-head {
-            display: grid;
-            grid-template-columns: 60px 160px 1fr;
-            gap: 1rem;
-            padding: 0.5rem 1rem;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border);
-        }
-        .status-head span {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-3);
-            font-weight: 600;
-        }
-        .status-row {
-            display: grid;
-            grid-template-columns: 60px 160px 1fr;
-            gap: 1rem;
-            padding: 0.65rem 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.825rem;
-            align-items: center;
-        }
+        .status-group-header { display: flex; align-items: center; gap: 0.5rem; padding: 0.4rem 1rem; background: var(--bg-3); border-bottom: 1px solid var(--border); font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.08em; font-weight: 600; }
+        .sg-2xx { color: var(--emerald); }
+        .sg-4xx { color: var(--red); }
+        .sg-5xx { color: var(--amber); }
+        .status-row { display: grid; grid-template-columns: 58px 170px 1fr; gap: 1rem; padding: 0.6rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.82rem; align-items: center; }
         .status-row:last-child { border-bottom: none; }
-        .status-code {
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            font-weight: 700;
-            padding: 0.15rem 0.45rem;
-            text-align: center;
-        }
+        .status-code { font-family: var(--font-mono); font-size: 0.72rem; font-weight: 700; padding: 0.12rem 0.42rem; text-align: center; }
         .s-2xx { background: rgba(52,211,153,0.1); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
         .s-4xx { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
         .s-5xx { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
-        .status-name { color: var(--text); font-family: var(--font-mono); font-size: 0.78rem; }
+        .status-name { color: var(--text); font-family: var(--font-mono); font-size: 0.76rem; font-weight: 500; }
         .status-desc { color: var(--text-2); }
 
-        /* ======================== FEATURE CARDS ======================== */
-        .feature-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 1px;
-            border: 1px solid var(--border);
-            margin: 1.25rem 0;
-            background: var(--border);
-        }
-        .feature-card {
-            background: var(--bg-1);
-            padding: 1.5rem;
-            transition: background 0.15s;
-        }
+        /* FEATURE GRID */
+        .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1px; border: 1px solid var(--border); margin: 1.25rem 0; background: var(--border); }
+        .feature-card { background: var(--bg-1); padding: 1.375rem; transition: background 0.15s; }
         .feature-card:hover { background: var(--bg-2); }
-        .feature-card-icon {
-            width: 28px; height: 28px;
-            border: 1px solid var(--border-2);
-            background: var(--purple-faint);
-            display: flex; align-items: center; justify-content: center;
-            margin-bottom: 0.875rem;
-        }
-        .feature-card-icon svg { width: 13px; height: 13px; }
-        .feature-card-title {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            font-weight: 600;
-            color: var(--text);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            margin-bottom: 0.5rem;
-        }
-        .feature-card-desc {
-            font-size: 0.825rem;
-            color: var(--text-2);
-            line-height: 1.65;
-        }
+        .feature-card-icon { width: 26px; height: 26px; border: 1px solid var(--border-2); background: var(--purple-faint); display: flex; align-items: center; justify-content: center; margin-bottom: 0.75rem; }
+        .feature-card-icon svg { width: 12px; height: 12px; }
+        .feature-card-title { font-family: var(--font-mono); font-size: 0.74rem; font-weight: 600; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 0.4rem; }
+        .feature-card-desc { font-size: 0.8rem; color: var(--text-2); line-height: 1.65; }
 
-        /* ======================== GATEWAY CARDS ======================== */
-        .gateway-row {
-            border: 1px solid var(--border);
-            margin: 1.25rem 0;
-        }
-        .gateway-item {
-            display: grid;
-            grid-template-columns: 140px 80px 80px 1fr auto;
-            align-items: center;
-            gap: 1rem;
-            padding: 0.75rem 1rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.825rem;
-        }
+        /* GATEWAY ROW */
+        .gateway-row { border: 1px solid var(--border); margin: 1.25rem 0; }
+        .gateway-item { display: grid; grid-template-columns: 150px 90px 80px 1fr; align-items: center; gap: 1rem; padding: 0.7rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.82rem; }
         .gateway-item:last-child { border-bottom: none; }
-        .gateway-item:hover { background: rgba(255,255,255,0.02); }
-        .gateway-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--purple-light); font-weight: 600; }
-        .gateway-currencies { color: var(--text-2); font-family: var(--font-mono); font-size: 0.72rem; }
-        .gateway-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; }
-        .dot { width: 5px; height: 5px; border-radius: 50%; }
-        .dot-green { background: var(--emerald); }
-        .dot-amber { background: var(--amber); }
+        .gateway-item:hover { background: rgba(255,255,255,0.018); }
+        .gateway-name { font-family: var(--font-mono); font-size: 0.76rem; color: var(--purple-light); font-weight: 600; }
+        .gateway-status { display: flex; align-items: center; gap: 0.4rem; }
+        .dot { width: 5px; height: 5px; border-radius: 50%; display: inline-block; }
+        .dot-green { background: var(--emerald); box-shadow: 0 0 4px var(--emerald); }
+        .dot-amber { background: var(--amber); box-shadow: 0 0 4px var(--amber); }
 
-        /* ======================== FLOW DIAGRAM ======================== */
-        .flow-diagram {
-            border: 1px solid var(--border);
-            background: var(--bg-1);
-            padding: 1.5rem;
-            margin: 1.25rem 0;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            line-height: 2;
-            color: var(--text-3);
-        }
-        .flow-step { display: flex; align-items: center; gap: 0.75rem; }
-        .flow-key { color: var(--purple-light); min-width: 120px; }
-        .flow-arrow { color: var(--text-3); }
-        .flow-val { color: var(--text-2); }
-        .flow-note { color: var(--text-3); font-style: italic; margin-left: auto; }
+        /* FLOW */
+        .flow-diagram { border: 1px solid var(--border); background: var(--bg-1); padding: 1.25rem; margin: 1.25rem 0; font-family: var(--font-mono); font-size: 0.75rem; line-height: 2.1; color: var(--text-3); white-space: pre; }
 
-        /* ======================== RIGHT PANEL ======================== */
-        .right-panel {
-            grid-column: 3;
-            border-left: 1px solid var(--border);
-            background: var(--bg-1);
-            position: sticky;
-            top: 0;
-            height: 100vh;
-            overflow-y: auto;
-            padding: 1.75rem 1.25rem;
-        }
+        /* GLOSSARY */
+        .glossary-item { padding: 0.875rem 0; border-bottom: 1px solid var(--border); display: grid; grid-template-columns: 160px 1fr; gap: 1rem; align-items: baseline; }
+        .glossary-item:last-child { border-bottom: none; }
+        .glossary-term { font-family: var(--font-mono); font-size: 0.78rem; color: var(--purple-light); font-weight: 500; }
+        .glossary-def { font-size: 0.825rem; color: var(--text-2); line-height: 1.65; }
+
+        /* RIGHT PANEL */
+        .right-panel { grid-column: 3; border-left: 1px solid var(--border); background: var(--bg-1); position: sticky; top: 0; height: 100vh; overflow-y: auto; padding: 1.5rem 1.125rem; }
         .right-panel::-webkit-scrollbar { width: 3px; }
         .right-panel::-webkit-scrollbar-thumb { background: var(--border-2); }
-
-        .panel-label {
-            font-family: var(--font-mono);
-            font-size: 0.62rem;
-            text-transform: uppercase;
-            letter-spacing: 0.1em;
-            color: var(--text-3);
-            font-weight: 600;
-            margin-bottom: 0.875rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .live-block {
-            background: var(--bg);
-            border: 1px solid var(--border-2);
-            margin-bottom: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-        }
-        .live-top {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            background: var(--bg-2);
-            border-bottom: 1px solid var(--border);
-        }
-        .live-dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-            background: var(--emerald);
-            animation: blink 2s ease infinite;
-        }
+        .panel-label { font-family: var(--font-mono); font-size: 0.6rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--text-3); font-weight: 600; margin-bottom: 0.75rem; padding-bottom: 0.4rem; border-bottom: 1px solid var(--border); }
+        .live-block { background: var(--bg); border: 1px solid var(--border-2); margin-bottom: 0.875rem; font-family: var(--font-mono); font-size: 0.72rem; }
+        .live-top { display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.75rem; background: var(--bg-2); border-bottom: 1px solid var(--border); }
+        .live-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--emerald); box-shadow: 0 0 4px var(--emerald); animation: blink 2s ease infinite; }
         @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
-        .live-label { font-size: 0.68rem; color: var(--emerald); }
-        .live-path { font-size: 0.68rem; color: var(--text-3); margin-left: auto; }
-        .live-body { padding: 0.875rem; line-height: 1.8; color: #a09ab8; }
-
-        .res-block {
-            background: var(--bg);
-            border: 1px solid rgba(52,211,153,0.18);
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            margin-bottom: 1.5rem;
-        }
-        .res-top {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem 0.75rem;
-            background: rgba(52,211,153,0.05);
-            border-bottom: 1px solid rgba(52,211,153,0.1);
-        }
-        .res-status { font-size: 0.72rem; color: var(--emerald); font-weight: 700; }
-        .res-time { margin-left: auto; font-size: 0.68rem; color: var(--text-3); }
-        .res-body { padding: 0.875rem; line-height: 1.8; color: #a09ab8; }
-
-        .gateway-status-panel { margin-top: 0.25rem; }
-        .gs-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 0.45rem 0;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.75rem;
-        }
+        .live-label { font-size: 0.66rem; color: var(--emerald); }
+        .live-path { font-size: 0.66rem; color: var(--text-3); margin-left: auto; }
+        .live-body { padding: 0.875rem; line-height: 1.85; color: #a09ab8; white-space: pre; font-size: 0.72rem; }
+        .res-block { background: var(--bg); border: 1px solid rgba(52,211,153,0.18); font-family: var(--font-mono); font-size: 0.72rem; margin-bottom: 1.5rem; }
+        .res-top { display: flex; align-items: center; gap: 0.5rem; padding: 0.45rem 0.75rem; background: rgba(52,211,153,0.05); border-bottom: 1px solid rgba(52,211,153,0.1); }
+        .res-status { font-size: 0.7rem; color: var(--emerald); font-weight: 700; }
+        .res-time { margin-left: auto; font-size: 0.66rem; color: var(--text-3); }
+        .res-body { padding: 0.875rem; line-height: 1.85; color: #a09ab8; white-space: pre; }
+        .gs-row { display: flex; justify-content: space-between; align-items: center; padding: 0.4rem 0; border-bottom: 1px solid var(--border); font-size: 0.75rem; }
         .gs-row:last-child { border-bottom: none; }
         .gs-name { font-family: var(--font-mono); color: var(--text-2); font-size: 0.7rem; }
 
-        /* ======================== FOOTER ======================== */
-        .doc-footer {
-            margin-top: 4rem;
-            padding-top: 1.5rem;
-            border-top: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            font-family: var(--font-mono);
-            font-size: 0.72rem;
-            color: var(--text-3);
-        }
+        /* FOOTER */
+        .doc-footer { margin-top: 4rem; padding-top: 1.5rem; border-top: 1px solid var(--border); display: flex; align-items: center; justify-content: space-between; font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-3); }
         .doc-footer a { color: var(--purple-light); text-decoration: none; }
 
-        /* ======================== RESPONSIVE ======================== */
-        @media (max-width: 1280px) {
-            .shell { grid-template-columns: 240px 1fr; }
-            .right-panel { display: none; }
-        }
-        @media (max-width: 768px) {
-            .shell { grid-template-columns: 1fr; }
-            .sidebar { display: none; }
-            .main { padding: 2rem 1.25rem 5rem; }
-            .hero-title { font-size: 1.8rem; }
-            .feature-grid { grid-template-columns: 1fr; }
-        }
+        /* RESPONSIVE */
+        @media (max-width: 1280px) { .shell { grid-template-columns: 240px 1fr; } .right-panel { display: none; } }
+        @media (max-width: 768px) { .shell { grid-template-columns: 1fr; } .sidebar { display: none; } .main { padding: 2rem 1.25rem 5rem; } .hero-title { font-size: 1.75rem; } .feature-grid { grid-template-columns: 1fr; } }
     </style>
 </head>
 <body>
 <div class="shell">
 
-<!-- ======================== SIDEBAR ======================== -->
 <aside class="sidebar">
     <a href="#intro" class="logo-area">
         <div class="logo-mark">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
-                <path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/>
-            </svg>
+            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
         </div>
         <span class="logo-text">Orquestraio</span>
         <span class="logo-version">v0.4.0</span>
     </a>
-
+    <div class="search-trigger" onclick="openCmd()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Buscar...
+        <span class="search-kbd">Ctrl K</span>
+    </div>
     <nav class="nav">
         <div class="nav-group">
             <div class="nav-group-label">Início</div>
-            <a href="#intro"  class="nav-item active">Introdução</a>
-            <a href="#auth"   class="nav-item">Autenticação</a>
+            <a href="#intro"    class="nav-item active">Introdução</a>
+            <a href="#auth"     class="nav-item">Autenticação</a>
+            <a href="#glossary" class="nav-item">Glossário</a>
         </div>
         <div class="nav-group">
             <div class="nav-group-label">API</div>
-            <a href="#create"  class="nav-item">Processar Pagamento</a>
-            <a href="#methods" class="nav-item">Métodos de Pagamento</a>
-            <a href="#routing" class="nav-item">SmartRouter</a>
-            <a href="#errors"  class="nav-item">Erros & Status</a>
+            <a href="#create"    class="nav-item">Processar Pagamento</a>
+            <a href="#methods"   class="nav-item">Métodos de Pagamento</a>
+            <a href="#routing"   class="nav-item">SmartRouter</a>
+            <a href="#webhooks"  class="nav-item">Webhooks</a>
+            <a href="#errors"    class="nav-item">Erros & Status</a>
+            <a href="#ratelimit" class="nav-item">Rate Limiting</a>
         </div>
         <div class="nav-group">
             <div class="nav-group-label">Funcionalidades</div>
-            <a href="#idempotency"  class="nav-item">Idempotência</a>
-            <a href="#circuit"      class="nav-item">Circuit Breaker</a>
-            <a href="#security"     class="nav-item">Segurança</a>
+            <a href="#idempotency" class="nav-item">Idempotência</a>
+            <a href="#circuit"     class="nav-item">Circuit Breaker</a>
+            <a href="#security"    class="nav-item">Segurança</a>
         </div>
         <div class="nav-group">
-            <div class="nav-group-label">Recursos</div>
-            <a href="#sdks" class="nav-item">SDKs</a>
+            <div class="nav-group-label">Guias</div>
+            <a href="#sandbox" class="nav-item">Sandbox & MOCK</a>
+            <a href="#sdks"    class="nav-item">SDKs & Quickstart</a>
         </div>
     </nav>
-
     <div class="sidebar-footer">
         <a href="https://github.com/vitinh0z/orchestra.io">GitHub</a>
         <a href="#">Changelog</a>
@@ -762,7 +327,23 @@
     </div>
 </aside>
 
-<!-- ======================== MAIN ======================== -->
+<!-- COMMAND PALETTE -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmdIfBg(event)">
+    <div class="cmd-modal">
+        <div class="cmd-search">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+            <input class="cmd-input" id="cmdInput" placeholder="Buscar seções, endpoints..." oninput="filterCmd(this.value)" onkeydown="handleCmdKey(event)">
+            <span class="cmd-esc" onclick="closeCmd()">ESC</span>
+        </div>
+        <div class="cmd-results" id="cmdResults"></div>
+        <div class="cmd-footer">
+            <span class="cmd-hint"><kbd>↑↓</kbd> navegar</span>
+            <span class="cmd-hint"><kbd>Enter</kbd> ir</span>
+            <span class="cmd-hint"><kbd>Esc</kbd> fechar</span>
+        </div>
+    </div>
+</div>
+
 <main class="main">
 
     <!-- INTRO -->
@@ -772,13 +353,11 @@
         <p class="hero-lead">O Orquestraio é uma plataforma de orquestração de pagamentos multi-tenant. Integre Stripe, MercadoPago e PayPal de uma vez — com roteamento inteligente, idempotência e resiliência embutidos.</p>
         <div class="hero-actions">
             <a href="#create" class="btn-primary">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 Ver endpoints
             </a>
-            <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                GitHub
-            </a>
+            <a href="#sandbox" class="btn-ghost">Testar no Sandbox</a>
+            <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">GitHub</a>
         </div>
     </section>
 
@@ -789,38 +368,31 @@
         <div class="section-label">Autenticação</div>
         <div class="section-title">API Key via header HTTP</div>
         <div class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do seu tenant. Chaves de produção têm o prefixo <code>Oz_</code>.</div>
-
         <div class="doc-body">
             <div class="callout callout-warning">
                 <span class="callout-icon">⚠</span>
-                <div class="callout-body">
-                    <strong>Nunca exponha sua API key no frontend.</strong> Faça todas as chamadas pelo seu backend. Se uma chave for comprometida, ela pode ser revogada no painel administrativo.
-                </div>
+                <div class="callout-body"><strong>Nunca exponha sua API key no frontend.</strong> Faça todas as chamadas pelo seu backend. Se uma chave for comprometida, ela pode ser revogada no painel sem downtime.</div>
             </div>
-
-            <div class="codeblock">
-                <div class="codeblock-header">
-                    <div class="lang-tabs"><button class="lang-tab active">Header</button></div>
-                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-                </div>
-                <div class="codeblock-body">
-                    <div class="tab-pane active"><span class="t-header">x-api-key</span><span class="t-punct">: </span><span class="t-str">Oz_live_a1b2c3d4e5f6g7h8i9j0</span></div>
-                </div>
-            </div>
-
             <div class="codeblock">
                 <div class="codeblock-header">
                     <div class="lang-tabs">
-                        <button class="lang-tab active" data-tab="auth-curl" onclick="switchTab(event)">cURL</button>
-                        <button class="lang-tab" data-tab="auth-node" onclick="switchTab(event)">Node.js</button>
+                        <button class="lang-tab active" data-tab="auth-h" onclick="switchTab(event)">Header</button>
+                        <button class="lang-tab" data-tab="auth-c" onclick="switchTab(event)">cURL</button>
+                        <button class="lang-tab" data-tab="auth-n" onclick="switchTab(event)">Node.js</button>
                     </div>
                     <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
                 </div>
                 <div class="codeblock-body">
-                    <div class="tab-pane active" id="auth-curl"><span class="t-method">curl</span> https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+<div class="tab-pane active" id="auth-h"><span class="t-header">x-api-key</span><span class="t-punct">: </span><span class="t-str">Oz_live_a1b2c3d4e5f6g7h8i9j0</span></div>
+<div class="tab-pane" id="auth-c"><span class="t-method">curl</span> https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
   <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_a1b2c3..."</span></div>
-                    <div class="tab-pane" id="auth-node"><span class="t-key">const</span> response = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
-  headers: { <span class="t-str">'x-api-key'</span>: <span class="t-str">'Oz_live_a1b2c3...'</span> }
+<div class="tab-pane" id="auth-n"><span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+  method: <span class="t-str">'POST'</span>,
+  headers: {
+    <span class="t-str">'x-api-key'</span>: <span class="t-str">'Oz_live_a1b2c3...'</span>,
+    <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>
+  },
+  body: JSON.stringify(payload)
 });</div>
                 </div>
             </div>
@@ -829,12 +401,28 @@
 
     <div class="doc-divider"></div>
 
+    <!-- GLOSSARY -->
+    <section id="glossary" class="doc-section">
+        <div class="section-label">Início</div>
+        <div class="section-title">Glossário</div>
+        <div class="section-desc">Termos usados em toda a documentação.</div>
+        <div style="border: 1px solid var(--border); padding: 0 1rem;">
+            <div class="glossary-item"><span class="glossary-term">Tenant</span><span class="glossary-def">Uma empresa ou aplicação cadastrada no Orquestraio. Cada tenant tem sua própria API key, gateways configurados e dados completamente isolados.</span></div>
+            <div class="glossary-item"><span class="glossary-term">SmartRouter</span><span class="glossary-def">Componente que seleciona automaticamente o melhor gateway com base na moeda, método e valor da transação.</span></div>
+            <div class="glossary-item"><span class="glossary-term">Idempotency Key</span><span class="glossary-def">Identificador único por transação. Garante que a mesma requisição nunca seja processada duas vezes, mesmo em cenários de retry.</span></div>
+            <div class="glossary-item"><span class="glossary-term">Circuit Breaker</span><span class="glossary-def">Mecanismo que detecta falhas em um gateway e o remove temporariamente das rotas disponíveis, evitando degradação em cascata.</span></div>
+            <div class="glossary-item"><span class="glossary-term">Gateway</span><span class="glossary-def">Provedor externo de pagamento: Stripe, MercadoPago, PayPal ou MOCK. O Orquestraio é uma camada de abstração sobre eles.</span></div>
+            <div class="glossary-item"><span class="glossary-term">MOCK</span><span class="glossary-def">Gateway fake para testes. Simula 300ms de latência e aprova qualquer pagamento, exceto o valor exato <code>99.99</code> (força erro).</span></div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
     <!-- CREATE PAYMENT -->
     <section id="create" class="doc-section">
-        <div class="section-label">Pagamentos</div>
+        <div class="section-label">API</div>
         <div class="section-title">Processar Pagamento</div>
         <div class="section-desc">Cria uma transação e roteia automaticamente para o gateway ideal com base na moeda e método de pagamento.</div>
-
         <div class="doc-body">
             <div class="endpoint-card">
                 <div class="endpoint-header">
@@ -843,82 +431,78 @@
                     <span class="endpoint-note">Requer x-api-key</span>
                 </div>
             </div>
-
             <div class="params-table">
-                <div class="params-head">
-                    <span>Campo</span><span>Req.</span><span>Descrição</span>
-                </div>
-                <div class="param-row"><span class="param-name">idempotecyKey</span><span class="param-req">sim</span><span class="param-desc">Identificador único para prevenir cobranças duplicadas. Use um UUID ou o ID do pedido no seu sistema.</span></div>
-                <div class="param-row"><span class="param-name">amount</span><span class="param-req">sim</span><span class="param-desc">Valor da transação em ponto flutuante. Mínimo: <code>0.01</code>.</span></div>
-                <div class="param-row"><span class="param-name">currency</span><span class="param-req">sim</span><span class="param-desc">Código ISO 4217. Ex: <code>BRL</code>, <code>USD</code>, <code>EUR</code>. Define qual gateway será selecionado.</span></div>
-                <div class="param-row"><span class="param-name">paymentMethodRequest</span><span class="param-req">sim</span><span class="param-desc">Objeto com <code>type</code> (<code>pix</code>, <code>boleto</code>, <code>card_token</code>) e <code>token</code> obrigatório apenas para cartão.</span></div>
-                <div class="param-row"><span class="param-name">customer</span><span class="param-req">sim</span><span class="param-desc">Dados do pagador: <code>id</code>, <code>email</code> e <code>document</code> (CPF/CNPJ).</span></div>
+                <div class="params-head"><span>Campo</span><span>Req.</span><span>Descrição</span></div>
+                <div class="param-row"><span class="param-name">idempotecyKey</span><span class="param-req">sim</span><span class="param-desc">Identificador único por transação. Use um UUID ou o ID do pedido no seu sistema.</span></div>
+                <div class="param-row"><span class="param-name">amount</span><span class="param-req">sim</span><span class="param-desc">Valor em ponto flutuante. Mínimo: <code>0.01</code>.</span></div>
+                <div class="param-row"><span class="param-name">currency</span><span class="param-req">sim</span><span class="param-desc">Código ISO 4217: <code>BRL</code>, <code>USD</code>, <code>EUR</code>. Define o gateway que o SmartRouter escolherá.</span></div>
+                <div class="param-row"><span class="param-name">paymentMethodRequest</span><span class="param-req">sim</span><span class="param-desc">Objeto com <code>type</code> (<code>pix</code>, <code>boleto</code>, <code>card_token</code>) e <code>token</code> — obrigatório somente para cartão.</span></div>
+                <div class="param-row"><span class="param-name">customer</span><span class="param-req">sim</span><span class="param-desc">Objeto com <code>id</code>, <code>email</code> e <code>document</code> (CPF/CNPJ) do pagador.</span></div>
                 <div class="param-row"><span class="param-name">metadata.gateway</span><span class="param-opt">não</span><span class="param-desc">Força um gateway específico: <code>STRIPE</code>, <code>MERCADO_PAGO</code>, <code>PAYPAL</code>, <code>MOCK</code>. Sobrescreve o SmartRouter.</span></div>
             </div>
 
             <div class="codeblock">
                 <div class="codeblock-header">
                     <div class="lang-tabs">
-                        <button class="lang-tab active" data-tab="pay-curl" onclick="switchTab(event)">cURL</button>
-                        <button class="lang-tab" data-tab="pay-json" onclick="switchTab(event)">JSON</button>
+                        <button class="lang-tab active" data-tab="p-curl" onclick="switchTab(event)">cURL</button>
+                        <button class="lang-tab" data-tab="p-json" onclick="switchTab(event)">JSON Body</button>
                     </div>
                     <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
                 </div>
                 <div class="codeblock-body">
-                    <div class="tab-pane active" id="pay-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+<div class="tab-pane active" id="p-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
   <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_abc123"</span> <span class="t-punct">\</span>
   <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
-  <span class="t-flag">-d</span> <span class="t-str">'{</span>
-    <span class="t-key">"idempotecyKey"</span>: <span class="t-str">"pedido-98765"</span>,
-    <span class="t-key">"amount"</span>: <span class="t-num">197.00</span>,
-    <span class="t-key">"currency"</span>: <span class="t-str">"BRL"</span>,
-    <span class="t-key">"paymentMethodRequest"</span>: {
-      <span class="t-key">"type"</span>: <span class="t-str">"pix"</span>,
-      <span class="t-key">"token"</span>: <span class="t-nil">null</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotecyKey": "pedido-98765",
+    "amount": 197.00,
+    "currency": "BRL",
+    "paymentMethodRequest": {
+      "type": "pix",
+      "token": null
     },
-    <span class="t-key">"customer"</span>: {
-      <span class="t-key">"id"</span>: <span class="t-str">"usr_001"</span>,
-      <span class="t-key">"email"</span>: <span class="t-str">"cliente@exemplo.com"</span>,
-      <span class="t-key">"document"</span>: <span class="t-str">"123.456.789-00"</span>
+    "customer": {
+      "id": "usr_001",
+      "email": "cliente@exemplo.com",
+      "document": "123.456.789-00"
     }
-  <span class="t-str">}'</span></div>
-                    <div class="tab-pane" id="pay-json"><span class="t-punct">{</span>
-  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span>,    <span class="t-comment">// UUID ou ID do pedido — obrigatório</span>
-  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,              <span class="t-comment">// BRL → MercadoPago | USD/EUR → Stripe/PayPal</span>
+  }'</span></div>
+<div class="tab-pane" id="p-json"><span class="t-punct">{</span>
+  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span><span class="t-punct">,</span>   <span class="t-comment">// UUID ou ID do pedido — obrigatório</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span><span class="t-punct">,</span>             <span class="t-comment">// BRL → MercadoPago | USD/EUR → Stripe/PayPal</span>
   <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,              <span class="t-comment">// pix | boleto | card_token</span>
+    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span><span class="t-punct">,</span>             <span class="t-comment">// pix | boleto | card_token</span>
     <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>             <span class="t-comment">// obrigatório somente para card_token</span>
   <span class="t-punct">},</span>
   <span class="t-key">"customer"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
-    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"cliente@exemplo.com"</span>,
+    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span><span class="t-punct">,</span>
+    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"cliente@exemplo.com"</span><span class="t-punct">,</span>
     <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-00"</span>
   <span class="t-punct">},</span>
   <span class="t-key">"metadata"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>     <span class="t-comment">// opcional: força gateway específico</span>
+    <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>    <span class="t-comment">// opcional: força gateway específico</span>
   <span class="t-punct">}</span>
 <span class="t-punct">}</span></div>
                 </div>
             </div>
 
-            <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin: 1.5rem 0 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
-                Resposta <span class="tag tag-green" style="vertical-align:middle;">201 Created</span>
+            <div style="display:flex;align-items:center;gap:0.6rem;font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:1.5rem 0 0.5rem;">
+                Resposta <span class="tag tag-green">201 Created</span>
             </div>
-
             <div class="codeblock">
                 <div class="codeblock-header">
                     <div class="lang-tabs"><button class="lang-tab active">JSON</button></div>
                     <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
                 </div>
                 <div class="codeblock-body">
-                    <div class="tab-pane active"><span class="t-punct">{</span>
-  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span>,
-  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span>,       <span class="t-comment">// PENDING | APPROVED | RECUSED | ERROR</span>
-  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">197.00</span>,
-  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span>,
+<div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>  <span class="t-comment">// PENDING | APPROVED | RECUSED | ERROR</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
   <span class="t-key">"details"</span><span class="t-punct">:</span>  <span class="t-punct">{</span>
-    <span class="t-key">"provider"</span><span class="t-punct">:</span>       <span class="t-str">"MERCADO_PAGO"</span>,
+    <span class="t-key">"provider"</span><span class="t-punct">:</span>       <span class="t-str">"MERCADO_PAGO"</span><span class="t-punct">,</span>
     <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126580014br.gov.bcb.pix..."</span>  <span class="t-comment">// QR code copia-e-cola</span>
   <span class="t-punct">},</span>
   <span class="t-key">"createAt"</span><span class="t-punct">:</span>  <span class="t-str">"2026-02-21T15:30:00"</span>
@@ -930,12 +514,11 @@
 
     <div class="doc-divider"></div>
 
-    <!-- PAYMENT METHODS -->
+    <!-- METHODS -->
     <section id="methods" class="doc-section">
-        <div class="section-label">Pagamentos</div>
+        <div class="section-label">API</div>
         <div class="section-title">Métodos de Pagamento</div>
-        <div class="section-desc">Tipos suportados no campo <code>paymentMethodRequest.type</code> e seus respectivos gateways.</div>
-
+        <div class="section-desc">Tipos suportados em <code>paymentMethodRequest.type</code> e seus gateways associados.</div>
         <table class="doc-table">
             <thead><tr><th>Tipo</th><th>Código</th><th>Moedas</th><th>Gateway</th></tr></thead>
             <tbody>
@@ -944,23 +527,19 @@
             <tr><td>Cartão de Crédito/Débito</td><td><code>card_token</code></td><td>BRL, USD, EUR</td><td><code>STRIPE</code>, <code>MERCADO_PAGO</code></td></tr>
             </tbody>
         </table>
-
         <div class="callout callout-info">
             <span class="callout-icon">ℹ</span>
-            <div class="callout-body">
-                <strong>Tokenização de cartão:</strong> Para <code>card_token</code>, tokenize os dados no SDK do gateway (Stripe.js, MercadoPago SDK) e envie somente o token no campo <code>paymentMethodRequest.token</code>. O servidor do Orquestraio nunca processa dados de cartão brutos.
-            </div>
+            <div class="callout-body"><strong>Tokenização de cartão:</strong> Para <code>card_token</code>, tokenize os dados no SDK do gateway (Stripe.js, MercadoPago SDK) e passe apenas o token em <code>paymentMethodRequest.token</code>. O Orquestraio nunca processa dados de cartão brutos.</div>
         </div>
     </section>
 
     <div class="doc-divider"></div>
 
-    <!-- SMART ROUTER -->
+    <!-- ROUTING -->
     <section id="routing" class="doc-section">
-        <div class="section-label">Arquitetura</div>
+        <div class="section-label">API</div>
         <div class="section-title">SmartRouter</div>
-        <div class="section-desc">Seleção automática de gateway por moeda, método e valor. Pode ser sobrescrito via <code>metadata.gateway</code>.</div>
-
+        <div class="section-desc">Seleção automática de gateway por moeda, método e valor. Sobrescreva com <code>metadata.gateway</code> quando necessário.</div>
         <table class="doc-table">
             <thead><tr><th>Moeda</th><th>Método</th><th>Condição</th><th>Gateway</th></tr></thead>
             <tbody>
@@ -971,39 +550,77 @@
             <tr><td>Qualquer</td><td>Qualquer</td><td>Sem regra correspondente</td><td><code>STRIPE</code> (fallback)</td></tr>
             </tbody>
         </table>
-
         <div class="gateway-row">
-            <div class="gateway-item" style="background:var(--bg-2); border-bottom: 1px solid var(--border);">
-                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Gateway</span>
-                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Moedas</span>
-                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Status</span>
-                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Identificador</span>
-                <span></span>
+            <div class="gateway-item" style="background:var(--bg-2);border-bottom:1px solid var(--border);">
+                <span style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Gateway</span>
+                <span style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Moedas</span>
+                <span style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Status</span>
+                <span style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Credential format</span>
             </div>
-            <div class="gateway-item">
-                <span class="gateway-name">STRIPE</span>
-                <span class="gateway-currencies">BRL, USD, EUR</span>
-                <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;">Ativo</span></span>
-                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">sk_live_...</span>
+            <div class="gateway-item"><span class="gateway-name">STRIPE</span><span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">BRL, USD, EUR</span><span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;font-family:var(--font-mono);">Ativo</span></span><span style="color:var(--text-3);font-family:var(--font-mono);font-size:0.72rem;">sk_live_...</span></div>
+            <div class="gateway-item"><span class="gateway-name">MERCADO_PAGO</span><span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">BRL</span><span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;font-family:var(--font-mono);">Ativo</span></span><span style="color:var(--text-3);font-family:var(--font-mono);font-size:0.72rem;">APP_USR_...</span></div>
+            <div class="gateway-item"><span class="gateway-name">PAYPAL</span><span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">USD, EUR</span><span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;font-family:var(--font-mono);">Beta</span></span><span style="color:var(--text-3);font-family:var(--font-mono);font-size:0.72rem;">clientId:secret</span></div>
+            <div class="gateway-item"><span class="gateway-name">MOCK</span><span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">Qualquer</span><span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;font-family:var(--font-mono);">Dev only</span></span><span style="color:var(--text-3);font-family:var(--font-mono);font-size:0.72rem;">qualquer string</span></div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- WEBHOOKS -->
+    <section id="webhooks" class="doc-section">
+        <div class="section-label">API</div>
+        <div class="section-title">Webhooks</div>
+        <div class="section-desc">O Orquestraio notifica seu backend de forma assíncrona quando o status de um pagamento muda — essencial para PIX e Boleto, confirmados fora do fluxo da requisição original.</div>
+        <div class="doc-body">
+            <div class="callout callout-info">
+                <span class="callout-icon">ℹ</span>
+                <div class="callout-body"><strong>Normalização automática:</strong> Independente do gateway (Stripe, MercadoPago, PayPal), todos os webhooks chegam no mesmo formato. Você implementa uma vez — o Orquestraio traduz o resto.</div>
             </div>
-            <div class="gateway-item">
-                <span class="gateway-name">MERCADO_PAGO</span>
-                <span class="gateway-currencies">BRL</span>
-                <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;">Ativo</span></span>
-                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">APP_USR_...</span>
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Payload do Webhook</button></div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-comment">// POST para a URL configurada no seu tenant</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"event"</span><span class="t-punct">:</span>     <span class="t-str">"payment.status_changed"</span><span class="t-punct">,</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>   <span class="t-comment">// PENDING | APPROVED | RECUSED | ERROR</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
+  <span class="t-key">"provider"</span><span class="t-punct">:</span>  <span class="t-str">"MERCADO_PAGO"</span><span class="t-punct">,</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:31:45Z"</span>
+<span class="t-punct">}</span></div>
+                </div>
             </div>
-            <div class="gateway-item">
-                <span class="gateway-name">PAYPAL</span>
-                <span class="gateway-currencies">USD, EUR</span>
-                <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;">Beta</span></span>
-                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">clientId:clientSecret</span>
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Handler (Node.js / Express)</button></div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-comment">// Responda 200 em até 5s ou o Orquestraio retentará</span>
+app.post(<span class="t-str">'/webhooks/orquestraio'</span>, (req, res) =&gt; {
+  <span class="t-key">const</span> { event, paymentId, status } = req.body;
+
+  <span class="t-key">if</span> (event === <span class="t-str">'payment.status_changed'</span> &amp;&amp; status === <span class="t-str">'APPROVED'</span>) {
+    fulfillOrder(paymentId); <span class="t-comment">// libera produto, envia email, etc.</span>
+  }
+
+  res.status(<span class="t-num">200</span>).json({ received: <span class="t-bool">true</span> });
+});</div>
+                </div>
             </div>
-            <div class="gateway-item">
-                <span class="gateway-name">MOCK</span>
-                <span class="gateway-currencies">Qualquer</span>
-                <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;">Dev only</span></span>
-                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">Simula 300ms de latência</span>
-            </div>
+            <table class="doc-table">
+                <thead><tr><th>Evento</th><th>Quando ocorre</th></tr></thead>
+                <tbody>
+                <tr><td><code>payment.status_changed</code></td><td>Sempre que o status muda</td></tr>
+                <tr><td><code>payment.approved</code></td><td>Pagamento confirmado pelo gateway</td></tr>
+                <tr><td><code>payment.recused</code></td><td>Pagamento negado (saldo, fraude, etc.)</td></tr>
+                <tr><td><code>payment.error</code></td><td>Erro técnico no gateway</td></tr>
+                </tbody>
+            </table>
         </div>
     </section>
 
@@ -1011,33 +628,32 @@
 
     <!-- ERRORS -->
     <section id="errors" class="doc-section">
-        <div class="section-label">Referência</div>
+        <div class="section-label">API</div>
         <div class="section-title">Erros & Status HTTP</div>
         <div class="section-desc">A API retorna erros em formato padronizado com <code>timestamp</code>, <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code>.</div>
-
         <div class="status-table">
-            <div class="status-head">
-                <span>HTTP</span><span>Nome</span><span>Descrição</span>
-            </div>
+            <div class="status-group-header sg-2xx">2xx — Sucesso</div>
             <div class="status-row"><span class="status-code s-2xx">201</span><span class="status-name">Created</span><span class="status-desc">Pagamento criado com sucesso.</span></div>
-            <div class="status-row"><span class="status-code s-4xx">400</span><span class="status-name">Bad Request</span><span class="status-desc">Campos inválidos ou ausentes. Veja a mensagem de erro para detalhes.</span></div>
+            <div class="status-group-header sg-4xx" style="border-top:1px solid var(--border);">4xx — Erro do cliente (sua requisição tem um problema)</div>
+            <div class="status-row"><span class="status-code s-4xx">400</span><span class="status-name">Bad Request</span><span class="status-desc">Campos inválidos ou ausentes. Leia o campo <code>message</code> para detalhes.</span></div>
             <div class="status-row"><span class="status-code s-4xx">401</span><span class="status-name">Unauthorized</span><span class="status-desc">Header <code>x-api-key</code> ausente ou chave inválida.</span></div>
             <div class="status-row"><span class="status-code s-4xx">403</span><span class="status-name">Forbidden</span><span class="status-desc">Tenant inativo. Entre em contato com o suporte.</span></div>
-            <div class="status-row"><span class="status-code s-4xx">409</span><span class="status-name">Conflict</span><span class="status-desc">Chave de idempotência já está em processamento ativo.</span></div>
-            <div class="status-row"><span class="status-code s-5xx">500</span><span class="status-name">Server Error</span><span class="status-desc">Erro inesperado. Abra uma issue no GitHub com o <code>path</code> e <code>timestamp</code>.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">409</span><span class="status-name">Conflict</span><span class="status-desc">Idempotency key já está em processamento ativo.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">429</span><span class="status-name">Too Many Requests</span><span class="status-desc">Limite de requisições excedido. Veja <a href="#ratelimit" style="color:var(--purple-light)">Rate Limiting</a>.</span></div>
+            <div class="status-group-header sg-5xx" style="border-top:1px solid var(--border);">5xx — Erro do servidor (problema no Orquestraio ou gateway)</div>
+            <div class="status-row"><span class="status-code s-5xx">500</span><span class="status-name">Server Error</span><span class="status-desc">Erro inesperado. Abra uma issue com <code>path</code> e <code>timestamp</code>.</span></div>
         </div>
-
         <div class="codeblock">
             <div class="codeblock-header">
                 <div class="lang-tabs"><button class="lang-tab active">Resposta de Erro (409)</button></div>
                 <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
             </div>
             <div class="codeblock-body">
-                <div class="tab-pane active"><span class="t-punct">{</span>
-  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span>,
-  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-num">409</span>,
-  <span class="t-key">"error"</span><span class="t-punct">:</span>     <span class="t-str">"Conflito de Idempotência"</span>,
-  <span class="t-key">"message"</span><span class="t-punct">:</span>   <span class="t-str">"Pagamento já está em processamento."</span>,
+<div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-num">409</span><span class="t-punct">,</span>
+  <span class="t-key">"error"</span><span class="t-punct">:</span>     <span class="t-str">"Conflito de Idempotência"</span><span class="t-punct">,</span>
+  <span class="t-key">"message"</span><span class="t-punct">:</span>   <span class="t-str">"Pagamento já está em processamento."</span><span class="t-punct">,</span>
   <span class="t-key">"path"</span><span class="t-punct">:</span>     <span class="t-str">"/v1/payments"</span>
 <span class="t-punct">}</span></div>
             </div>
@@ -1046,44 +662,50 @@
 
     <div class="doc-divider"></div>
 
-    <!-- ============================
-         FEATURE SECTION HEADER
-    ============================= -->
-    <div style="margin-bottom: 2rem;">
-        <div style="font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.5rem;">Funcionalidades</div>
-        <div style="font-family: var(--font-sans); font-size: 1.5rem; font-weight: 600; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.5rem;">Resiliência e consistência por padrão</div>
-        <div style="font-size: 0.875rem; color: var(--text-2); max-width: 520px;">Idempotência, circuit breaker e criptografia fazem parte do core do Orquestraio — não são opcionais.</div>
-    </div>
+    <!-- RATE LIMIT -->
+    <section id="ratelimit" class="doc-section">
+        <div class="section-label">API</div>
+        <div class="section-title">Rate Limiting</div>
+        <div class="section-desc">Limites por tenant para proteger a plataforma contra abuso. Implementado com <strong>Bucket4j + Redis</strong> — planejado para v0.6.0.</div>
+        <div class="doc-body">
+            <div class="callout callout-warning">
+                <span class="callout-icon">⚠</span>
+                <div class="callout-body"><strong>Em desenvolvimento (v0.6.0).</strong> Rate limiting não está ativo ainda, mas os headers e comportamento abaixo já estão especificados e serão implementados sem breaking changes.</div>
+            </div>
+            <table class="doc-table">
+                <thead><tr><th>Plano</th><th>Limite</th><th>Janela</th><th>Burst</th></tr></thead>
+                <tbody>
+                <tr><td>Free</td><td>100 req</td><td>por minuto</td><td>20 req/s</td></tr>
+                <tr><td>Premium</td><td>1.000 req</td><td>por minuto</td><td>200 req/s</td></tr>
+                </tbody>
+            </table>
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Response Headers (429)</button></div>
+                </div>
+                <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-header">X-RateLimit-Limit</span><span class="t-punct">:</span>     <span class="t-num">100</span>          <span class="t-comment">// limite total da janela</span>
+<span class="t-header">X-RateLimit-Remaining</span><span class="t-punct">:</span>  <span class="t-num">0</span>            <span class="t-comment">// requisições restantes nesta janela</span>
+<span class="t-header">X-RateLimit-Reset</span><span class="t-punct">:</span>      <span class="t-num">1740161460</span>   <span class="t-comment">// unix timestamp do próximo reset</span>
+<span class="t-header">Retry-After</span><span class="t-punct">:</span>            <span class="t-num">12</span>           <span class="t-comment">// segundos para tentar novamente</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
 
-    <div class="feature-grid" style="margin-bottom: 3rem;">
-        <div class="feature-card">
-            <div class="feature-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22V12m0 0V2m0 10H2m10 0h10"/></svg>
-            </div>
-            <div class="feature-card-title">Idempotência</div>
-            <div class="feature-card-desc">Proteção contra cobranças duplicadas via Redis com TTL de 24h. Mesma chave, mesmo resultado — sem reprocessar.</div>
-        </div>
-        <div class="feature-card">
-            <div class="feature-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-            </div>
-            <div class="feature-card-title">Circuit Breaker</div>
-            <div class="feature-card-desc">Cada gateway tem seu próprio circuit breaker via Resilience4j. Falhas em cascata são isoladas automaticamente.</div>
-        </div>
-        <div class="feature-card">
-            <div class="feature-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-            </div>
-            <div class="feature-card-title">Criptografia AES-256</div>
-            <div class="feature-card-desc">Credenciais de gateway são criptografadas antes de persistir. Descriptografia acontece em memória, nunca em logs.</div>
-        </div>
-        <div class="feature-card">
-            <div class="feature-card-icon">
-                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M3 12h18m-6-6 6 6-6 6"/><path d="M9 6 3 12l6 6"/></svg>
-            </div>
-            <div class="feature-card-title">SmartRouter</div>
-            <div class="feature-card-desc">Roteamento automático por moeda e valor. Pode ser sobrescrito por tenant via <code>metadata.gateway</code>.</div>
-        </div>
+    <div class="doc-divider"></div>
+
+    <!-- FEATURES HEADER -->
+    <div style="margin-bottom:1.75rem;">
+        <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.12em;color:var(--text-3);margin-bottom:0.4rem;">Funcionalidades</div>
+        <div style="font-size:1.35rem;font-weight:600;color:var(--text);letter-spacing:-0.025em;line-height:1.2;margin-bottom:0.4rem;">Resiliência e consistência por padrão</div>
+        <div style="font-size:0.875rem;color:var(--text-2);max-width:520px;line-height:1.75;">Idempotência, circuit breaker e criptografia fazem parte do core do Orquestraio — não são opcionais.</div>
+    </div>
+    <div class="feature-grid" style="margin-bottom:3rem;">
+        <div class="feature-card"><div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22V12m0 0V2m0 10H2m10 0h10"/></svg></div><div class="feature-card-title">Idempotência</div><div class="feature-card-desc">Proteção contra cobranças duplicadas via Redis com TTL de 24h. Mesma chave, mesmo resultado — sem reprocessar no gateway.</div></div>
+        <div class="feature-card"><div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg></div><div class="feature-card-title">Circuit Breaker</div><div class="feature-card-desc">Cada gateway tem circuit breaker independente via Resilience4j. Falhas são isoladas automaticamente com fallback configurável.</div></div>
+        <div class="feature-card"><div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div><div class="feature-card-title">Criptografia AES-256</div><div class="feature-card-desc">Credenciais de gateway são criptografadas antes de persistir. Descriptografia ocorre apenas em memória, nunca em logs.</div></div>
+        <div class="feature-card"><div class="feature-card-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M3 12h18m-6-6 6 6-6 6"/><path d="M9 6 3 12l6 6"/></svg></div><div class="feature-card-title">SmartRouter</div><div class="feature-card-desc">Roteamento automático por moeda e valor. Sobrescreva por tenant via <code>metadata.gateway</code> sem alterar código.</div></div>
     </div>
 
     <div class="doc-divider"></div>
@@ -1092,45 +714,19 @@
     <section id="idempotency" class="doc-section">
         <div class="section-label">Funcionalidades</div>
         <div class="section-title">Idempotência</div>
-        <div class="section-desc">O campo <code>idempotecyKey</code> garante que a mesma transação nunca seja processada duas vezes. Implementado com bloqueio distribuído via Redis.</div>
-
+        <div class="section-desc">O campo <code>idempotecyKey</code> garante que a mesma transação nunca seja processada duas vezes, mesmo com falhas de rede e múltiplas tentativas.</div>
         <div class="doc-body">
-            <p>Se a mesma chave for enviada enquanto a requisição original ainda está em andamento, a API retorna <code>409 Conflict</code>. Se o pagamento já foi concluído, a resposta original é retornada do cache — sem reprocessar no gateway.</p>
+            <div class="flow-diagram"><span class="t-comment">// 1ª chamada — processada normalmente</span>
+<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-ok">201 APPROVED</span>
 
-            <div class="flow-diagram">
-                <div class="flow-step"><span class="t-comment">// 1ª chamada — processada normalmente</span></div>
-                <div class="flow-step">
-                    <span class="t-key">POST /v1/payments</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-ok">201 APPROVED</span>
-                </div>
-                <br>
-                <div class="flow-step"><span class="t-comment">// 2ª chamada, request ainda em andamento — bloqueada</span></div>
-                <div class="flow-step">
-                    <span class="t-key">POST /v1/payments</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-err">409 Conflict</span>
-                </div>
-                <br>
-                <div class="flow-step"><span class="t-comment">// 2ª chamada após conclusão — retorna do cache</span></div>
-                <div class="flow-step">
-                    <span class="t-key">POST /v1/payments</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
-                    <span class="t-punct">→</span>
-                    <span class="t-ok">201 APPROVED (cached)</span>
-                </div>
-            </div>
+<span class="t-comment">// 2ª chamada, request ainda em andamento — bloqueada</span>
+<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-err">409 Conflict</span>
 
+<span class="t-comment">// 2ª chamada após conclusão — retorna do cache Redis</span>
+<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-ok">201 APPROVED (cached)</span></div>
             <div class="callout callout-success">
                 <span class="callout-icon">✓</span>
-                <div class="callout-body">
-                    <strong>Boas práticas:</strong> Use um UUID v4 gerado no seu backend, vinculado ao ID do pedido no seu sistema. Nunca reutilize a mesma chave para transações distintas.
-                </div>
+                <div class="callout-body"><strong>Boas práticas:</strong> Use um UUID v4 gerado no backend, vinculado ao ID do pedido no seu sistema. Nunca reutilize a mesma chave para transações distintas.</div>
             </div>
         </div>
     </section>
@@ -1141,8 +737,7 @@
     <section id="circuit" class="doc-section">
         <div class="section-label">Funcionalidades</div>
         <div class="section-title">Circuit Breaker</div>
-        <div class="section-desc">Cada gateway possui um circuit breaker independente via <strong>Resilience4j</strong>. Quando a taxa de falha ultrapassa o threshold, o circuito abre e o gateway é temporariamente removido das rotas.</div>
-
+        <div class="section-desc">Cada gateway tem um circuit breaker independente via <strong>Resilience4j</strong>. Quando a taxa de falha ultrapassa o threshold, o gateway é removido temporariamente das rotas.</div>
         <div class="doc-body">
             <table class="doc-table">
                 <thead><tr><th>Gateway</th><th>Janela</th><th>Threshold</th><th>Tempo aberto</th><th>Half-open (calls)</th></tr></thead>
@@ -1152,37 +747,15 @@
                 <tr><td><code>PAYPAL</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3</td></tr>
                 </tbody>
             </table>
+            <div class="flow-diagram"><span class="t-comment">// Ciclo de vida do circuit breaker</span>
 
-            <div class="flow-diagram">
-                <div class="flow-step"><span class="t-comment">// Ciclo do circuit breaker</span></div>
-                <br>
-                <div class="flow-step">
-                    <span class="t-key">CLOSED</span>
-                    <span class="t-punct">→ falhas > 50% em 10 req →</span>
-                    <span class="t-err">OPEN (20s)</span>
-                </div>
-                <div class="flow-step">
-                    <span class="t-key">OPEN</span>
-                    <span class="t-punct">→ após 20s →</span>
-                    <span class="t-str">HALF-OPEN (testa 3 calls)</span>
-                </div>
-                <div class="flow-step">
-                    <span class="t-key">HALF-OPEN</span>
-                    <span class="t-punct">→ sucesso →</span>
-                    <span class="t-ok">CLOSED</span>
-                </div>
-                <div class="flow-step">
-                    <span class="t-key">HALF-OPEN</span>
-                    <span class="t-punct">→ falha →</span>
-                    <span class="t-err">OPEN novamente</span>
-                </div>
-            </div>
-
+<span class="t-key">CLOSED</span>     → falhas > 50% em 10 req → <span class="t-err">OPEN (aguarda 20s)</span>
+<span class="t-err">OPEN</span>       → após 20s              → <span class="t-str">HALF-OPEN (testa 3 calls)</span>
+<span class="t-str">HALF-OPEN</span>  → todas as 3 ok         → <span class="t-ok">CLOSED</span>
+<span class="t-str">HALF-OPEN</span>  → qualquer falha        → <span class="t-err">OPEN novamente</span></div>
             <div class="callout callout-info">
                 <span class="callout-icon">ℹ</span>
-                <div class="callout-body">
-                    Métricas são expostas via <code>GET /actuator/health</code> e <code>/actuator/metrics</code>. Configure o Grafana para visualizar o estado de cada circuit breaker em tempo real.
-                </div>
+                <div class="callout-body">Métricas expostas via <code>GET /actuator/health</code> e <code>/actuator/metrics</code>. Configure o Grafana para visualizar o estado de cada circuit breaker em tempo real.</div>
             </div>
         </div>
     </section>
@@ -1193,34 +766,117 @@
     <section id="security" class="doc-section">
         <div class="section-label">Funcionalidades</div>
         <div class="section-title">Segurança</div>
-        <div class="section-desc">O Orquestraio nunca armazena dados de cartão. Credenciais de gateway são criptografadas com AES-256 antes de persistir no banco de dados.</div>
-
+        <div class="section-desc">O Orquestraio nunca armazena dados de cartão. Credenciais de gateway são criptografadas com AES-256 antes de persistir no banco.</div>
         <div class="doc-body">
             <div class="codeblock">
-                <div class="codeblock-header">
-                    <div class="lang-tabs"><button class="lang-tab active">Fluxo de Criptografia</button></div>
-                </div>
+                <div class="codeblock-header"><div class="lang-tabs"><button class="lang-tab active">Fluxo de Criptografia</button></div></div>
                 <div class="codeblock-body">
-                    <div class="tab-pane active"><span class="t-comment">// Ao salvar credencial de gateway</span>
+<div class="tab-pane active"><span class="t-comment">// Ao salvar credencial de gateway</span>
 <span class="t-key">POST</span> /v1/tenants/gateways
-  → Recebe <span class="t-str">{ "secretKey": "sk_live_abc..." }</span>
-  → Criptografa com AES-256  →  armazena <span class="t-str">"encryptedCredential": "dGhpcy..."</span>
+  → Recebe      <span class="t-punct">{</span> <span class="t-key">"secretKey"</span><span class="t-punct">:</span> <span class="t-str">"sk_live_abc..."</span> <span class="t-punct">}</span>
+  → Criptografa AES-256
+  → Persiste    <span class="t-punct">{</span> <span class="t-key">"encryptedCredential"</span><span class="t-punct">:</span> <span class="t-str">"dGhpcy..."</span> <span class="t-punct">}</span>
 
 <span class="t-comment">// Ao processar pagamento</span>
 <span class="t-key">SELECT</span> encrypted_credential <span class="t-key">FROM</span> gateways
-  → Descriptografa em memória (nunca em log)
-  → Usa credencial  →  descarta imediatamente</div>
+  → Descriptografa em memória  <span class="t-comment">// nunca em log</span>
+  → Usa a credencial
+  → Descarta imediatamente</div>
                 </div>
             </div>
-
             <table class="doc-table">
                 <thead><tr><th>Prática</th><th>Implementação</th></tr></thead>
                 <tbody>
                 <tr><td>Dados de cartão</td><td>Nunca passam pelo servidor — tokenizados no frontend</td></tr>
                 <tr><td>Credenciais de gateway</td><td>AES-256, descriptografado apenas em memória</td></tr>
                 <tr><td>Isolamento de tenant</td><td>Dados separados por <code>tenantId</code> em todas as queries</td></tr>
-                <tr><td>Autenticação</td><td>API Key com prefixo <code>Oz_</code>, validada por filtro antes de qualquer handler</td></tr>
+                <tr><td>Autenticação</td><td>API Key com prefixo <code>Oz_</code>, validada antes de qualquer handler</td></tr>
                 <tr><td>Auditoria</td><td>Todas as transações salvas em <code>execution_history</code> com latência</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- SANDBOX -->
+    <section id="sandbox" class="doc-section">
+        <div class="section-label">Guias</div>
+        <div class="section-title">Sandbox & Gateway MOCK</div>
+        <div class="section-desc">Simule cenários reais sem tocar em dinheiro real. O gateway <code>MOCK</code> está disponível para qualquer tenant em desenvolvimento.</div>
+        <div class="doc-body">
+            <div class="callout callout-success">
+                <span class="callout-icon">✓</span>
+                <div class="callout-body"><strong>Chave de dev inclusa:</strong> O <code>data.sql</code> já cria um tenant com API key <code>orchestra-livre-123</code>. Use direto após <code>docker-compose up</code>. Nenhuma credencial externa necessária.</div>
+            </div>
+            <table class="doc-table">
+                <thead><tr><th>Valor (amount)</th><th>Resultado</th><th>Uso</th></tr></thead>
+                <tbody>
+                <tr><td>Qualquer (exceto 99.99)</td><td><span class="tag tag-green">APPROVED</span></td><td>Fluxo feliz de aprovação</td></tr>
+                <tr><td><code>99.99</code></td><td><span class="tag tag-red">ERROR</span></td><td>Simula falha no gateway</td></tr>
+                </tbody>
+            </table>
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs">
+                        <button class="lang-tab active" data-tab="sb-ok" onclick="switchTab(event)">Aprovado</button>
+                        <button class="lang-tab" data-tab="sb-err" onclick="switchTab(event)">Simular erro</button>
+                    </div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+<div class="tab-pane active" id="sb-ok"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: orchestra-livre-123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotecyKey": "test-001",
+    "amount": 197.00,
+    "currency": "BRL",
+    "paymentMethodRequest": {
+      "type": "pix",
+      "token": null
+    },
+    "customer": {
+      "id": "usr_1",
+      "email": "dev@teste.com",
+      "document": "000.000.000-00"
+    },
+    "metadata": {
+      "gateway": "MOCK"
+    }
+  }'</span>
+<span class="t-comment">// → 201 APPROVED em ~300ms</span></div>
+<div class="tab-pane" id="sb-err"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: orchestra-livre-123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotecyKey": "test-err-001",
+    "amount": 99.99,
+    "currency": "BRL",
+    "paymentMethodRequest": {
+      "type": "pix",
+      "token": null
+    },
+    "customer": {
+      "id": "usr_1",
+      "email": "dev@teste.com",
+      "document": "000.000.000-00"
+    },
+    "metadata": {
+      "gateway": "MOCK"
+    }
+  }'</span>
+<span class="t-comment">// → 201 com status ERROR (amount 99.99 força falha)</span></div>
+                </div>
+            </div>
+            <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin:1.5rem 0 0.5rem;">Cartões de Teste (Stripe)</div>
+            <table class="doc-table">
+                <thead><tr><th>Número</th><th>Resultado</th><th>Cenário</th></tr></thead>
+                <tbody>
+                <tr><td><code>4242 4242 4242 4242</code></td><td><span class="tag tag-green">APPROVED</span></td><td>Visa — fluxo normal</td></tr>
+                <tr><td><code>5555 5555 5555 4444</code></td><td><span class="tag tag-green">APPROVED</span></td><td>Mastercard — fluxo normal</td></tr>
+                <tr><td><code>4000 0000 0000 9995</code></td><td><span class="tag tag-red">RECUSED</span></td><td>Saldo insuficiente</td></tr>
+                <tr><td><code>4000 0025 0000 3155</code></td><td><span class="tag tag-amber">3DS</span></td><td>Requer autenticação 3D Secure</td></tr>
                 </tbody>
             </table>
         </div>
@@ -1230,38 +886,50 @@
 
     <!-- SDKs -->
     <section id="sdks" class="doc-section">
-        <div class="section-label">Recursos</div>
-        <div class="section-title">SDKs</div>
-        <div class="section-desc">SDKs oficiais estão em desenvolvimento. Por enquanto, use a API REST diretamente.</div>
-
-        <div class="callout callout-warning">
-            <span class="callout-icon">⚠</span>
-            <div class="callout-body">
-                <strong>Em desenvolvimento.</strong> SDKs para Java, Node.js e Python estão planejados para a v0.6.0. Contribuições são bem-vindas no GitHub.
+        <div class="section-label">Guias</div>
+        <div class="section-title">SDKs & Quickstart</div>
+        <div class="section-desc">SDKs oficiais planejados para v0.6.0. Por enquanto, use a API REST com o setup abaixo.</div>
+        <div class="doc-body">
+            <div class="callout callout-warning">
+                <span class="callout-icon">⚠</span>
+                <div class="callout-body"><strong>Em desenvolvimento.</strong> SDKs para Java, Node.js e Python estão na roadmap. Contribuições são bem-vindas no GitHub.</div>
             </div>
-        </div>
-
-        <div class="codeblock">
-            <div class="codeblock-header">
-                <div class="lang-tabs"><button class="lang-tab active">Início Rápido (cURL)</button></div>
-                <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-            </div>
-            <div class="codeblock-body">
-                <div class="tab-pane active"><span class="t-comment"># 1. Clone e configure</span>
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Setup completo</button></div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-comment"># 1. Clone e suba a infraestrutura</span>
 <span class="t-method">git</span> clone https://github.com/vitinh0z/orchestra.io.git
 <span class="t-method">cd</span> orchestra.io && docker-compose up -d
 
-<span class="t-comment"># 2. Use a chave de desenvolvimento inclusa no data.sql</span>
-<span class="t-flag">API_KEY</span>=<span class="t-str">"orchestra-livre-123"</span>
+<span class="t-comment"># 2. API disponível em http://localhost:8080</span>
+<span class="t-comment"># Chave de dev: orchestra-livre-123</span>
+<span class="t-comment"># Swagger UI: http://localhost:8080/swagger-ui/index.html</span>
 
-<span class="t-comment"># 3. Processe seu primeiro pagamento</span>
+<span class="t-comment"># 3. Primeiro pagamento (gateway MOCK, sem config externa)</span>
 <span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
-  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: $API_KEY"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: orchestra-livre-123"</span> <span class="t-punct">\</span>
   <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
-  <span class="t-flag">-d</span> <span class="t-str">'{"idempotecyKey":"test-001","amount":197.00,"currency":"BRL",
-     "paymentMethodRequest":{"type":"pix","token":null},
-     "customer":{"id":"usr_1","email":"dev@teste.com","document":"000.000.000-00"},
-     "metadata":{"gateway":"MOCK"}}'</span></div>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotecyKey": "primeiro-pagamento",
+    "amount": 50.00,
+    "currency": "BRL",
+    "paymentMethodRequest": {
+      "type": "pix",
+      "token": null
+    },
+    "customer": {
+      "id": "u1",
+      "email": "dev@teste.com",
+      "document": "000.000.000-00"
+    },
+    "metadata": {
+      "gateway": "MOCK"
+    }
+  }'</span></div>
+                </div>
             </div>
         </div>
     </section>
@@ -1273,10 +941,9 @@
 
 </main>
 
-<!-- ======================== RIGHT PANEL ======================== -->
+<!-- RIGHT PANEL -->
 <aside class="right-panel">
     <div class="panel-label">Exemplo ao vivo</div>
-
     <div class="live-block">
         <div class="live-top">
             <span class="live-dot"></span>
@@ -1284,99 +951,169 @@
             <span class="live-path">/v1/payments</span>
         </div>
         <div class="live-body"><span class="t-punct">{</span>
-  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"req-9f3a8d"</span>,
-  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
+  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"req-9f3a8d"</span><span class="t-punct">,</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span><span class="t-punct">,</span>
   <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,
+    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span><span class="t-punct">,</span>
     <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>
   <span class="t-punct">},</span>
   <span class="t-key">"customer"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
+    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span><span class="t-punct">,</span>
     <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"dev@orquestraio.com"</span>
   <span class="t-punct">}</span>
 <span class="t-punct">}</span></div>
     </div>
-
     <div class="res-block">
         <div class="res-top">
             <span class="res-status">201 Created</span>
             <span class="res-time">248ms</span>
         </div>
         <div class="res-body"><span class="t-punct">{</span>
-  <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400..."</span>,
-  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-str">"APPROVED"</span>,
-  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
-  <span class="t-key">"details"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>,
-    <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126..."</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400..."</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
+  <span class="t-key">"details"</span><span class="t-punct">:</span>  <span class="t-punct">{</span>
+    <span class="t-key">"provider"</span><span class="t-punct">:</span>
+      <span class="t-str">"MERCADO_PAGO"</span><span class="t-punct">,</span>
+    <span class="t-key">"transacitionId"</span><span class="t-punct">:</span>
+      <span class="t-str">"00020126..."</span>
   <span class="t-punct">},</span>
-  <span class="t-key">"createAt"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:30:00"</span>
+  <span class="t-key">"createAt"</span><span class="t-punct">:</span>
+    <span class="t-str">"2026-02-21T15:30:00"</span>
 <span class="t-punct">}</span></div>
     </div>
-
     <div class="panel-label">Status dos gateways</div>
-    <div class="gateway-status-panel">
-        <div class="gs-row">
-            <span class="gs-name">STRIPE</span>
-            <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span>
-        </div>
-        <div class="gs-row">
-            <span class="gs-name">MERCADO_PAGO</span>
-            <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span>
-        </div>
-        <div class="gs-row">
-            <span class="gs-name">PAYPAL</span>
-            <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.7rem;font-family:var(--font-mono);">Beta</span></span>
-        </div>
+    <div>
+        <div class="gs-row"><span class="gs-name">STRIPE</span><span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span></div>
+        <div class="gs-row"><span class="gs-name">MERCADO_PAGO</span><span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span></div>
+        <div class="gs-row"><span class="gs-name">PAYPAL</span><span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.7rem;font-family:var(--font-mono);">Beta</span></span></div>
     </div>
 </aside>
 
 </div>
 
 <script>
+    // COMMAND PALETTE
+    const CMD_ITEMS = [
+        { label: 'Introdução',          href: '#intro',       group: 'Início',          sub: 'visão geral' },
+        { label: 'Autenticação',        href: '#auth',        group: 'Início',          sub: 'x-api-key' },
+        { label: 'Glossário',           href: '#glossary',    group: 'Início',          sub: 'tenant, smartrouter, idempotency' },
+        { label: 'Processar Pagamento', href: '#create',      group: 'API',             sub: 'POST /v1/payments' },
+        { label: 'Métodos de Pagamento',href: '#methods',     group: 'API',             sub: 'pix, boleto, card_token' },
+        { label: 'SmartRouter',         href: '#routing',     group: 'API',             sub: 'roteamento automático' },
+        { label: 'Webhooks',            href: '#webhooks',    group: 'API',             sub: 'notificações assíncronas' },
+        { label: 'Erros & Status HTTP', href: '#errors',      group: 'API',             sub: '400, 401, 409, 429, 500' },
+        { label: 'Rate Limiting',       href: '#ratelimit',   group: 'API',             sub: '100 req/min, Bucket4j' },
+        { label: 'Idempotência',        href: '#idempotency', group: 'Funcionalidades', sub: 'redis, ttl 24h' },
+        { label: 'Circuit Breaker',     href: '#circuit',     group: 'Funcionalidades', sub: 'resilience4j, open/closed' },
+        { label: 'Segurança',           href: '#security',    group: 'Funcionalidades', sub: 'AES-256, tokens' },
+        { label: 'Sandbox & MOCK',      href: '#sandbox',     group: 'Guias',           sub: 'gateway fake, testes locais' },
+        { label: 'SDKs & Quickstart',   href: '#sdks',        group: 'Guias',           sub: 'docker, setup' },
+    ];
+
+    let focusedIdx = 0;
+    let filteredItems = [...CMD_ITEMS];
+
+    function renderCmd(query) {
+        const q = (query || '').toLowerCase();
+        filteredItems = q
+            ? CMD_ITEMS.filter(i => i.label.toLowerCase().includes(q) || i.sub.toLowerCase().includes(q) || i.group.toLowerCase().includes(q))
+            : CMD_ITEMS;
+        focusedIdx = 0;
+
+        const groups = {};
+        filteredItems.forEach(item => {
+            if (!groups[item.group]) groups[item.group] = [];
+            groups[item.group].push(item);
+        });
+
+        let html = '';
+        let gi = 0;
+        Object.entries(groups).forEach(([group, items]) => {
+            html += `<div class="cmd-section-label">${group}</div>`;
+            items.forEach(item => {
+                const idx = gi++;
+                html += `<div class="cmd-item${idx === 0 ? ' focused' : ''}" data-idx="${idx}" onclick="gotoCmd('${item.href}')">
+                    <div class="cmd-item-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3h8M9 10h6"/></svg></div>
+                    <span class="cmd-item-label">${item.label}</span>
+                    <span class="cmd-item-sub">${item.sub}</span>
+                </div>`;
+            });
+        });
+        document.getElementById('cmdResults').innerHTML = html || '<div style="padding:1rem;text-align:center;color:var(--text-3);font-size:0.8rem;">Nenhum resultado</div>';
+    }
+
+    function openCmd() {
+        document.getElementById('cmdOverlay').classList.add('open');
+        const inp = document.getElementById('cmdInput');
+        inp.value = '';
+        renderCmd('');
+        setTimeout(() => inp.focus(), 50);
+    }
+    function closeCmd() { document.getElementById('cmdOverlay').classList.remove('open'); }
+    function closeCmdIfBg(e) { if (e.target === document.getElementById('cmdOverlay')) closeCmd(); }
+    function gotoCmd(href) {
+        closeCmd();
+        const t = document.querySelector(href);
+        if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+    function filterCmd(val) { renderCmd(val); }
+    function handleCmdKey(e) {
+        const items = document.querySelectorAll('.cmd-item');
+        if (e.key === 'ArrowDown') { e.preventDefault(); focusedIdx = Math.min(focusedIdx + 1, filteredItems.length - 1); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); focusedIdx = Math.max(focusedIdx - 1, 0); }
+        else if (e.key === 'Enter') { if (filteredItems[focusedIdx]) gotoCmd(filteredItems[focusedIdx].href); return; }
+        else if (e.key === 'Escape') { closeCmd(); return; }
+        items.forEach((el, i) => el.classList.toggle('focused', i === focusedIdx));
+        if (items[focusedIdx]) items[focusedIdx].scrollIntoView({ block: 'nearest' });
+    }
+    document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') { e.preventDefault(); document.getElementById('cmdOverlay').classList.contains('open') ? closeCmd() : openCmd(); }
+        if (e.key === 'Escape' && document.getElementById('cmdOverlay').classList.contains('open')) closeCmd();
+    });
+
+    // TABS
     function switchTab(e) {
         const btn = e.target;
-        const codeblock = btn.closest('.codeblock');
+        const cb = btn.closest('.codeblock');
         const tabId = btn.dataset.tab;
-        codeblock.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
+        cb.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
-        codeblock.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+        cb.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
         const pane = document.getElementById(tabId);
         if (pane) pane.classList.add('active');
     }
 
+    // COPY
     function copyBlock(btn) {
-        const codeblock = btn.closest('.codeblock');
-        const active = codeblock.querySelector('.tab-pane.active') || codeblock.querySelector('.tab-pane');
-        const text = active ? active.innerText : '';
-        navigator.clipboard.writeText(text).then(() => {
+        const cb = btn.closest('.codeblock');
+        const active = cb.querySelector('.tab-pane.active') || cb.querySelector('.tab-pane');
+        navigator.clipboard.writeText(active ? active.innerText : '').then(() => {
             btn.textContent = '✓ Copiado';
             btn.classList.add('copied');
             setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('copied'); }, 2000);
         });
     }
 
+    // SCROLL SPY
     const navItems = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.doc-section');
-    const observer = new IntersectionObserver((entries) => {
+    const obs = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 const id = entry.target.id;
-                navItems.forEach(item => {
-                    item.classList.toggle('active', item.getAttribute('href') === `#${id}`);
-                });
+                navItems.forEach(item => item.classList.toggle('active', item.getAttribute('href') === `#${id}`));
             }
         });
-    }, { threshold: 0.25, rootMargin: '-5% 0px -72% 0px' });
-    sections.forEach(s => observer.observe(s));
-
+    }, { threshold: 0.2, rootMargin: '-5% 0px -72% 0px' });
+    sections.forEach(s => obs.observe(s));
     navItems.forEach(item => {
         item.addEventListener('click', e => {
             e.preventDefault();
-            const target = document.querySelector(item.getAttribute('href'));
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const t = document.querySelector(item.getAttribute('href'));
+            if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
         });
     });
 </script>
