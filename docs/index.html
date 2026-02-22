@@ -6,665 +6,605 @@
     <title>Orquestraio — Documentação</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,700&family=JetBrains+Mono:wght@400;500&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #08080f;
-            --bg-1: #0d0d18;
-            --bg-2: #12121f;
-            --bg-3: #1a1a2e;
-            --border: rgba(139, 92, 246, 0.12);
-            --border-2: rgba(139, 92, 246, 0.22);
-            --purple: #7c3aed;
-            --purple-light: #a78bfa;
-            --purple-glow: rgba(124, 58, 237, 0.15);
-            --indigo: #6366f1;
-            --indigo-light: #818cf8;
-            --text: #f1f0ff;
-            --text-2: #a09bb8;
-            --text-3: #5a5575;
-            --amber: #fbbf24;
+            --bg:       #07070d;
+            --bg-1:     #0c0c16;
+            --bg-2:     #111120;
+            --bg-3:     #16162a;
+            --border:   rgba(120, 80, 255, 0.10);
+            --border-2: rgba(120, 80, 255, 0.20);
+            --border-3: rgba(120, 80, 255, 0.35);
+            --purple:        #6d28d9;
+            --purple-mid:    #7c3aed;
+            --purple-light:  #a78bfa;
+            --purple-faint:  rgba(109, 40, 217, 0.08);
+            --indigo:        #4f46e5;
+            --indigo-light:  #818cf8;
+            --text:    #e8e6f0;
+            --text-2:  #9791b0;
+            --text-3:  #4a4565;
             --emerald: #34d399;
-            --red: #f87171;
-            --font-display: 'Bricolage Grotesque', sans-serif;
-            --font-body: 'Figtree', sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
+            --amber:   #fbbf24;
+            --red:     #f87171;
+            --font-sans: 'IBM Plex Sans', sans-serif;
+            --font-mono: 'IBM Plex Mono', monospace;
+            --font-serif: 'IBM Plex Serif', serif;
         }
 
         *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
         html { scroll-behavior: smooth; }
 
         body {
             background: var(--bg);
             color: var(--text-2);
-            font-family: var(--font-body);
-            font-size: 15px;
-            line-height: 1.7;
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.75;
             min-height: 100vh;
             overflow-x: hidden;
         }
 
-        /* Ambient glow in background */
+        /* Subtle grid texture */
         body::before {
             content: '';
             position: fixed;
-            top: -20vh;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 900px;
-            height: 600px;
-            background: radial-gradient(ellipse at center, rgba(109, 40, 217, 0.07) 0%, transparent 70%);
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(120,80,255,0.025) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(120,80,255,0.025) 1px, transparent 1px);
+            background-size: 40px 40px;
             pointer-events: none;
             z-index: 0;
         }
 
-        /* ========================
-           LAYOUT
-        ======================== */
+        /* ======================== LAYOUT ======================== */
         .shell {
             display: grid;
-            grid-template-columns: 252px 1fr 320px;
+            grid-template-columns: 240px 1fr 300px;
             min-height: 100vh;
             position: relative;
             z-index: 1;
         }
 
-        /* ========================
-           SIDEBAR
-        ======================== */
+        /* ======================== SIDEBAR ======================== */
         .sidebar {
             position: fixed;
             top: 0; left: 0;
-            width: 252px;
+            width: 240px;
             height: 100vh;
             overflow-y: auto;
-            overflow-x: hidden;
             border-right: 1px solid var(--border);
             background: var(--bg-1);
             display: flex;
             flex-direction: column;
-            padding: 0;
             z-index: 20;
         }
-
-        .sidebar::-webkit-scrollbar { width: 4px; }
-        .sidebar::-webkit-scrollbar-track { background: transparent; }
-        .sidebar::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+        .sidebar::-webkit-scrollbar { width: 3px; }
+        .sidebar::-webkit-scrollbar-thumb { background: var(--border-2); }
 
         .logo-area {
-            padding: 1.5rem 1.5rem 1.25rem;
+            padding: 1.25rem 1.25rem 1rem;
             border-bottom: 1px solid var(--border);
             display: flex;
             align-items: center;
-            gap: 0.6rem;
+            gap: 0.65rem;
             text-decoration: none;
         }
 
-        .logo-icon {
-            width: 30px; height: 30px;
-            background: linear-gradient(135deg, var(--purple) 0%, var(--indigo) 100%);
-            border-radius: 7px;
+        .logo-mark {
+            width: 26px; height: 26px;
+            border: 1px solid var(--border-3);
+            background: var(--purple-faint);
             display: flex; align-items: center; justify-content: center;
             flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(124, 58, 237, 0.35);
         }
-
-        .logo-icon svg { width: 16px; height: 16px; fill: white; }
+        .logo-mark svg { width: 13px; height: 13px; }
 
         .logo-text {
-            font-family: var(--font-display);
-            font-weight: 700;
-            font-size: 1rem;
-            color: var(--text);
-            letter-spacing: -0.01em;
-        }
-        .logo-tag {
-            font-size: 0.65rem;
             font-family: var(--font-mono);
-            color: var(--purple-light);
-            background: rgba(124, 58, 237, 0.12);
-            border: 1px solid var(--border-2);
-            padding: 0.1rem 0.4rem;
-            border-radius: 3px;
-            margin-left: auto;
-            flex-shrink: 0;
-        }
-
-        .nav {
-            padding: 1.25rem 0.75rem;
-            flex: 1;
-        }
-
-        .nav-group { margin-bottom: 1.75rem; }
-        .nav-group-label {
-            font-size: 0.68rem;
-            text-transform: uppercase;
-            letter-spacing: 0.08em;
-            color: var(--text-3);
             font-weight: 600;
-            padding: 0 0.75rem;
-            margin-bottom: 0.4rem;
+            font-size: 0.82rem;
+            color: var(--text);
+            letter-spacing: 0.04em;
+            text-transform: uppercase;
+        }
+        .logo-version {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            color: var(--text-3);
+            border: 1px solid var(--border);
+            padding: 0.1rem 0.4rem;
+            margin-left: auto;
+            letter-spacing: 0.03em;
+        }
+
+        .nav { padding: 1rem 0; flex: 1; }
+
+        .nav-group { margin-bottom: 0.25rem; }
+        .nav-group-label {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.12em;
+            color: var(--text-3);
+            font-weight: 500;
+            padding: 0.75rem 1.25rem 0.35rem;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.42rem 0.75rem;
-            border-radius: 6px;
+            gap: 0.5rem;
+            padding: 0.3rem 1.25rem;
             color: var(--text-3);
-            font-size: 0.875rem;
+            font-size: 0.82rem;
+            font-family: var(--font-sans);
             text-decoration: none;
-            transition: all 0.15s;
             cursor: pointer;
             position: relative;
+            transition: color 0.12s;
+            border-left: 2px solid transparent;
         }
-
-        .nav-item:hover { color: var(--text-2); background: rgba(255,255,255,0.04); }
+        .nav-item:hover { color: var(--text-2); }
         .nav-item.active {
             color: var(--purple-light);
-            background: rgba(124, 58, 237, 0.1);
-        }
-        .nav-item.active::before {
-            content: '';
-            position: absolute;
-            left: 0; top: 20%; bottom: 20%;
-            width: 2px;
-            background: var(--purple);
-            border-radius: 1px;
-        }
-
-        .nav-item-dot {
-            width: 5px; height: 5px;
-            border-radius: 50%;
-            background: currentColor;
-            opacity: 0.5;
-            flex-shrink: 0;
+            border-left-color: var(--purple-mid);
+            background: rgba(124,58,237,0.06);
         }
 
         .sidebar-footer {
-            padding: 1rem 1.5rem;
+            padding: 0.875rem 1.25rem;
             border-top: 1px solid var(--border);
             display: flex;
             gap: 1rem;
-            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
         }
-        .sidebar-footer a {
-            color: var(--text-3);
-            text-decoration: none;
-            transition: color 0.15s;
-        }
+        .sidebar-footer a { color: var(--text-3); text-decoration: none; }
         .sidebar-footer a:hover { color: var(--purple-light); }
 
-        /* ========================
-           MAIN
-        ======================== */
+        /* ======================== MAIN ======================== */
         .main {
             grid-column: 2;
             min-width: 0;
-            padding: 3.5rem 4rem 6rem;
-            animation: fadeUp 0.5s ease both;
+            padding: 3rem 3.5rem 6rem;
         }
 
-        @keyframes fadeUp {
-            from { opacity: 0; transform: translateY(16px); }
-            to   { opacity: 1; transform: translateY(0); }
-        }
+        /* ======================== PAGE HERO ======================== */
+        .page-hero { margin-bottom: 3rem; padding-bottom: 2.5rem; border-bottom: 1px solid var(--border); }
 
-        /* Page header */
-        .page-hero {
-            margin-bottom: 3.5rem;
-            padding-bottom: 3rem;
-            border-bottom: 1px solid var(--border);
-        }
-
-        .hero-eyebrow {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .tag {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
+        .eyebrow {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
-            padding: 0.25rem 0.6rem;
-            border-radius: 4px;
-            font-weight: 500;
-            letter-spacing: 0.02em;
-        }
-        .tag-purple {
-            background: rgba(124, 58, 237, 0.12);
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
             color: var(--purple-light);
-            border: 1px solid var(--border-2);
-        }
-        .tag-green {
-            background: rgba(52, 211, 153, 0.1);
-            color: var(--emerald);
-            border: 1px solid rgba(52, 211, 153, 0.2);
-        }
-        .tag-amber {
-            background: rgba(251, 191, 36, 0.1);
-            color: var(--amber);
-            border: 1px solid rgba(251, 191, 36, 0.2);
-        }
-        .tag-red {
-            background: rgba(248, 113, 113, 0.1);
-            color: var(--red);
-            border: 1px solid rgba(248, 113, 113, 0.2);
-        }
-        .tag-indigo {
-            background: rgba(99, 102, 241, 0.1);
-            color: var(--indigo-light);
-            border: 1px solid rgba(99, 102, 241, 0.2);
-        }
-
-        .hero-title {
-            font-family: var(--font-display);
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--text);
-            letter-spacing: -0.03em;
-            line-height: 1.1;
             margin-bottom: 1rem;
         }
 
-        .hero-title span {
-            background: linear-gradient(135deg, var(--purple-light) 0%, var(--indigo-light) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-
-        .hero-lead {
-            font-size: 1.05rem;
-            color: var(--text-2);
-            max-width: 560px;
-            line-height: 1.65;
-            margin-bottom: 1.75rem;
-        }
-
-        .hero-actions {
-            display: flex;
-            gap: 0.75rem;
-            flex-wrap: wrap;
-        }
-
-        .btn-primary {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.6rem 1.25rem;
-            background: linear-gradient(135deg, var(--purple) 0%, var(--indigo) 100%);
-            color: white;
-            font-size: 0.875rem;
+        .hero-title {
+            font-family: var(--font-sans);
+            font-size: 2.2rem;
             font-weight: 600;
-            font-family: var(--font-body);
-            border: none;
-            border-radius: 7px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 16px rgba(124, 58, 237, 0.25);
-        }
-        .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(124, 58, 237, 0.35);
-            color: white;
-        }
-
-        .btn-ghost {
-            display: inline-flex; align-items: center; gap: 0.4rem;
-            padding: 0.6rem 1.25rem;
-            background: transparent;
-            color: var(--text-2);
-            font-size: 0.875rem;
-            font-weight: 500;
-            font-family: var(--font-body);
-            border: 1px solid var(--border-2);
-            border-radius: 7px;
-            text-decoration: none;
-            cursor: pointer;
-            transition: all 0.2s;
-        }
-        .btn-ghost:hover { border-color: var(--purple-light); color: var(--purple-light); }
-
-        /* Sections */
-        .doc-section {
-            margin-bottom: 4rem;
-            scroll-margin-top: 2rem;
-        }
-
-        .section-header {
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
-            margin-bottom: 1.25rem;
-        }
-
-        .section-icon {
-            width: 36px; height: 36px;
-            border-radius: 8px;
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0;
-            margin-top: 0.15rem;
-        }
-        .icon-purple { background: rgba(124, 58, 237, 0.15); border: 1px solid var(--border-2); }
-        .icon-indigo { background: rgba(99, 102, 241, 0.12); border: 1px solid rgba(99, 102, 241, 0.2); }
-        .icon-emerald { background: rgba(52, 211, 153, 0.1); border: 1px solid rgba(52, 211, 153, 0.2); }
-        .icon-amber { background: rgba(251, 191, 36, 0.08); border: 1px solid rgba(251, 191, 36, 0.18); }
-
-        .section-icon svg { width: 18px; height: 18px; }
-
-        .section-title {
-            font-family: var(--font-display);
-            font-size: 1.35rem;
-            font-weight: 700;
             color: var(--text);
-            letter-spacing: -0.02em;
-            line-height: 1.2;
+            letter-spacing: -0.025em;
+            line-height: 1.15;
+            margin-bottom: 1rem;
         }
-        .section-sub {
-            font-size: 0.8rem;
-            color: var(--text-3);
-            margin-top: 0.15rem;
-        }
-
-        .doc-body { max-width: 680px; }
-        .doc-body p { margin-bottom: 1rem; color: var(--text-2); }
-        .doc-body p:last-child { margin-bottom: 0; }
-
-        .doc-divider {
-            height: 1px;
-            background: var(--border);
-            margin: 3.5rem 0;
-        }
-
-        /* Inline code */
-        code {
-            font-family: var(--font-mono);
-            font-size: 0.82em;
-            background: rgba(139, 92, 246, 0.1);
-            border: 1px solid rgba(139, 92, 246, 0.15);
-            padding: 0.15em 0.45em;
-            border-radius: 4px;
+        .hero-title em {
+            font-family: var(--font-serif);
+            font-style: italic;
+            font-weight: 400;
             color: var(--purple-light);
         }
 
-        /* ========================
-           ENDPOINT CARD
-        ======================== */
-        .endpoint-card {
-            border: 1px solid var(--border-2);
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 1.5rem 0;
-            background: var(--bg-1);
+        .hero-lead {
+            font-size: 0.95rem;
+            color: var(--text-2);
+            max-width: 520px;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
         }
 
+        .hero-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+        .btn-primary {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.55rem 1.1rem;
+            background: var(--purple-mid);
+            color: #fff;
+            font-size: 0.8rem;
+            font-weight: 500;
+            font-family: var(--font-mono);
+            letter-spacing: 0.02em;
+            border: 1px solid var(--purple-mid);
+            text-decoration: none;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+        .btn-primary:hover { background: var(--purple); color: #fff; }
+
+        .btn-ghost {
+            display: inline-flex; align-items: center; gap: 0.4rem;
+            padding: 0.55rem 1.1rem;
+            background: transparent;
+            color: var(--text-2);
+            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            letter-spacing: 0.02em;
+            border: 1px solid var(--border-2);
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+        .btn-ghost:hover { border-color: var(--purple-light); color: var(--purple-light); }
+
+        /* ======================== SECTIONS ======================== */
+        .doc-section { margin-bottom: 3.5rem; scroll-margin-top: 2rem; }
+        .doc-divider { height: 1px; background: var(--border); margin: 3rem 0; }
+
+        .section-label {
+            font-family: var(--font-mono);
+            font-size: 0.64rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            color: var(--purple-light);
+            margin-bottom: 0.5rem;
+        }
+
+        .section-title {
+            font-family: var(--font-sans);
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text);
+            letter-spacing: -0.02em;
+            margin-bottom: 0.35rem;
+            line-height: 1.2;
+        }
+
+        .section-desc {
+            font-size: 0.875rem;
+            color: var(--text-2);
+            margin-bottom: 1.5rem;
+            max-width: 560px;
+        }
+
+        .doc-body p { margin-bottom: 1rem; color: var(--text-2); font-size: 0.875rem; }
+        .doc-body p:last-child { margin-bottom: 0; }
+
+        /* ======================== INLINE CODE ======================== */
+        code {
+            font-family: var(--font-mono);
+            font-size: 0.8em;
+            background: rgba(120,80,255,0.08);
+            border: 1px solid var(--border-2);
+            padding: 0.1em 0.4em;
+            color: var(--purple-light);
+        }
+
+        /* ======================== TAGS ======================== */
+        .tag {
+            display: inline-flex; align-items: center; gap: 0.25rem;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 0.2rem 0.5rem;
+            letter-spacing: 0.03em;
+            font-weight: 500;
+        }
+        .tag-purple { background: rgba(124,58,237,0.1); color: var(--purple-light); border: 1px solid var(--border-2); }
+        .tag-green  { background: rgba(52,211,153,0.08); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
+        .tag-amber  { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+        .tag-red    { background: rgba(248,113,113,0.08); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+        .tag-indigo { background: rgba(99,102,241,0.08); color: var(--indigo-light); border: 1px solid rgba(99,102,241,0.2); }
+
+        /* ======================== ENDPOINT CARD ======================== */
+        .endpoint-card {
+            border: 1px solid var(--border-2);
+            margin: 1.25rem 0;
+            background: var(--bg-1);
+        }
         .endpoint-header {
             display: flex;
             align-items: center;
             gap: 0.75rem;
-            padding: 0.875rem 1.25rem;
+            padding: 0.75rem 1rem;
             background: var(--bg-2);
             border-bottom: 1px solid var(--border);
         }
-
         .method-badge {
             font-family: var(--font-mono);
-            font-size: 0.72rem;
-            font-weight: 700;
-            padding: 0.2rem 0.55rem;
-            border-radius: 4px;
+            font-size: 0.68rem;
+            font-weight: 600;
+            padding: 0.18rem 0.5rem;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.06em;
         }
-        .method-post { background: rgba(124, 58, 237, 0.15); color: var(--purple-light); border: 1px solid var(--border-2); }
-        .method-get { background: rgba(52, 211, 153, 0.1); color: var(--emerald); border: 1px solid rgba(52, 211, 153, 0.2); }
+        .method-post { background: rgba(124,58,237,0.12); color: var(--purple-light); border: 1px solid var(--border-2); }
+        .method-get  { background: rgba(52,211,153,0.08); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
 
         .endpoint-path {
             font-family: var(--font-mono);
-            font-size: 0.875rem;
+            font-size: 0.82rem;
             color: var(--text);
             background: none;
             border: none;
             padding: 0;
         }
+        .endpoint-note { margin-left: auto; font-size: 0.75rem; color: var(--text-3); font-family: var(--font-mono); }
 
-        .endpoint-description {
-            font-size: 0.82rem;
-            color: var(--text-3);
-            margin-left: auto;
-        }
-
-        /* ========================
-           CODE BLOCKS
-        ======================== */
+        /* ======================== CODE BLOCKS ======================== */
         .codeblock {
             border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
             margin: 1.25rem 0;
             background: var(--bg-1);
             font-family: var(--font-mono);
-            font-size: 0.8rem;
+            font-size: 0.78rem;
         }
-
         .codeblock-header {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0.6rem 1rem;
+            padding: 0.5rem 0.875rem;
             background: var(--bg-2);
             border-bottom: 1px solid var(--border);
         }
-
-        .lang-tabs {
-            display: flex;
-            gap: 0;
-        }
-
+        .lang-tabs { display: flex; gap: 0; }
         .lang-tab {
             background: none;
             border: none;
             color: var(--text-3);
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            padding: 0.2rem 0.75rem;
+            font-size: 0.7rem;
+            padding: 0.15rem 0.65rem;
             cursor: pointer;
-            border-radius: 4px;
-            transition: all 0.15s;
+            transition: color 0.12s;
         }
         .lang-tab:hover { color: var(--text-2); }
-        .lang-tab.active {
-            color: var(--purple-light);
-            background: rgba(139, 92, 246, 0.12);
-        }
+        .lang-tab.active { color: var(--purple-light); border-bottom: 1px solid var(--purple-light); }
 
         .copy-btn {
             background: none;
             border: 1px solid var(--border);
             color: var(--text-3);
-            font-family: var(--font-body);
-            font-size: 0.72rem;
-            padding: 0.2rem 0.6rem;
-            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 0.15rem 0.55rem;
             cursor: pointer;
-            transition: all 0.15s;
+            transition: all 0.12s;
         }
         .copy-btn:hover { color: var(--text-2); border-color: var(--text-3); }
-        .copy-btn.copied { color: var(--emerald); border-color: rgba(52, 211, 153, 0.35); }
+        .copy-btn.copied { color: var(--emerald); border-color: rgba(52,211,153,0.35); }
 
         .codeblock-body {
-            padding: 1.25rem 1.25rem;
+            padding: 1.1rem 1.1rem;
             overflow-x: auto;
-            line-height: 1.7;
-            color: #c4bfe8;
+            line-height: 1.8;
+            color: #b8b0d8;
         }
-
         .tab-pane { display: none; }
         .tab-pane.active { display: block; }
 
         /* Syntax tokens */
-        .t-key { color: #a78bfa; }
-        .t-str { color: #fbbf24; }
-        .t-num { color: #818cf8; }
-        .t-nil { color: #f87171; }
-        .t-bool { color: #f87171; }
-        .t-comment { color: #44415a; font-style: italic; }
-        .t-method { color: #7c3aed; font-weight: 500; }
-        .t-header { color: #34d399; }
-        .t-flag { color: #a78bfa; }
-        .t-url { color: #94a3b8; }
-        .t-punct { color: #5a5575; }
+        .t-key     { color: #a78bfa; }
+        .t-str     { color: #fbbf24; }
+        .t-num     { color: #818cf8; }
+        .t-nil     { color: #f87171; }
+        .t-bool    { color: #f87171; }
+        .t-comment { color: #3d3858; font-style: italic; }
+        .t-method  { color: #7c3aed; font-weight: 500; }
+        .t-header  { color: #34d399; }
+        .t-flag    { color: #a78bfa; }
+        .t-url     { color: #818cf8; }
+        .t-punct   { color: #4a4565; }
+        .t-ok      { color: #34d399; font-weight: 600; }
+        .t-err     { color: #f87171; font-weight: 600; }
 
-        /* ========================
-           TABLES
-        ======================== */
+        /* ======================== PARAMS ======================== */
+        .params-table {
+            border: 1px solid var(--border);
+            margin: 1.25rem 0;
+            width: 100%;
+        }
+        .params-head {
+            display: grid;
+            grid-template-columns: 190px 65px 1fr;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--border);
+        }
+        .params-head span {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-3);
+            font-weight: 600;
+        }
+        .param-row {
+            display: grid;
+            grid-template-columns: 190px 65px 1fr;
+            gap: 1rem;
+            padding: 0.7rem 1rem;
+            border-bottom: 1px solid var(--border);
+            align-items: start;
+            transition: background 0.1s;
+        }
+        .param-row:last-child { border-bottom: none; }
+        .param-row:hover { background: rgba(255,255,255,0.02); }
+        .param-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--purple-light); }
+        .param-req  { font-family: var(--font-mono); font-size: 0.68rem; color: var(--red); font-weight: 600; }
+        .param-opt  { font-family: var(--font-mono); font-size: 0.68rem; color: var(--text-3); }
+        .param-desc { color: var(--text-2); font-size: 0.825rem; line-height: 1.6; }
+
+        /* ======================== TABLE ======================== */
         .doc-table {
             width: 100%;
             border-collapse: collapse;
             margin: 1.25rem 0;
-            font-size: 0.875rem;
+            font-size: 0.825rem;
         }
         .doc-table thead th {
             text-align: left;
-            padding: 0.6rem 1rem;
-            font-size: 0.72rem;
+            padding: 0.5rem 0.875rem;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
             text-transform: uppercase;
-            letter-spacing: 0.07em;
+            letter-spacing: 0.08em;
             color: var(--text-3);
             font-weight: 600;
             border-bottom: 1px solid var(--border);
             background: var(--bg-2);
         }
-        .doc-table thead th:first-child { border-radius: 6px 0 0 0; }
-        .doc-table thead th:last-child { border-radius: 0 6px 0 0; }
-        .doc-table tbody tr {
-            border-bottom: 1px solid var(--border);
-            transition: background 0.1s;
-        }
+        .doc-table tbody tr { border-bottom: 1px solid var(--border); }
         .doc-table tbody tr:last-child { border-bottom: none; }
         .doc-table tbody tr:hover { background: rgba(255,255,255,0.02); }
         .doc-table td {
-            padding: 0.75rem 1rem;
+            padding: 0.65rem 0.875rem;
             color: var(--text-2);
             vertical-align: top;
         }
-        .doc-table td:first-child { color: var(--text); }
+        .doc-table td:first-child { color: var(--text); font-weight: 500; }
 
-        /* ========================
-           PARAMS TABLE
-        ======================== */
-        .params {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            overflow: hidden;
-            margin: 1.25rem 0;
-        }
-        .param-row {
-            display: grid;
-            grid-template-columns: 180px 70px 1fr;
-            gap: 1rem;
-            padding: 0.875rem 1.25rem;
-            border-bottom: 1px solid var(--border);
-            font-size: 0.875rem;
-            align-items: start;
-        }
-        .param-row:last-child { border-bottom: none; }
-        .param-row:hover { background: rgba(255,255,255,0.02); }
-        .param-name { font-family: var(--font-mono); font-size: 0.8rem; color: var(--purple-light); }
-        .param-req { font-size: 0.72rem; color: var(--red); font-weight: 600; }
-        .param-opt { font-size: 0.72rem; color: var(--text-3); }
-        .param-desc { color: var(--text-2); font-size: 0.835rem; }
-
-        /* ========================
-           CALLOUT
-        ======================== */
+        /* ======================== CALLOUT ======================== */
         .callout {
             display: flex;
-            gap: 0.875rem;
-            padding: 1rem 1.25rem;
-            border-radius: 8px;
+            gap: 0.75rem;
+            padding: 0.875rem 1rem;
             margin: 1.25rem 0;
-            font-size: 0.875rem;
-            line-height: 1.6;
+            font-size: 0.825rem;
+            line-height: 1.65;
+            border-left: 2px solid;
         }
-        .callout-info { background: rgba(124, 58, 237, 0.07); border: 1px solid rgba(124, 58, 237, 0.18); }
-        .callout-warning { background: rgba(251, 191, 36, 0.06); border: 1px solid rgba(251, 191, 36, 0.18); }
-        .callout-success { background: rgba(52, 211, 153, 0.06); border: 1px solid rgba(52, 211, 153, 0.15); }
-        .callout-icon { font-size: 1rem; flex-shrink: 0; margin-top: 0.05rem; }
+        .callout-info    { background: rgba(109,40,217,0.06); border-color: var(--purple-mid); }
+        .callout-warning { background: rgba(251,191,36,0.05); border-color: var(--amber); }
+        .callout-success { background: rgba(52,211,153,0.05); border-color: var(--emerald); }
+        .callout-icon { flex-shrink: 0; }
         .callout-body { color: var(--text-2); }
-        .callout-body strong { color: var(--text); }
+        .callout-body strong { color: var(--text); font-weight: 600; }
 
-        /* ========================
-           STATUS BADGES
-        ======================== */
+        /* ======================== STATUS ROWS ======================== */
+        .status-table { border: 1px solid var(--border); margin: 1.25rem 0; }
+        .status-head {
+            display: grid;
+            grid-template-columns: 60px 160px 1fr;
+            gap: 1rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--border);
+        }
+        .status-head span {
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: var(--text-3);
+            font-weight: 600;
+        }
         .status-row {
-            display: flex;
+            display: grid;
+            grid-template-columns: 60px 160px 1fr;
+            gap: 1rem;
+            padding: 0.65rem 1rem;
+            border-bottom: 1px solid var(--border);
+            font-size: 0.825rem;
+            align-items: center;
+        }
+        .status-row:last-child { border-bottom: none; }
+        .status-code {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            font-weight: 700;
+            padding: 0.15rem 0.45rem;
+            text-align: center;
+        }
+        .s-2xx { background: rgba(52,211,153,0.1); color: var(--emerald); border: 1px solid rgba(52,211,153,0.2); }
+        .s-4xx { background: rgba(248,113,113,0.1); color: var(--red); border: 1px solid rgba(248,113,113,0.2); }
+        .s-5xx { background: rgba(251,191,36,0.08); color: var(--amber); border: 1px solid rgba(251,191,36,0.2); }
+        .status-name { color: var(--text); font-family: var(--font-mono); font-size: 0.78rem; }
+        .status-desc { color: var(--text-2); }
+
+        /* ======================== FEATURE CARDS ======================== */
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1px;
+            border: 1px solid var(--border);
+            margin: 1.25rem 0;
+            background: var(--border);
+        }
+        .feature-card {
+            background: var(--bg-1);
+            padding: 1.5rem;
+            transition: background 0.15s;
+        }
+        .feature-card:hover { background: var(--bg-2); }
+        .feature-card-icon {
+            width: 28px; height: 28px;
+            border: 1px solid var(--border-2);
+            background: var(--purple-faint);
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 0.875rem;
+        }
+        .feature-card-icon svg { width: 13px; height: 13px; }
+        .feature-card-title {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            font-weight: 600;
+            color: var(--text);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+        .feature-card-desc {
+            font-size: 0.825rem;
+            color: var(--text-2);
+            line-height: 1.65;
+        }
+
+        /* ======================== GATEWAY CARDS ======================== */
+        .gateway-row {
+            border: 1px solid var(--border);
+            margin: 1.25rem 0;
+        }
+        .gateway-item {
+            display: grid;
+            grid-template-columns: 140px 80px 80px 1fr auto;
             align-items: center;
             gap: 1rem;
             padding: 0.75rem 1rem;
             border-bottom: 1px solid var(--border);
-            font-size: 0.875rem;
+            font-size: 0.825rem;
         }
-        .status-code {
-            font-family: var(--font-mono);
-            font-size: 0.78rem;
-            font-weight: 700;
-            padding: 0.2rem 0.55rem;
-            border-radius: 4px;
-            min-width: 42px;
-            text-align: center;
-        }
-        .status-2xx { background: rgba(52, 211, 153, 0.12); color: var(--emerald); border: 1px solid rgba(52, 211, 153, 0.2); }
-        .status-4xx { background: rgba(248, 113, 113, 0.1); color: var(--red); border: 1px solid rgba(248, 113, 113, 0.2); }
-        .status-5xx { background: rgba(251, 191, 36, 0.08); color: var(--amber); border: 1px solid rgba(251, 191, 36, 0.18); }
+        .gateway-item:last-child { border-bottom: none; }
+        .gateway-item:hover { background: rgba(255,255,255,0.02); }
+        .gateway-name { font-family: var(--font-mono); font-size: 0.78rem; color: var(--purple-light); font-weight: 600; }
+        .gateway-currencies { color: var(--text-2); font-family: var(--font-mono); font-size: 0.72rem; }
+        .gateway-status { display: flex; align-items: center; gap: 0.4rem; font-size: 0.75rem; }
+        .dot { width: 5px; height: 5px; border-radius: 50%; }
+        .dot-green { background: var(--emerald); }
+        .dot-amber { background: var(--amber); }
 
-        .status-name { color: var(--text); font-weight: 500; min-width: 140px; }
-        .status-desc { color: var(--text-2); }
-
-        /* ========================
-           GATEWAY TABLE
-        ======================== */
-        .gateway-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr 1fr;
-            gap: 0.75rem;
-            margin: 1.25rem 0;
-        }
-
-        .gateway-card {
-            background: var(--bg-1);
+        /* ======================== FLOW DIAGRAM ======================== */
+        .flow-diagram {
             border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 1rem 1.25rem;
-            transition: border-color 0.2s;
-        }
-        .gateway-card:hover { border-color: var(--border-2); }
-
-        .gateway-name {
+            background: var(--bg-1);
+            padding: 1.5rem;
+            margin: 1.25rem 0;
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            font-weight: 500;
-            color: var(--purple-light);
-            margin-bottom: 0.4rem;
-        }
-        .gateway-stat {
-            font-size: 0.78rem;
+            font-size: 0.75rem;
+            line-height: 2;
             color: var(--text-3);
-            display: flex;
-            justify-content: space-between;
-            margin-top: 0.25rem;
         }
-        .gateway-stat span:last-child { color: var(--text-2); }
+        .flow-step { display: flex; align-items: center; gap: 0.75rem; }
+        .flow-key { color: var(--purple-light); min-width: 120px; }
+        .flow-arrow { color: var(--text-3); }
+        .flow-val { color: var(--text-2); }
+        .flow-note { color: var(--text-3); font-style: italic; margin-left: auto; }
 
-        /* ========================
-           RIGHT PANEL
-        ======================== */
+        /* ======================== RIGHT PANEL ======================== */
         .right-panel {
             grid-column: 3;
             border-left: 1px solid var(--border);
@@ -673,651 +613,744 @@
             top: 0;
             height: 100vh;
             overflow-y: auto;
-            padding: 2rem 1.5rem;
+            padding: 1.75rem 1.25rem;
         }
-        .right-panel::-webkit-scrollbar { width: 4px; }
-        .right-panel::-webkit-scrollbar-track { background: transparent; }
-        .right-panel::-webkit-scrollbar-thumb { background: var(--border-2); border-radius: 2px; }
+        .right-panel::-webkit-scrollbar { width: 3px; }
+        .right-panel::-webkit-scrollbar-thumb { background: var(--border-2); }
 
         .panel-label {
-            font-size: 0.72rem;
+            font-family: var(--font-mono);
+            font-size: 0.62rem;
             text-transform: uppercase;
-            letter-spacing: 0.08em;
+            letter-spacing: 0.1em;
             color: var(--text-3);
             font-weight: 600;
+            margin-bottom: 0.875rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .live-block {
+            background: var(--bg);
+            border: 1px solid var(--border-2);
             margin-bottom: 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+        }
+        .live-top {
             display: flex;
             align-items: center;
             gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: var(--bg-2);
+            border-bottom: 1px solid var(--border);
         }
-        .panel-label::after {
-            content: '';
-            flex: 1;
-            height: 1px;
-            background: var(--border);
+        .live-dot {
+            width: 5px; height: 5px;
+            border-radius: 50%;
+            background: var(--emerald);
+            animation: blink 2s ease infinite;
         }
+        @keyframes blink { 0%,100%{opacity:1}50%{opacity:0.3} }
+        .live-label { font-size: 0.68rem; color: var(--emerald); }
+        .live-path { font-size: 0.68rem; color: var(--text-3); margin-left: auto; }
+        .live-body { padding: 0.875rem; line-height: 1.8; color: #a09ab8; }
 
-        .live-req {
+        .res-block {
             background: var(--bg);
-            border: 1px solid var(--border-2);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-bottom: 1.25rem;
-            box-shadow: 0 0 24px rgba(124, 58, 237, 0.08);
+            border: 1px solid rgba(52,211,153,0.18);
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            margin-bottom: 1.5rem;
         }
-
-        .live-req-top {
+        .res-top {
             display: flex;
             align-items: center;
-            gap: 0.6rem;
-            padding: 0.7rem 1rem;
-            background: var(--bg-2);
+            gap: 0.5rem;
+            padding: 0.5rem 0.75rem;
+            background: rgba(52,211,153,0.05);
+            border-bottom: 1px solid rgba(52,211,153,0.1);
+        }
+        .res-status { font-size: 0.72rem; color: var(--emerald); font-weight: 700; }
+        .res-time { margin-left: auto; font-size: 0.68rem; color: var(--text-3); }
+        .res-body { padding: 0.875rem; line-height: 1.8; color: #a09ab8; }
+
+        .gateway-status-panel { margin-top: 0.25rem; }
+        .gs-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.45rem 0;
             border-bottom: 1px solid var(--border);
             font-size: 0.75rem;
         }
-        .live-indicator {
-            width: 6px; height: 6px;
-            border-radius: 50%;
-            background: var(--emerald);
-            box-shadow: 0 0 6px var(--emerald);
-            animation: pulse 2s ease infinite;
-        }
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.4; }
-        }
-        .live-label { color: var(--emerald); font-family: var(--font-mono); font-size: 0.7rem; }
-        .live-url { color: var(--text-3); font-family: var(--font-mono); font-size: 0.7rem; margin-left: auto; }
+        .gs-row:last-child { border-bottom: none; }
+        .gs-name { font-family: var(--font-mono); color: var(--text-2); font-size: 0.7rem; }
 
-        .live-body {
-            padding: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.75rem;
-            line-height: 1.75;
-            color: #c4bfe8;
-        }
-
-        .response-preview {
-            background: var(--bg);
-            border: 1px solid rgba(52, 211, 153, 0.2);
-            border-radius: 8px;
-            overflow: hidden;
-            margin-top: 1rem;
-        }
-        .response-top {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.6rem 1rem;
-            background: rgba(52, 211, 153, 0.05);
-            border-bottom: 1px solid rgba(52, 211, 153, 0.1);
-            font-size: 0.72rem;
-        }
-        .response-status { color: var(--emerald); font-family: var(--font-mono); font-weight: 600; }
-        .response-body {
-            padding: 1rem;
-            font-family: var(--font-mono);
-            font-size: 0.73rem;
-            line-height: 1.75;
-            color: #c4bfe8;
-        }
-
-        /* ========================
-           FOOTER
-        ======================== */
+        /* ======================== FOOTER ======================== */
         .doc-footer {
-            margin-top: 5rem;
-            padding-top: 2rem;
+            margin-top: 4rem;
+            padding-top: 1.5rem;
             border-top: 1px solid var(--border);
             display: flex;
             align-items: center;
             justify-content: space-between;
-            font-size: 0.8rem;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
             color: var(--text-3);
         }
+        .doc-footer a { color: var(--purple-light); text-decoration: none; }
 
-        /* ========================
-           RESPONSIVE
-        ======================== */
+        /* ======================== RESPONSIVE ======================== */
         @media (max-width: 1280px) {
-            .shell { grid-template-columns: 252px 1fr; }
+            .shell { grid-template-columns: 240px 1fr; }
             .right-panel { display: none; }
         }
         @media (max-width: 768px) {
             .shell { grid-template-columns: 1fr; }
             .sidebar { display: none; }
             .main { padding: 2rem 1.25rem 5rem; }
-            .hero-title { font-size: 2rem; }
-            .gateway-grid { grid-template-columns: 1fr; }
+            .hero-title { font-size: 1.8rem; }
+            .feature-grid { grid-template-columns: 1fr; }
         }
     </style>
 </head>
 <body>
-
 <div class="shell">
 
-    <!-- ======================== SIDEBAR ======================== -->
-    <aside class="sidebar">
-        <a href="#" class="logo-area">
-            <div class="logo-icon">
-                <svg viewBox="0 0 24 24"><path d="M9 3a1 1 0 0 0-1 1v3H5a1 1 0 0 0 0 2h3v2H5a1 1 0 0 0 0 2h3v2H5a1 1 0 0 0 0 2h3v2a1 1 0 0 0 2 0V4a1 1 0 0 0-1-1zm5 1a1 1 0 1 1 2 0v16a1 1 0 1 1-2 0V4z"/></svg>
-            </div>
-            <span class="logo-text">Orchestra.io</span>
-            <span class="logo-tag">v0.4.0</span>
-        </a>
-
-        <nav class="nav">
-            <div class="nav-group">
-                <div class="nav-group-label">Começando</div>
-                <a href="#intro" class="nav-item active"><span class="nav-item-dot"></span>Introdução</a>
-                <a href="#auth" class="nav-item"><span class="nav-item-dot"></span>Autenticação</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-label">Pagamentos</div>
-                <a href="#create" class="nav-item"><span class="nav-item-dot"></span>Processar Pagamento</a>
-                <a href="#methods" class="nav-item"><span class="nav-item-dot"></span>Métodos de Pagamento</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-label">Arquitetura</div>
-                <a href="#routing" class="nav-item"><span class="nav-item-dot"></span>SmartRouter</a>
-                <a href="#idempotency" class="nav-item"><span class="nav-item-dot"></span>Idempotência</a>
-                <a href="#resilience" class="nav-item"><span class="nav-item-dot"></span>Circuit Breaker</a>
-            </div>
-            <div class="nav-group">
-                <div class="nav-group-label">Referência</div>
-                <a href="#errors" class="nav-item"><span class="nav-item-dot"></span>Erros</a>
-                <a href="#sdks" class="nav-item"><span class="nav-item-dot"></span>SDKs</a>
-            </div>
-        </nav>
-
-        <div class="sidebar-footer">
-            <a href="#">GitHub</a>
-            <a href="#">Changelog</a>
-            <a href="#">Status</a>
+<!-- ======================== SIDEBAR ======================== -->
+<aside class="sidebar">
+    <a href="#intro" class="logo-area">
+        <div class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2">
+                <path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/>
+            </svg>
         </div>
-    </aside>
+        <span class="logo-text">Orquestraio</span>
+        <span class="logo-version">v0.4.0</span>
+    </a>
 
-    <!-- ======================== MAIN ======================== -->
-    <main class="main">
-
-        <!-- Hero -->
-        <section id="intro" class="page-hero doc-section">
-            <div class="hero-eyebrow">
-                <span class="tag tag-purple">Documentação da API</span>
-                <span class="tag tag-green">● Online</span>
-            </div>
-            <h1 class="hero-title">Uma API.<br><span>Múltiplos gateways.</span></h1>
-            <p class="hero-lead">O Orchestra.io é uma plataforma de orquestração de pagamentos multi-tenant. Integre Stripe, MercadoPago e PayPal de uma vez — com roteamento inteligente, idempotência e resiliência embutidos.</p>
-            <div class="hero-actions">
-                <a href="#create" class="btn-primary">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-                    Ver endpoints
-                </a>
-                <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    GitHub
-                </a>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Auth -->
-        <section id="auth" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-purple">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Autenticação</div>
-                    <div class="section-sub">API Key via header HTTP</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <p>Todas as requisições precisam do header <code>x-api-key</code> com a chave do seu tenant. Chaves de produção começam com o prefixo <code>Oz_</code>.</p>
-
-                <div class="callout callout-warning">
-                    <span class="callout-icon">⚠️</span>
-                    <div class="callout-body">
-                        <strong>Nunca exponha a sua API key no frontend.</strong> Faça todas as chamadas pelo seu backend. Se uma chave for comprometida, ela pode ser revogada no painel.
-                    </div>
-                </div>
-
-                <div class="codeblock">
-                    <div class="codeblock-header">
-                        <span class="lang-tabs"><button class="lang-tab active" data-tab="auth-header">Header</button></span>
-                        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-                    </div>
-                    <div class="codeblock-body">
-                        <div class="tab-pane active" id="auth-header"><span class="t-header">x-api-key</span><span class="t-punct">:</span> <span class="t-str">Oz_live_abc123def456ghi789jkl</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Create Payment -->
-        <section id="create" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-indigo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M12 2v20M2 12h20"/><circle cx="12" cy="12" r="9"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Processar Pagamento</div>
-                    <div class="section-sub">Cria uma transação e roteia para o gateway ideal</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <div class="endpoint-card">
-                    <div class="endpoint-header">
-                        <span class="method-badge method-post">POST</span>
-                        <span class="endpoint-path">/v1/payments</span>
-                        <span class="endpoint-description">Requer autenticação</span>
-                    </div>
-                </div>
-
-                <p>O SmartRouter seleciona automaticamente o melhor gateway com base na moeda, método de pagamento e disponibilidade. Você pode sobrescrever a escolha via <code>metadata.gateway</code>.</p>
-
-                <h3 style="font-family: var(--font-display); font-size: 1rem; color: var(--text); margin: 1.5rem 0 0.75rem; font-weight: 600;">Parâmetros da Requisição</h3>
-
-                <div class="params">
-                    <div class="param-row" style="background: var(--bg-2); border-bottom: 1px solid var(--border);">
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600;">Campo</span>
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600;">Req.</span>
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600;">Descrição</span>
-                    </div>
-                    <div class="param-row"><span class="param-name">idempotecyKey</span><span class="param-req">sim</span><span class="param-desc">Identificador único para prevenir duplicações. Use um UUID ou ID de pedido.</span></div>
-                    <div class="param-row"><span class="param-name">amount</span><span class="param-req">sim</span><span class="param-desc">Valor da transação. Mínimo: <code>0.01</code>.</span></div>
-                    <div class="param-row"><span class="param-name">currency</span><span class="param-req">sim</span><span class="param-desc">Código ISO 4217. Ex: <code>BRL</code>, <code>USD</code>, <code>EUR</code>.</span></div>
-                    <div class="param-row"><span class="param-name">paymentMethodRequest</span><span class="param-req">sim</span><span class="param-desc">Objeto com <code>type</code> e <code>token</code> opcional para cartão.</span></div>
-                    <div class="param-row"><span class="param-name">customer</span><span class="param-req">sim</span><span class="param-desc">Dados do cliente: <code>id</code>, <code>email</code> e <code>document</code>.</span></div>
-                    <div class="param-row"><span class="param-name">metadata</span><span class="param-opt">não</span><span class="param-desc">Pares chave-valor extras. Use <code>gateway</code> para forçar um gateway específico.</span></div>
-                </div>
-
-                <div class="codeblock">
-                    <div class="codeblock-header">
-                        <div class="lang-tabs">
-                            <button class="lang-tab active" data-tab="create-curl" onclick="switchTab(event, 'create')">cURL</button>
-                            <button class="lang-tab" data-tab="create-json" onclick="switchTab(event, 'create')">JSON</button>
-                        </div>
-                        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-                    </div>
-                    <div class="codeblock-body">
-                        <div class="tab-pane active" id="create-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST https://api.orchestra.io<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
-                            <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_abc123"</span> <span class="t-punct">\</span>
-                            <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
-                            <span class="t-flag">-d</span> <span class="t-str">'{</span>
-                            <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span>,
-                            <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-                            <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
-                            <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> { <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>, <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span> },
-                            <span class="t-key">"customer"</span><span class="t-punct">:</span> { <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>, <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"dev@exemplo.com"</span>, <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-00"</span> },
-                            <span class="t-key">"metadata"</span><span class="t-punct">:</span> { <span class="t-key">"source"</span><span class="t-punct">:</span> <span class="t-str">"checkout_v2"</span> }
-                            }'</div>
-                        <div class="tab-pane" id="create-json"><span class="t-punct">{</span>
-                            <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span>,   <span class="t-comment">// ID único — use UUID ou ID do pedido</span>
-                            <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-                            <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,            <span class="t-comment">// BRL → MercadoPago | USD/EUR → Stripe/PayPal</span>
-                            <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">: {</span>
-                            <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,                <span class="t-comment">// pix | boleto | card_token</span>
-                            <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>               <span class="t-comment">// obrigatório apenas para card_token</span>
-                            <span class="t-punct">},</span>
-                            <span class="t-key">"customer"</span><span class="t-punct">: {</span>
-                            <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
-                            <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"cliente@exemplo.com"</span>,
-                            <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-00"</span>
-                            <span class="t-punct">},</span>
-                            <span class="t-key">"metadata"</span><span class="t-punct">: {</span>
-                            <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>     <span class="t-comment">// opcional: força um gateway específico</span>
-                            <span class="t-punct">}</span>
-                            <span class="t-punct">}</span></div>
-                    </div>
-                </div>
-
-                <h3 style="font-family: var(--font-display); font-size: 1rem; color: var(--text); margin: 1.5rem 0 0.75rem; font-weight: 600;">Resposta <span class="tag tag-green" style="font-size: 0.7rem; vertical-align: middle;">201 Created</span></h3>
-
-                <div class="codeblock">
-                    <div class="codeblock-header">
-                        <span class="lang-tabs"><button class="lang-tab active">JSON</button></span>
-                        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-                    </div>
-                    <div class="codeblock-body">
-                        <div class="tab-pane active"><span class="t-punct">{</span>
-                            <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span>,
-                            <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-str">"APPROVED"</span>,            <span class="t-comment">// PENDING | APPROVED | RECUSED | ERROR</span>
-                            <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-                            <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
-                            <span class="t-key">"details"</span><span class="t-punct">: {</span>
-                            <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>,
-                            <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126580014br.gov.bcb.pix..."</span>  <span class="t-comment">// QR code pix</span>
-                            <span class="t-punct">},</span>
-                            <span class="t-key">"createAt"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:30:00"</span>
-                            <span class="t-punct">}</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Payment Methods -->
-        <section id="methods" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-emerald">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Métodos de Pagamento</div>
-                    <div class="section-sub">Tipos aceitos no campo <code>paymentMethodRequest.type</code></div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <table class="doc-table">
-                    <thead><tr><th>Tipo</th><th>Código</th><th>Moedas</th><th>Gateway</th></tr></thead>
-                    <tbody>
-                    <tr><td>PIX</td><td><code>pix</code></td><td>BRL</td><td><code>MERCADO_PAGO</code></td></tr>
-                    <tr><td>Boleto Bancário</td><td><code>boleto</code></td><td>BRL</td><td><code>MERCADO_PAGO</code></td></tr>
-                    <tr><td>Cartão de Crédito</td><td><code>card_token</code></td><td>BRL, USD, EUR</td><td><code>STRIPE</code>, <code>MERCADO_PAGO</code></td></tr>
-                    <tr><td>Cartão de Débito</td><td><code>card_token</code></td><td>BRL, USD, EUR</td><td><code>STRIPE</code>, <code>MERCADO_PAGO</code></td></tr>
-                    </tbody>
-                </table>
-
-                <div class="callout callout-info">
-                    <span class="callout-icon">💡</span>
-                    <div class="callout-body">Para pagamentos com cartão, tokenize os dados antes no SDK do gateway e envie apenas o token no campo <code>paymentMethodRequest.token</code>. O servidor nunca processa dados de cartão brutos.</div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Routing -->
-        <section id="routing" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-purple">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M3 12h18m-6-6 6 6-6 6"/><path d="M9 6 3 12l6 6"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">SmartRouter</div>
-                    <div class="section-sub">Seleção automática de gateway por regras de negócio</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <p>O SmartRouter avalia moeda, método de pagamento e valor para determinar o gateway ótimo. Para sobrescrever a decisão, passe <code>metadata.gateway</code> com um dos valores: <code>STRIPE</code>, <code>MERCADO_PAGO</code>, <code>PAYPAL</code> ou <code>MOCK</code>.</p>
-
-                <table class="doc-table">
-                    <thead><tr><th>Moeda</th><th>Método</th><th>Condição</th><th>Gateway</th></tr></thead>
-                    <tbody>
-                    <tr><td>BRL</td><td>pix / boleto</td><td>Qualquer valor</td><td><code>MERCADO_PAGO</code></td></tr>
-                    <tr><td>USD / EUR</td><td>card_token</td><td>Valor &lt; $50</td><td><code>STRIPE</code></td></tr>
-                    <tr><td>USD / EUR</td><td>card_token</td><td>Valor ≥ $50</td><td><code>PAYPAL</code></td></tr>
-                    <tr><td>Qualquer</td><td>Qualquer</td><td>metadata.gateway definido</td><td>Gateway especificado</td></tr>
-                    <tr><td>Qualquer</td><td>Qualquer</td><td>Sem regra correspondente</td><td><code>STRIPE</code> (fallback)</td></tr>
-                    </tbody>
-                </table>
-
-                <h3 style="font-family: var(--font-display),monospace; font-size: 1rem; color: var(--text); margin: 1.5rem 0 0.75rem; font-weight: 600;">Gateways Disponíveis</h3>
-                <div class="gateway-grid">
-                    <div class="gateway-card">
-                        <div class="gateway-name">STRIPE</div>
-                        <div class="gateway-stat"><span>Moedas</span><span>USD, EUR, BRL</span></div>
-                        <div class="gateway-stat"><span>Status</span><span style="color: var(--emerald)">● Ativo</span></div>
-                    </div>
-                    <div class="gateway-card">
-                        <div class="gateway-name">MERCADO_PAGO</div>
-                        <div class="gateway-stat"><span>Moedas</span><span>BRL</span></div>
-                        <div class="gateway-stat"><span>Status</span><span style="color: var(--emerald)">● Ativo</span></div>
-                    </div>
-                    <div class="gateway-card">
-                        <div class="gateway-name">PAYPAL</div>
-                        <div class="gateway-stat"><span>Moedas</span><span>USD, EUR</span></div>
-                        <div class="gateway-stat"><span>Status</span><span style="color: var(--amber)">● Beta</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Idempotency -->
-        <section id="idempotency" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-amber">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M12 22V12m0 0V2m0 10H2m10 0h10"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Idempotência</div>
-                    <div class="section-sub">Proteção contra cobranças duplicadas via Redis</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <p>O campo <code>idempotecyKey</code> garante que a mesma transação nunca seja processada duas vezes. O sistema usa Redis com TTL de 24 horas para armazenar chaves processadas.</p>
-
-                <p>Se a mesma chave for enviada enquanto a requisição original ainda está em andamento, a API retorna <code>409 Conflict</code>. Se já foi processada com sucesso, retorna a resposta original em cache — sem reprocessar.</p>
-
-                <div class="callout callout-success">
-                    <span class="callout-icon">✅</span>
-                    <div class="callout-body"><strong>Boas práticas:</strong> Use um UUID v4 gerado no seu backend, vinculado ao ID do pedido. Nunca reutilize a mesma chave para transações diferentes.</div>
-                </div>
-
-                <div class="codeblock">
-                    <div class="codeblock-header">
-                        <span class="lang-tabs"><button class="lang-tab active">Fluxo de Idempotência</button></span>
-                    </div>
-                    <div class="codeblock-body">
-                        <div class="tab-pane active"><span class="t-comment">// 1ª chamada — processada normalmente</span>
-                            POST /v1/payments  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-num">201 APPROVED</span>
-
-                            <span class="t-comment">// 2ª chamada com mesma chave (em andamento) — bloqueada</span>
-                            POST /v1/payments  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-nil">409 Conflict</span>
-
-                            <span class="t-comment">// 2ª chamada com mesma chave (após conclusão) — retorna cache</span>
-                            POST /v1/payments  →  <span class="t-str">"idempotecyKey": "order-abc-123"</span>  →  <span class="t-num">201 APPROVED (cached)</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Circuit Breaker -->
-        <section id="resilience" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-indigo">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Circuit Breaker</div>
-                    <div class="section-sub">Resiliência automática via Resilience4j</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <p>Cada gateway possui um circuit breaker independente. Quando a taxa de falha ultrapassa o threshold configurado, o circuito abre e o gateway é temporariamente excluído das rotas disponíveis — evitando degradação em cascata.</p>
-
-                <table class="doc-table">
-                    <thead><tr><th>Gateway</th><th>Janela</th><th>Threshold</th><th>Tempo aberto</th><th>Chamadas (half-open)</th></tr></thead>
-                    <tbody>
-                    <tr><td><code>STRIPE</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3</td></tr>
-                    <tr><td><code>MERCADO_PAGO</code></td><td>10 req</td><td>50%</td><td>15s</td><td>3</td></tr>
-                    <tr><td><code>PAYPAL</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3</td></tr>
-                    </tbody>
-                </table>
-
-                <div class="callout callout-info">
-                    <span class="callout-icon">ℹ️</span>
-                    <div class="callout-body">Métricas de circuit breaker são expostas via <code>GET /actuator/health</code> e <code>/actuator/metrics</code>. Configure o Grafana para visualizar o estado em tempo real.</div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- Errors -->
-        <section id="errors" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-purple">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">Erros</div>
-                    <div class="section-sub">Códigos HTTP e formato de resposta</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <p>A API retorna erros no formato padrão com <code>timestamp</code>, <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code>.</p>
-
-                <div style="border: 1px solid var(--border); border-radius: 8px; overflow: hidden; margin: 1.25rem 0;">
-                    <div class="status-row" style="background: var(--bg-2); border-bottom: 1px solid var(--border);">
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600; min-width: 42px;">HTTP</span>
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600; min-width: 140px;">Nome</span>
-                        <span style="font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-3); font-weight: 600;">Descrição</span>
-                    </div>
-                    <div class="status-row"><span class="status-code status-2xx">201</span><span class="status-name">Created</span><span class="status-desc">Pagamento criado com sucesso.</span></div>
-                    <div class="status-row"><span class="status-code status-4xx">400</span><span class="status-name">Bad Request</span><span class="status-desc">Campos inválidos ou faltando na requisição.</span></div>
-                    <div class="status-row"><span class="status-code status-4xx">401</span><span class="status-name">Unauthorized</span><span class="status-desc">API key ausente ou inválida.</span></div>
-                    <div class="status-row"><span class="status-code status-4xx">403</span><span class="status-name">Forbidden</span><span class="status-desc">Tenant inativo. Entre em contato com o suporte.</span></div>
-                    <div class="status-row"><span class="status-code status-4xx">409</span><span class="status-name">Conflict</span><span class="status-desc">Chave de idempotência já está em processamento.</span></div>
-                    <div class="status-row" style="border-bottom: none;"><span class="status-code status-5xx">500</span><span class="status-name">Server Error</span><span class="status-desc">Erro inesperado. Abra uma issue no GitHub.</span></div>
-                </div>
-
-                <div class="codeblock">
-                    <div class="codeblock-header">
-                        <span class="lang-tabs"><button class="lang-tab active">Exemplo de Erro (409)</button></span>
-                        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
-                    </div>
-                    <div class="codeblock-body">
-                        <div class="tab-pane active"><span class="t-punct">{</span>
-                            <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span>,
-                            <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">409</span>,
-                            <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Conflito de Idempotência"</span>,
-                            <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"Pagamento já está em processamento."</span>,
-                            <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
-                            <span class="t-punct">}</span></div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <div class="doc-divider"></div>
-
-        <!-- SDKs -->
-        <section id="sdks" class="doc-section">
-            <div class="section-header">
-                <div class="section-icon icon-purple">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
-                </div>
-                <div>
-                    <div class="section-title">SDKs</div>
-                    <div class="section-sub">Clientes nativos para sua linguagem preferida</div>
-                </div>
-            </div>
-
-            <div class="doc-body">
-                <div class="callout callout-warning">
-                    <span class="callout-icon">🚧</span>
-                    <div class="callout-body"><strong>Em desenvolvimento.</strong> SDKs oficiais para Java, Node.js e Python estão planejados. Por enquanto, use a API REST diretamente.</div>
-                </div>
-            </div>
-        </section>
-
-        <footer class="doc-footer">
-            <span>© 2026 Orchestra.io — Desenvolvido por <a href="https://github.com/vitinh0z" style="color: var(--purple-light); text-decoration: none;">@vitinh0z</a></span>
-            <span>MIT License</span>
-        </footer>
-    </main>
-
-    <!-- ======================== RIGHT PANEL ======================== -->
-    <aside class="right-panel">
-        <div class="panel-label">Exemplo ao vivo</div>
-
-        <div class="live-req">
-            <div class="live-req-top">
-                <span class="live-indicator"></span>
-                <span class="live-label">POST</span>
-                <span class="live-url">/v1/payments</span>
-            </div>
-            <div class="live-body"><span class="t-punct">{</span>
-                <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"req_9f3a8d"</span>,
-                <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-                <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
-                <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">: {</span>
-                <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,
-                <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>
-                <span class="t-punct">},</span>
-                <span class="t-key">"customer"</span><span class="t-punct">: {</span>
-                <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
-                <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"dev@orchestra.io"</span>
-                <span class="t-punct">}</span>
-                <span class="t-punct">}</span></div>
+    <nav class="nav">
+        <div class="nav-group">
+            <div class="nav-group-label">Início</div>
+            <a href="#intro"  class="nav-item active">Introdução</a>
+            <a href="#auth"   class="nav-item">Autenticação</a>
         </div>
-
-        <div class="response-preview">
-            <div class="response-top">
-                <span class="response-status">201 Created</span>
-                <span style="color: var(--text-3); margin-left: auto; font-size: 0.7rem; font-family: var(--font-mono)">248ms</span>
-            </div>
-            <div class="response-body"><span class="t-punct">{</span>
-                <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400..."</span>,
-                <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-str">"APPROVED"</span>,
-                <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
-                <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
-                <span class="t-key">"details"</span><span class="t-punct">: {</span>
-                <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>,
-                <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126..."</span>
-                <span class="t-punct">},</span>
-                <span class="t-key">"createAt"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:30:00"</span>
-                <span class="t-punct">}</span></div>
+        <div class="nav-group">
+            <div class="nav-group-label">API</div>
+            <a href="#create"  class="nav-item">Processar Pagamento</a>
+            <a href="#methods" class="nav-item">Métodos de Pagamento</a>
+            <a href="#routing" class="nav-item">SmartRouter</a>
+            <a href="#errors"  class="nav-item">Erros & Status</a>
         </div>
+        <div class="nav-group">
+            <div class="nav-group-label">Funcionalidades</div>
+            <a href="#idempotency"  class="nav-item">Idempotência</a>
+            <a href="#circuit"      class="nav-item">Circuit Breaker</a>
+            <a href="#security"     class="nav-item">Segurança</a>
+        </div>
+        <div class="nav-group">
+            <div class="nav-group-label">Recursos</div>
+            <a href="#sdks" class="nav-item">SDKs</a>
+        </div>
+    </nav>
 
-        <div style="margin-top: 1.5rem;">
-            <div class="panel-label">Status dos gateways</div>
-            <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                    <span style="font-family: var(--font-mono); color: var(--text-2); font-size: 0.75rem;">STRIPE</span>
-                    <span style="color: var(--emerald); font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem;"><span style="width:6px;height:6px;background:var(--emerald);border-radius:50%;display:inline-block"></span>Operacional</span>
+    <div class="sidebar-footer">
+        <a href="https://github.com/vitinh0z/orchestra.io">GitHub</a>
+        <a href="#">Changelog</a>
+        <a href="#">Status</a>
+    </div>
+</aside>
+
+<!-- ======================== MAIN ======================== -->
+<main class="main">
+
+    <!-- INTRO -->
+    <section id="intro" class="page-hero doc-section">
+        <div class="eyebrow">Documentação da API — v0.4.0-alpha</div>
+        <h1 class="hero-title">Uma integração.<br><em>Múltiplos gateways.</em></h1>
+        <p class="hero-lead">O Orquestraio é uma plataforma de orquestração de pagamentos multi-tenant. Integre Stripe, MercadoPago e PayPal de uma vez — com roteamento inteligente, idempotência e resiliência embutidos.</p>
+        <div class="hero-actions">
+            <a href="#create" class="btn-primary">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                Ver endpoints
+            </a>
+            <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                GitHub
+            </a>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- AUTH -->
+    <section id="auth" class="doc-section">
+        <div class="section-label">Autenticação</div>
+        <div class="section-title">API Key via header HTTP</div>
+        <div class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do seu tenant. Chaves de produção têm o prefixo <code>Oz_</code>.</div>
+
+        <div class="doc-body">
+            <div class="callout callout-warning">
+                <span class="callout-icon">⚠</span>
+                <div class="callout-body">
+                    <strong>Nunca exponha sua API key no frontend.</strong> Faça todas as chamadas pelo seu backend. Se uma chave for comprometida, ela pode ser revogada no painel administrativo.
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; padding: 0.5rem 0; border-bottom: 1px solid var(--border);">
-                    <span style="font-family: var(--font-mono); color: var(--text-2); font-size: 0.75rem;">MERCADO_PAGO</span>
-                    <span style="color: var(--emerald); font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem;"><span style="width:6px;height:6px;background:var(--emerald);border-radius:50%;display:inline-block"></span>Operacional</span>
+            </div>
+
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Header</button></div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
                 </div>
-                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; padding: 0.5rem 0;">
-                    <span style="font-family: var(--font-mono); color: var(--text-2); font-size: 0.75rem;">PAYPAL</span>
-                    <span style="color: var(--amber); font-size: 0.75rem; display: flex; align-items: center; gap: 0.3rem;"><span style="width:6px;height:6px;background:var(--amber);border-radius:50%;display:inline-block"></span>Beta</span>
+                <div class="codeblock-body">
+                    <div class="tab-pane active"><span class="t-header">x-api-key</span><span class="t-punct">: </span><span class="t-str">Oz_live_a1b2c3d4e5f6g7h8i9j0</span></div>
+                </div>
+            </div>
+
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs">
+                        <button class="lang-tab active" data-tab="auth-curl" onclick="switchTab(event)">cURL</button>
+                        <button class="lang-tab" data-tab="auth-node" onclick="switchTab(event)">Node.js</button>
+                    </div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+                    <div class="tab-pane active" id="auth-curl"><span class="t-method">curl</span> https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_a1b2c3..."</span></div>
+                    <div class="tab-pane" id="auth-node"><span class="t-key">const</span> response = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+  headers: { <span class="t-str">'x-api-key'</span>: <span class="t-str">'Oz_live_a1b2c3...'</span> }
+});</div>
                 </div>
             </div>
         </div>
-    </aside>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- CREATE PAYMENT -->
+    <section id="create" class="doc-section">
+        <div class="section-label">Pagamentos</div>
+        <div class="section-title">Processar Pagamento</div>
+        <div class="section-desc">Cria uma transação e roteia automaticamente para o gateway ideal com base na moeda e método de pagamento.</div>
+
+        <div class="doc-body">
+            <div class="endpoint-card">
+                <div class="endpoint-header">
+                    <span class="method-badge method-post">POST</span>
+                    <span class="endpoint-path">/v1/payments</span>
+                    <span class="endpoint-note">Requer x-api-key</span>
+                </div>
+            </div>
+
+            <div class="params-table">
+                <div class="params-head">
+                    <span>Campo</span><span>Req.</span><span>Descrição</span>
+                </div>
+                <div class="param-row"><span class="param-name">idempotecyKey</span><span class="param-req">sim</span><span class="param-desc">Identificador único para prevenir cobranças duplicadas. Use um UUID ou o ID do pedido no seu sistema.</span></div>
+                <div class="param-row"><span class="param-name">amount</span><span class="param-req">sim</span><span class="param-desc">Valor da transação em ponto flutuante. Mínimo: <code>0.01</code>.</span></div>
+                <div class="param-row"><span class="param-name">currency</span><span class="param-req">sim</span><span class="param-desc">Código ISO 4217. Ex: <code>BRL</code>, <code>USD</code>, <code>EUR</code>. Define qual gateway será selecionado.</span></div>
+                <div class="param-row"><span class="param-name">paymentMethodRequest</span><span class="param-req">sim</span><span class="param-desc">Objeto com <code>type</code> (<code>pix</code>, <code>boleto</code>, <code>card_token</code>) e <code>token</code> obrigatório apenas para cartão.</span></div>
+                <div class="param-row"><span class="param-name">customer</span><span class="param-req">sim</span><span class="param-desc">Dados do pagador: <code>id</code>, <code>email</code> e <code>document</code> (CPF/CNPJ).</span></div>
+                <div class="param-row"><span class="param-name">metadata.gateway</span><span class="param-opt">não</span><span class="param-desc">Força um gateway específico: <code>STRIPE</code>, <code>MERCADO_PAGO</code>, <code>PAYPAL</code>, <code>MOCK</code>. Sobrescreve o SmartRouter.</span></div>
+            </div>
+
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs">
+                        <button class="lang-tab active" data-tab="pay-curl" onclick="switchTab(event)">cURL</button>
+                        <button class="lang-tab" data-tab="pay-json" onclick="switchTab(event)">JSON</button>
+                    </div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+                    <div class="tab-pane active" id="pay-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_abc123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{</span>
+    <span class="t-key">"idempotecyKey"</span>: <span class="t-str">"pedido-98765"</span>,
+    <span class="t-key">"amount"</span>: <span class="t-num">197.00</span>,
+    <span class="t-key">"currency"</span>: <span class="t-str">"BRL"</span>,
+    <span class="t-key">"paymentMethodRequest"</span>: {
+      <span class="t-key">"type"</span>: <span class="t-str">"pix"</span>,
+      <span class="t-key">"token"</span>: <span class="t-nil">null</span>
+    },
+    <span class="t-key">"customer"</span>: {
+      <span class="t-key">"id"</span>: <span class="t-str">"usr_001"</span>,
+      <span class="t-key">"email"</span>: <span class="t-str">"cliente@exemplo.com"</span>,
+      <span class="t-key">"document"</span>: <span class="t-str">"123.456.789-00"</span>
+    }
+  <span class="t-str">}'</span></div>
+                    <div class="tab-pane" id="pay-json"><span class="t-punct">{</span>
+  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span>,    <span class="t-comment">// UUID ou ID do pedido — obrigatório</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,              <span class="t-comment">// BRL → MercadoPago | USD/EUR → Stripe/PayPal</span>
+  <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,              <span class="t-comment">// pix | boleto | card_token</span>
+    <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>             <span class="t-comment">// obrigatório somente para card_token</span>
+  <span class="t-punct">},</span>
+  <span class="t-key">"customer"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
+    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"cliente@exemplo.com"</span>,
+    <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-00"</span>
+  <span class="t-punct">},</span>
+  <span class="t-key">"metadata"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>     <span class="t-comment">// opcional: força gateway específico</span>
+  <span class="t-punct">}</span>
+<span class="t-punct">}</span></div>
+                </div>
+            </div>
+
+            <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-3); margin: 1.5rem 0 0.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                Resposta <span class="tag tag-green" style="vertical-align:middle;">201 Created</span>
+            </div>
+
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">JSON</button></div>
+                    <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+                </div>
+                <div class="codeblock-body">
+                    <div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span>,
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span>,       <span class="t-comment">// PENDING | APPROVED | RECUSED | ERROR</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">197.00</span>,
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span>,
+  <span class="t-key">"details"</span><span class="t-punct">:</span>  <span class="t-punct">{</span>
+    <span class="t-key">"provider"</span><span class="t-punct">:</span>       <span class="t-str">"MERCADO_PAGO"</span>,
+    <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126580014br.gov.bcb.pix..."</span>  <span class="t-comment">// QR code copia-e-cola</span>
+  <span class="t-punct">},</span>
+  <span class="t-key">"createAt"</span><span class="t-punct">:</span>  <span class="t-str">"2026-02-21T15:30:00"</span>
+<span class="t-punct">}</span></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- PAYMENT METHODS -->
+    <section id="methods" class="doc-section">
+        <div class="section-label">Pagamentos</div>
+        <div class="section-title">Métodos de Pagamento</div>
+        <div class="section-desc">Tipos suportados no campo <code>paymentMethodRequest.type</code> e seus respectivos gateways.</div>
+
+        <table class="doc-table">
+            <thead><tr><th>Tipo</th><th>Código</th><th>Moedas</th><th>Gateway</th></tr></thead>
+            <tbody>
+            <tr><td>PIX</td><td><code>pix</code></td><td>BRL</td><td><code>MERCADO_PAGO</code></td></tr>
+            <tr><td>Boleto Bancário</td><td><code>boleto</code></td><td>BRL</td><td><code>MERCADO_PAGO</code></td></tr>
+            <tr><td>Cartão de Crédito/Débito</td><td><code>card_token</code></td><td>BRL, USD, EUR</td><td><code>STRIPE</code>, <code>MERCADO_PAGO</code></td></tr>
+            </tbody>
+        </table>
+
+        <div class="callout callout-info">
+            <span class="callout-icon">ℹ</span>
+            <div class="callout-body">
+                <strong>Tokenização de cartão:</strong> Para <code>card_token</code>, tokenize os dados no SDK do gateway (Stripe.js, MercadoPago SDK) e envie somente o token no campo <code>paymentMethodRequest.token</code>. O servidor do Orquestraio nunca processa dados de cartão brutos.
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- SMART ROUTER -->
+    <section id="routing" class="doc-section">
+        <div class="section-label">Arquitetura</div>
+        <div class="section-title">SmartRouter</div>
+        <div class="section-desc">Seleção automática de gateway por moeda, método e valor. Pode ser sobrescrito via <code>metadata.gateway</code>.</div>
+
+        <table class="doc-table">
+            <thead><tr><th>Moeda</th><th>Método</th><th>Condição</th><th>Gateway</th></tr></thead>
+            <tbody>
+            <tr><td>BRL</td><td>pix / boleto</td><td>Qualquer valor</td><td><code>MERCADO_PAGO</code></td></tr>
+            <tr><td>USD / EUR</td><td>card_token</td><td>Valor &lt; $50</td><td><code>STRIPE</code></td></tr>
+            <tr><td>USD / EUR</td><td>card_token</td><td>Valor ≥ $50</td><td><code>PAYPAL</code></td></tr>
+            <tr><td>Qualquer</td><td>Qualquer</td><td><code>metadata.gateway</code> definido</td><td>Gateway especificado</td></tr>
+            <tr><td>Qualquer</td><td>Qualquer</td><td>Sem regra correspondente</td><td><code>STRIPE</code> (fallback)</td></tr>
+            </tbody>
+        </table>
+
+        <div class="gateway-row">
+            <div class="gateway-item" style="background:var(--bg-2); border-bottom: 1px solid var(--border);">
+                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Gateway</span>
+                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Moedas</span>
+                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Status</span>
+                <span style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);font-weight:600;">Identificador</span>
+                <span></span>
+            </div>
+            <div class="gateway-item">
+                <span class="gateway-name">STRIPE</span>
+                <span class="gateway-currencies">BRL, USD, EUR</span>
+                <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;">Ativo</span></span>
+                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">sk_live_...</span>
+            </div>
+            <div class="gateway-item">
+                <span class="gateway-name">MERCADO_PAGO</span>
+                <span class="gateway-currencies">BRL</span>
+                <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.72rem;">Ativo</span></span>
+                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">APP_USR_...</span>
+            </div>
+            <div class="gateway-item">
+                <span class="gateway-name">PAYPAL</span>
+                <span class="gateway-currencies">USD, EUR</span>
+                <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;">Beta</span></span>
+                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">clientId:clientSecret</span>
+            </div>
+            <div class="gateway-item">
+                <span class="gateway-name">MOCK</span>
+                <span class="gateway-currencies">Qualquer</span>
+                <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.72rem;">Dev only</span></span>
+                <span style="color:var(--text-2);font-family:var(--font-mono);font-size:0.72rem;">Simula 300ms de latência</span>
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ERRORS -->
+    <section id="errors" class="doc-section">
+        <div class="section-label">Referência</div>
+        <div class="section-title">Erros & Status HTTP</div>
+        <div class="section-desc">A API retorna erros em formato padronizado com <code>timestamp</code>, <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code>.</div>
+
+        <div class="status-table">
+            <div class="status-head">
+                <span>HTTP</span><span>Nome</span><span>Descrição</span>
+            </div>
+            <div class="status-row"><span class="status-code s-2xx">201</span><span class="status-name">Created</span><span class="status-desc">Pagamento criado com sucesso.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">400</span><span class="status-name">Bad Request</span><span class="status-desc">Campos inválidos ou ausentes. Veja a mensagem de erro para detalhes.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">401</span><span class="status-name">Unauthorized</span><span class="status-desc">Header <code>x-api-key</code> ausente ou chave inválida.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">403</span><span class="status-name">Forbidden</span><span class="status-desc">Tenant inativo. Entre em contato com o suporte.</span></div>
+            <div class="status-row"><span class="status-code s-4xx">409</span><span class="status-name">Conflict</span><span class="status-desc">Chave de idempotência já está em processamento ativo.</span></div>
+            <div class="status-row"><span class="status-code s-5xx">500</span><span class="status-name">Server Error</span><span class="status-desc">Erro inesperado. Abra uma issue no GitHub com o <code>path</code> e <code>timestamp</code>.</span></div>
+        </div>
+
+        <div class="codeblock">
+            <div class="codeblock-header">
+                <div class="lang-tabs"><button class="lang-tab active">Resposta de Erro (409)</button></div>
+                <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+            </div>
+            <div class="codeblock-body">
+                <div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span>,
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-num">409</span>,
+  <span class="t-key">"error"</span><span class="t-punct">:</span>     <span class="t-str">"Conflito de Idempotência"</span>,
+  <span class="t-key">"message"</span><span class="t-punct">:</span>   <span class="t-str">"Pagamento já está em processamento."</span>,
+  <span class="t-key">"path"</span><span class="t-punct">:</span>     <span class="t-str">"/v1/payments"</span>
+<span class="t-punct">}</span></div>
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- ============================
+         FEATURE SECTION HEADER
+    ============================= -->
+    <div style="margin-bottom: 2rem;">
+        <div style="font-family: var(--font-mono); font-size: 0.62rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--text-3); margin-bottom: 0.5rem;">Funcionalidades</div>
+        <div style="font-family: var(--font-sans); font-size: 1.5rem; font-weight: 600; color: var(--text); letter-spacing: -0.02em; line-height: 1.2; margin-bottom: 0.5rem;">Resiliência e consistência por padrão</div>
+        <div style="font-size: 0.875rem; color: var(--text-2); max-width: 520px;">Idempotência, circuit breaker e criptografia fazem parte do core do Orquestraio — não são opcionais.</div>
+    </div>
+
+    <div class="feature-grid" style="margin-bottom: 3rem;">
+        <div class="feature-card">
+            <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M12 22V12m0 0V2m0 10H2m10 0h10"/></svg>
+            </div>
+            <div class="feature-card-title">Idempotência</div>
+            <div class="feature-card-desc">Proteção contra cobranças duplicadas via Redis com TTL de 24h. Mesma chave, mesmo resultado — sem reprocessar.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <div class="feature-card-title">Circuit Breaker</div>
+            <div class="feature-card-desc">Cada gateway tem seu próprio circuit breaker via Resilience4j. Falhas em cascata são isoladas automaticamente.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </div>
+            <div class="feature-card-title">Criptografia AES-256</div>
+            <div class="feature-card-desc">Credenciais de gateway são criptografadas antes de persistir. Descriptografia acontece em memória, nunca em logs.</div>
+        </div>
+        <div class="feature-card">
+            <div class="feature-card-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2"><path d="M3 12h18m-6-6 6 6-6 6"/><path d="M9 6 3 12l6 6"/></svg>
+            </div>
+            <div class="feature-card-title">SmartRouter</div>
+            <div class="feature-card-desc">Roteamento automático por moeda e valor. Pode ser sobrescrito por tenant via <code>metadata.gateway</code>.</div>
+        </div>
+    </div>
+
+    <div class="doc-divider"></div>
+
+    <!-- IDEMPOTENCY -->
+    <section id="idempotency" class="doc-section">
+        <div class="section-label">Funcionalidades</div>
+        <div class="section-title">Idempotência</div>
+        <div class="section-desc">O campo <code>idempotecyKey</code> garante que a mesma transação nunca seja processada duas vezes. Implementado com bloqueio distribuído via Redis.</div>
+
+        <div class="doc-body">
+            <p>Se a mesma chave for enviada enquanto a requisição original ainda está em andamento, a API retorna <code>409 Conflict</code>. Se o pagamento já foi concluído, a resposta original é retornada do cache — sem reprocessar no gateway.</p>
+
+            <div class="flow-diagram">
+                <div class="flow-step"><span class="t-comment">// 1ª chamada — processada normalmente</span></div>
+                <div class="flow-step">
+                    <span class="t-key">POST /v1/payments</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-ok">201 APPROVED</span>
+                </div>
+                <br>
+                <div class="flow-step"><span class="t-comment">// 2ª chamada, request ainda em andamento — bloqueada</span></div>
+                <div class="flow-step">
+                    <span class="t-key">POST /v1/payments</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-err">409 Conflict</span>
+                </div>
+                <br>
+                <div class="flow-step"><span class="t-comment">// 2ª chamada após conclusão — retorna do cache</span></div>
+                <div class="flow-step">
+                    <span class="t-key">POST /v1/payments</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-str">"idempotecyKey": "order-abc-123"</span>
+                    <span class="t-punct">→</span>
+                    <span class="t-ok">201 APPROVED (cached)</span>
+                </div>
+            </div>
+
+            <div class="callout callout-success">
+                <span class="callout-icon">✓</span>
+                <div class="callout-body">
+                    <strong>Boas práticas:</strong> Use um UUID v4 gerado no seu backend, vinculado ao ID do pedido no seu sistema. Nunca reutilize a mesma chave para transações distintas.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- CIRCUIT BREAKER -->
+    <section id="circuit" class="doc-section">
+        <div class="section-label">Funcionalidades</div>
+        <div class="section-title">Circuit Breaker</div>
+        <div class="section-desc">Cada gateway possui um circuit breaker independente via <strong>Resilience4j</strong>. Quando a taxa de falha ultrapassa o threshold, o circuito abre e o gateway é temporariamente removido das rotas.</div>
+
+        <div class="doc-body">
+            <table class="doc-table">
+                <thead><tr><th>Gateway</th><th>Janela</th><th>Threshold</th><th>Tempo aberto</th><th>Half-open (calls)</th></tr></thead>
+                <tbody>
+                <tr><td><code>STRIPE</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3</td></tr>
+                <tr><td><code>MERCADO_PAGO</code></td><td>10 req</td><td>50%</td><td>15s</td><td>3</td></tr>
+                <tr><td><code>PAYPAL</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3</td></tr>
+                </tbody>
+            </table>
+
+            <div class="flow-diagram">
+                <div class="flow-step"><span class="t-comment">// Ciclo do circuit breaker</span></div>
+                <br>
+                <div class="flow-step">
+                    <span class="t-key">CLOSED</span>
+                    <span class="t-punct">→ falhas > 50% em 10 req →</span>
+                    <span class="t-err">OPEN (20s)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="t-key">OPEN</span>
+                    <span class="t-punct">→ após 20s →</span>
+                    <span class="t-str">HALF-OPEN (testa 3 calls)</span>
+                </div>
+                <div class="flow-step">
+                    <span class="t-key">HALF-OPEN</span>
+                    <span class="t-punct">→ sucesso →</span>
+                    <span class="t-ok">CLOSED</span>
+                </div>
+                <div class="flow-step">
+                    <span class="t-key">HALF-OPEN</span>
+                    <span class="t-punct">→ falha →</span>
+                    <span class="t-err">OPEN novamente</span>
+                </div>
+            </div>
+
+            <div class="callout callout-info">
+                <span class="callout-icon">ℹ</span>
+                <div class="callout-body">
+                    Métricas são expostas via <code>GET /actuator/health</code> e <code>/actuator/metrics</code>. Configure o Grafana para visualizar o estado de cada circuit breaker em tempo real.
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- SECURITY -->
+    <section id="security" class="doc-section">
+        <div class="section-label">Funcionalidades</div>
+        <div class="section-title">Segurança</div>
+        <div class="section-desc">O Orquestraio nunca armazena dados de cartão. Credenciais de gateway são criptografadas com AES-256 antes de persistir no banco de dados.</div>
+
+        <div class="doc-body">
+            <div class="codeblock">
+                <div class="codeblock-header">
+                    <div class="lang-tabs"><button class="lang-tab active">Fluxo de Criptografia</button></div>
+                </div>
+                <div class="codeblock-body">
+                    <div class="tab-pane active"><span class="t-comment">// Ao salvar credencial de gateway</span>
+<span class="t-key">POST</span> /v1/tenants/gateways
+  → Recebe <span class="t-str">{ "secretKey": "sk_live_abc..." }</span>
+  → Criptografa com AES-256  →  armazena <span class="t-str">"encryptedCredential": "dGhpcy..."</span>
+
+<span class="t-comment">// Ao processar pagamento</span>
+<span class="t-key">SELECT</span> encrypted_credential <span class="t-key">FROM</span> gateways
+  → Descriptografa em memória (nunca em log)
+  → Usa credencial  →  descarta imediatamente</div>
+                </div>
+            </div>
+
+            <table class="doc-table">
+                <thead><tr><th>Prática</th><th>Implementação</th></tr></thead>
+                <tbody>
+                <tr><td>Dados de cartão</td><td>Nunca passam pelo servidor — tokenizados no frontend</td></tr>
+                <tr><td>Credenciais de gateway</td><td>AES-256, descriptografado apenas em memória</td></tr>
+                <tr><td>Isolamento de tenant</td><td>Dados separados por <code>tenantId</code> em todas as queries</td></tr>
+                <tr><td>Autenticação</td><td>API Key com prefixo <code>Oz_</code>, validada por filtro antes de qualquer handler</td></tr>
+                <tr><td>Auditoria</td><td>Todas as transações salvas em <code>execution_history</code> com latência</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <div class="doc-divider"></div>
+
+    <!-- SDKs -->
+    <section id="sdks" class="doc-section">
+        <div class="section-label">Recursos</div>
+        <div class="section-title">SDKs</div>
+        <div class="section-desc">SDKs oficiais estão em desenvolvimento. Por enquanto, use a API REST diretamente.</div>
+
+        <div class="callout callout-warning">
+            <span class="callout-icon">⚠</span>
+            <div class="callout-body">
+                <strong>Em desenvolvimento.</strong> SDKs para Java, Node.js e Python estão planejados para a v0.6.0. Contribuições são bem-vindas no GitHub.
+            </div>
+        </div>
+
+        <div class="codeblock">
+            <div class="codeblock-header">
+                <div class="lang-tabs"><button class="lang-tab active">Início Rápido (cURL)</button></div>
+                <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+            </div>
+            <div class="codeblock-body">
+                <div class="tab-pane active"><span class="t-comment"># 1. Clone e configure</span>
+<span class="t-method">git</span> clone https://github.com/vitinh0z/orchestra.io.git
+<span class="t-method">cd</span> orchestra.io && docker-compose up -d
+
+<span class="t-comment"># 2. Use a chave de desenvolvimento inclusa no data.sql</span>
+<span class="t-flag">API_KEY</span>=<span class="t-str">"orchestra-livre-123"</span>
+
+<span class="t-comment"># 3. Processe seu primeiro pagamento</span>
+<span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: $API_KEY"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{"idempotecyKey":"test-001","amount":197.00,"currency":"BRL",
+     "paymentMethodRequest":{"type":"pix","token":null},
+     "customer":{"id":"usr_1","email":"dev@teste.com","document":"000.000.000-00"},
+     "metadata":{"gateway":"MOCK"}}'</span></div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="doc-footer">
+        <span>© 2026 Orquestraio — <a href="https://github.com/vitinh0z">@vitinh0z</a></span>
+        <span>MIT License</span>
+    </footer>
+
+</main>
+
+<!-- ======================== RIGHT PANEL ======================== -->
+<aside class="right-panel">
+    <div class="panel-label">Exemplo ao vivo</div>
+
+    <div class="live-block">
+        <div class="live-top">
+            <span class="live-dot"></span>
+            <span class="live-label">POST</span>
+            <span class="live-path">/v1/payments</span>
+        </div>
+        <div class="live-body"><span class="t-punct">{</span>
+  <span class="t-key">"idempotecyKey"</span><span class="t-punct">:</span> <span class="t-str">"req-9f3a8d"</span>,
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
+  <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span>,
+    <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>
+  <span class="t-punct">},</span>
+  <span class="t-key">"customer"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span>,
+    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"dev@orquestraio.com"</span>
+  <span class="t-punct">}</span>
+<span class="t-punct">}</span></div>
+    </div>
+
+    <div class="res-block">
+        <div class="res-top">
+            <span class="res-status">201 Created</span>
+            <span class="res-time">248ms</span>
+        </div>
+        <div class="res-body"><span class="t-punct">{</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400..."</span>,
+  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-str">"APPROVED"</span>,
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span>,
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span>,
+  <span class="t-key">"details"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
+    <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>,
+    <span class="t-key">"transacitionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126..."</span>
+  <span class="t-punct">},</span>
+  <span class="t-key">"createAt"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:30:00"</span>
+<span class="t-punct">}</span></div>
+    </div>
+
+    <div class="panel-label">Status dos gateways</div>
+    <div class="gateway-status-panel">
+        <div class="gs-row">
+            <span class="gs-name">STRIPE</span>
+            <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span>
+        </div>
+        <div class="gs-row">
+            <span class="gs-name">MERCADO_PAGO</span>
+            <span class="gateway-status"><span class="dot dot-green"></span><span style="color:var(--emerald);font-size:0.7rem;font-family:var(--font-mono);">Operacional</span></span>
+        </div>
+        <div class="gs-row">
+            <span class="gs-name">PAYPAL</span>
+            <span class="gateway-status"><span class="dot dot-amber"></span><span style="color:var(--amber);font-size:0.7rem;font-family:var(--font-mono);">Beta</span></span>
+        </div>
+    </div>
+</aside>
 
 </div>
 
 <script>
-    // Tab switching
-    function switchTab(e, group) {
+    function switchTab(e) {
         const btn = e.target;
         const codeblock = btn.closest('.codeblock');
         const tabId = btn.dataset.tab;
-
         codeblock.querySelectorAll('.lang-tab').forEach(t => t.classList.remove('active'));
         btn.classList.add('active');
-
         codeblock.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-        document.getElementById(tabId).classList.add('active');
+        const pane = document.getElementById(tabId);
+        if (pane) pane.classList.add('active');
     }
 
-    // Copy code
     function copyBlock(btn) {
         const codeblock = btn.closest('.codeblock');
-        const activePane = codeblock.querySelector('.tab-pane.active') || codeblock.querySelector('.tab-pane');
-        const text = activePane ? activePane.innerText : '';
-
+        const active = codeblock.querySelector('.tab-pane.active') || codeblock.querySelector('.tab-pane');
+        const text = active ? active.innerText : '';
         navigator.clipboard.writeText(text).then(() => {
             btn.textContent = '✓ Copiado';
             btn.classList.add('copied');
@@ -1325,10 +1358,8 @@
         });
     }
 
-    // Scroll spy
     const navItems = document.querySelectorAll('.nav-item');
     const sections = document.querySelectorAll('.doc-section');
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -1338,11 +1369,9 @@
                 });
             }
         });
-    }, { threshold: 0.3, rootMargin: '-10% 0px -70% 0px' });
-
+    }, { threshold: 0.25, rootMargin: '-5% 0px -72% 0px' });
     sections.forEach(s => observer.observe(s));
 
-    // Smooth scroll
     navItems.forEach(item => {
         item.addEventListener('click', e => {
             e.preventDefault();
