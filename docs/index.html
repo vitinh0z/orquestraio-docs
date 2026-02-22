@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <style>
 /* =================== CSS VARIABLES =================== */
 :root {
@@ -55,7 +56,7 @@
   --text-3:       #9088b8;
   --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(109,40,217,0.08);
 }
-[data-theme="light"] .t-comment { color: #9088b8; }
+[data-theme="light"] .t-comment { color: #5a527a; }
 [data-theme="light"] .codeblock-body { color: #4a4368; background: #f2f0fa; }
 [data-theme="light"] .t-str  { color: #92400e; }
 [data-theme="light"] .t-key  { color: #6d28d9; }
@@ -103,7 +104,7 @@ body::before{
 }
 
 /* =================== SCROLL ANIMATIONS =================== */
-.reveal{opacity:0;transform:translateY(16px);transition:opacity 0.45s ease,transform 0.45s ease;}
+.reveal{opacity:0;transform:translateY(10px);transition:opacity 0.4s ease,transform 0.4s ease;}
 .reveal.visible{opacity:1;transform:none;}
 
 /* =================== LAYOUT =================== */
@@ -518,6 +519,8 @@ a:hover{text-decoration:underline;}
 
 /* =================== FLOW DIAGRAM =================== */
 .flow-diagram{border:1px solid var(--border);background:var(--bg-1);padding:1.125rem;margin:1.125rem 0;font-family:var(--font-mono);font-size:0.73rem;line-height:2.1;color:var(--text-3);white-space:pre;}
+.mermaid-wrap{border:1px solid var(--border);background:var(--bg-1);padding:1.25rem;margin:1.125rem 0;overflow-x:auto;}
+.mermaid-wrap .mermaid{display:flex;justify-content:center;}
 
 /* =================== GLOSSARY =================== */
 .glossary-item{padding:0.8rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:155px 1fr;gap:1rem;align-items:baseline;}
@@ -652,6 +655,7 @@ a:hover{text-decoration:underline;}
       <div class="nav-group-label">Início</div>
       <a href="#changelog" class="nav-item">Changelog <span class="nav-badge tag tag-new">Novo</span></a>
       <a href="#intro"     class="nav-item active">Introdução</a>
+      <a href="#quickstart" class="nav-item">Primeiros Passos</a>
       <a href="#auth"      class="nav-item">Autenticação</a>
       <a href="#glossary"  class="nav-item">Glossário</a>
     </div>
@@ -758,6 +762,148 @@ a:hover{text-decoration:underline;}
         Testar no Sandbox
       </a>
       <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">GitHub</a>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
+  <!-- QUICKSTART -->
+  <section id="quickstart" class="doc-section reveal">
+    <div class="section-label">Início</div>
+    <div class="section-header">
+      <div>
+        <div class="section-title">
+          Primeiros passos em 3 minutos
+          <a href="#quickstart" class="permalink" onclick="copyPermalink(event,'quickstart')">🔗</a>
+        </div>
+        <div class="section-desc">Do zero ao primeiro pagamento aprovado. Siga os 3 passos abaixo — sem configuração de gateway real.</div>
+      </div>
+      <span class="reading-time">⏱ ~3 min</span>
+    </div>
+
+    <div class="callout callout-success">
+      <span class="callout-icon">✓</span>
+      <div class="callout-body"><strong>Pré-requisito:</strong> Docker instalado. Nenhuma credencial de Stripe/MercadoPago/PayPal necessária — usaremos o gateway <code>MOCK</code>.</div>
+    </div>
+
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.25rem 0 0.5rem;">Passo 1 — Subir o servidor</div>
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs"><button class="lang-tab active">Terminal</button></div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-method">git</span> clone https://github.com/vitinh0z/orchestra.io.git
+<span class="t-method">cd</span> orchestra.io
+<span class="t-method">docker-compose</span> up -d
+
+<span class="t-comment"># API disponível em: http://localhost:8080</span>
+<span class="t-comment"># Swagger UI:       http://localhost:8080/swagger-ui/index.html</span>
+<span class="t-comment"># API key de dev:   orchestra-livre-123</span></div>
+      </div>
+    </div>
+
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.25rem 0 0.5rem;">Passo 2 — Fazer o primeiro pagamento</div>
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs">
+          <button class="lang-tab active" data-tab="qs-curl" onclick="switchTab(event)">cURL</button>
+          <button class="lang-tab" data-tab="qs-js" onclick="switchTab(event)">JavaScript</button>
+          <button class="lang-tab" data-tab="qs-py" onclick="switchTab(event)">Python</button>
+        </div>
+        <div class="codeblock-actions">
+          <button class="run-btn" onclick="runSandboxInternal('qs-sandbox-result','qs-sandbox-status','qs-sandbox-time','qs-sandbox-body',50.00)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+            Run
+          </button>
+          <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+        </div>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active" id="qs-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: orchestra-livre-123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotencyKey": "primeiro-pagamento-001",
+    "amount": 50.00,
+    "currency": "BRL",
+    "paymentMethodRequest": { "type": "pix", "token": null },
+    "customer": { "id": "u1", "email": "dev@teste.com", "document": "000.000.000-00" },
+    "metadata": { "gateway": "MOCK" }
+  }'</span></div>
+<div class="tab-pane" id="qs-js"><span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'http://localhost:8080/v1/payments'</span>, {
+  method: <span class="t-str">'POST'</span>,
+  headers: {
+    <span class="t-str">'x-api-key'</span>: <span class="t-str">'orchestra-livre-123'</span>,
+    <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>
+  },
+  body: JSON.stringify({
+    idempotencyKey: <span class="t-str">'primeiro-pagamento-001'</span>,
+    amount: <span class="t-num">50.00</span>,
+    currency: <span class="t-str">'BRL'</span>,
+    paymentMethodRequest: { type: <span class="t-str">'pix'</span>, token: <span class="t-nil">null</span> },
+    customer: { id: <span class="t-str">'u1'</span>, email: <span class="t-str">'dev@teste.com'</span>, document: <span class="t-str">'000.000.000-00'</span> },
+    metadata: { gateway: <span class="t-str">'MOCK'</span> }
+  })
+});
+<span class="t-key">const</span> data = <span class="t-key">await</span> res.json();
+console.log(data.status); <span class="t-comment">// → "APPROVED"</span></div>
+<div class="tab-pane" id="qs-py">import requests, uuid
+
+res = requests.post(
+    <span class="t-str">"http://localhost:8080/v1/payments"</span>,
+    headers={<span class="t-str">"x-api-key"</span>: <span class="t-str">"orchestra-livre-123"</span>},
+    json={
+        <span class="t-str">"idempotencyKey"</span>: str(uuid.uuid4()),
+        <span class="t-str">"amount"</span>: <span class="t-num">50.00</span>,
+        <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
+        <span class="t-str">"paymentMethodRequest"</span>: {<span class="t-str">"type"</span>: <span class="t-str">"pix"</span>, <span class="t-str">"token"</span>: <span class="t-nil">None</span>},
+        <span class="t-str">"customer"</span>: {<span class="t-str">"id"</span>: <span class="t-str">"u1"</span>, <span class="t-str">"email"</span>: <span class="t-str">"dev@teste.com"</span>, <span class="t-str">"document"</span>: <span class="t-str">"000.000.000-00"</span>},
+        <span class="t-str">"metadata"</span>: {<span class="t-str">"gateway"</span>: <span class="t-str">"MOCK"</span>}
+    }
+)
+print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment"># → "APPROVED"</span></div>
+      </div>
+    </div>
+    <div class="sandbox-result" id="qs-sandbox-result">
+      <div class="sandbox-result-header">
+        <span style="width:5px;height:5px;border-radius:50%;background:var(--emerald);box-shadow:0 0 4px var(--emerald);animation:blink 2s ease infinite;display:inline-block;"></span>
+        <span style="color:var(--emerald);font-size:0.66rem;margin-left:0.3rem;">SANDBOX</span>
+        <span id="qs-sandbox-status" style="margin-left:0.5rem;font-size:0.66rem;color:var(--text-3);"></span>
+        <span id="qs-sandbox-time" style="margin-left:auto;font-size:0.66rem;color:var(--text-3);"></span>
+      </div>
+      <div class="sandbox-result-body" id="qs-sandbox-body">—</div>
+    </div>
+
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.25rem 0 0.5rem;">Passo 3 — Interpretar a resposta</div>
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs"><button class="lang-tab active">Resposta <span class="tag tag-green" style="font-size:0.56rem;">201</span></button></div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>   <span class="t-comment">// ✓ pagamento aprovado</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">50.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
+  <span class="t-key">"details"</span><span class="t-punct">:</span>   <span class="t-punct">{</span> <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MOCK"</span> <span class="t-punct">},</span>
+  <span class="t-key">"createdAt"</span><span class="t-punct">:</span>  <span class="t-str">"2026-02-22T15:30:00Z"</span>
+<span class="t-punct">}</span></div>
+      </div>
+    </div>
+    <div class="callout callout-tip">
+      <span class="callout-icon">💡</span>
+      <div class="callout-body"><strong>Próximo passo:</strong> Configure um webhook para receber notificações quando o status mudar (essencial para PIX e Boleto). Veja a seção <a href="#webhooks">Webhooks</a>.</div>
+    </div>
+    <div class="last-updated">📅 Atualizado em 22/02/2026 • v0.4.0</div>
+    <div class="helpful-widget">
+      <span class="helpful-label">Esta seção foi útil?</span>
+      <div class="helpful-btns">
+        <button class="helpful-btn yes" onclick="helpful(this,'yes')">👍 Sim</button>
+        <button class="helpful-btn no" onclick="helpful(this,'no')">👎 Não</button>
+      </div>
+      <span class="helpful-github"><a href="https://github.com/vitinh0z/orchestra.io/issues/new">Abrir issue →</a></span>
     </div>
   </section>
 
@@ -1020,7 +1166,7 @@ res = requests.post(
     </div>
     <div class="callout callout-tip">
       <span class="callout-icon">💡</span>
-      <div class="callout-body"><strong>Dica:</strong> Clique em <strong>Run Sandbox</strong> no bloco de código acima para fazer uma requisição real ao seu localhost:8080 e ver a resposta ao vivo.</div>
+      <div class="callout-body"><strong>Dica:</strong> Clique em <strong>Run Sandbox</strong> no bloco de código acima para ver uma resposta demo. Se estiver com <code>localhost:8080</code> rodando, fará uma requisição real — caso contrário, mostrará dados de demonstração.</div>
     </div>
     <div class="last-updated">📅 Atualizado em 22/02/2026 • v0.4.0</div>
     <div class="helpful-widget">
@@ -1296,14 +1442,24 @@ def webhook():
       <span class="callout-icon">📌</span>
       <div class="callout-body">Typo corrigido na v0.4.0: <strong>idempotecyKey → idempotencyKey</strong>. Atualize suas requisições se estiver usando a v0.3.x.</div>
     </div>
-    <div class="flow-diagram"><span class="t-comment">// 1ª chamada — processada normalmente</span>
-<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotencyKey": "order-abc-123"</span>  →  <span class="t-ok">201 APPROVED</span>
-
-<span class="t-comment">// 2ª chamada, request ainda em andamento — bloqueada</span>
-<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotencyKey": "order-abc-123"</span>  →  <span class="t-err">409 Conflict</span>
-
-<span class="t-comment">// 2ª chamada após conclusão — retorna do cache Redis</span>
-<span class="t-key">POST /v1/payments</span>  →  <span class="t-str">"idempotencyKey": "order-abc-123"</span>  →  <span class="t-ok">201 APPROVED (cached)</span></div>
+    <div class="mermaid-wrap">
+      <div class="mermaid" data-src="sequenceDiagram
+  participant C as Cliente
+  participant O as Orquestraio
+  participant R as Redis
+  participant G as Gateway
+  C->>O: POST /v1/payments (idempotencyKey: &quot;order-abc&quot;)
+  O->>R: Verificar chave
+  R-->>O: Não existe → processar
+  O->>G: Criar pagamento
+  G-->>O: APPROVED
+  O->>R: Salvar resultado (TTL 24h)
+  O-->>C: 201 APPROVED
+  C->>O: POST /v1/payments (idempotencyKey: &quot;order-abc&quot;)
+  O->>R: Verificar chave
+  R-->>O: Existe → retornar cache
+  O-->>C: 201 APPROVED (cached)"></div>
+    </div>
     <div class="callout callout-success">
       <span class="callout-icon">✓</span>
       <div class="callout-body"><strong>Boas práticas:</strong> Use UUID v4 gerado no backend, vinculado ao ID do pedido no seu sistema. Nunca reutilize a mesma chave para transações distintas.</div>
@@ -1331,12 +1487,14 @@ def webhook():
       <tr><td><code>PAYPAL</code></td><td>10 req</td><td>50%</td><td>20s</td><td>3 calls</td></tr>
       </tbody>
     </table>
-    <div class="flow-diagram"><span class="t-comment">// Ciclo de vida do circuit breaker</span>
-
-<span class="t-key">CLOSED</span>     → falhas > 50% em 10 req → <span class="t-err">OPEN (aguarda 20s)</span>
-<span class="t-err">OPEN</span>       → após 20s              → <span class="t-str">HALF-OPEN (testa 3 calls)</span>
-<span class="t-str">HALF-OPEN</span>  → todas as 3 ok         → <span class="t-ok">CLOSED</span>
-<span class="t-str">HALF-OPEN</span>  → qualquer falha        → <span class="t-err">OPEN novamente</span></div>
+    <div class="mermaid-wrap">
+      <div class="mermaid" data-src="stateDiagram-v2
+  [*] --> CLOSED
+  CLOSED --> OPEN : falhas &gt; 50% em 10 req
+  OPEN --> HALF_OPEN : após timeout (20s)
+  HALF_OPEN --> CLOSED : 3 chamadas OK
+  HALF_OPEN --> OPEN : qualquer falha"></div>
+    </div>
     <div class="callout callout-tip">
       <span class="callout-icon">💡</span>
       <div class="callout-body">Métricas expostas via <code>GET /actuator/health</code> e <code>/actuator/metrics</code>. Configure o Grafana para visualizar o estado de cada circuit breaker em tempo real.</div>
@@ -1538,6 +1696,7 @@ def webhook():
   <div class="toc-label">Nesta página</div>
   <a href="#changelog"   class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
   <a href="#intro"       class="toc-item" onclick="tocNav(event,'intro')">Introdução</a>
+  <a href="#quickstart"  class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
   <a href="#auth"        class="toc-item" onclick="tocNav(event,'auth')">Autenticação</a>
   <a href="#glossary"    class="toc-item" onclick="tocNav(event,'glossary')">Glossário</a>
   <div class="toc-divider"></div>
@@ -1567,6 +1726,7 @@ def webhook():
 const CMD_ITEMS = [
   {label:'Changelog',           href:'#changelog',   group:'Início',          sub:'v0.4.0, v0.3.2'},
   {label:'Introdução',          href:'#intro',        group:'Início',          sub:'visão geral'},
+  {label:'Primeiros Passos',    href:'#quickstart',   group:'Início',          sub:'3 minutos, docker-compose, MOCK'},
   {label:'Autenticação',        href:'#auth',         group:'Início',          sub:'x-api-key, Oz_'},
   {label:'Glossário',           href:'#glossary',     group:'Início',          sub:'tenant, smartrouter, idempotencyKey'},
   {label:'Processar Pagamento', href:'#create',       group:'API',             sub:'POST /v1/payments'},
@@ -1647,6 +1807,22 @@ document.addEventListener('keydown',e=>{
   if(e.key==='?'&&!document.getElementById('cmdOverlay').classList.contains('open')&&document.activeElement.tagName!=='INPUT')openCmd();
 });
 
+// ======================== MERMAID ========================
+function initMermaid(){
+  const theme=document.documentElement.getAttribute('data-theme')==='dark'?'dark':'default';
+  if(typeof mermaid==='undefined')return;
+  mermaid.initialize({startOnLoad:false,theme,securityLevel:'loose'});
+  document.querySelectorAll('.mermaid[data-src]').forEach(el=>{
+    el.removeAttribute('data-processed');
+    el.textContent=el.getAttribute('data-src');
+  });
+  if(typeof mermaid.run==='function'){
+    mermaid.run({querySelector:'.mermaid'});
+  }else{
+    mermaid.init(undefined,'.mermaid');
+  }
+}
+
 // ======================== THEME ========================
 function toggleTheme(){
   const html=document.documentElement;
@@ -1655,6 +1831,7 @@ function toggleTheme(){
   document.getElementById('themeIcon').innerHTML=isLight
     ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
     :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  initMermaid();
 }
 
 // ======================== SIDEBAR MOBILE ========================
@@ -1711,12 +1888,32 @@ function tocNav(e,id){
 }
 
 // ======================== SANDBOX ========================
+const IS_LOCAL = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+
 async function runSandboxInternal(resultId, statusId, timeId, bodyId, amount){
   const rs=document.getElementById(resultId);
   rs.classList.add('visible');
-  document.getElementById(statusId).textContent='conectando a localhost:8080...';
+  document.getElementById(statusId).textContent= IS_LOCAL ? 'conectando a localhost:8080...' : 'demo (GitHub Pages)...';
   document.getElementById(bodyId).textContent='…';
   const t0=performance.now();
+
+  if(!IS_LOCAL){
+    // Simulação mock para GitHub Pages (sem conexão a localhost)
+    await new Promise(r=>setTimeout(r,320));
+    const ms=Math.round(performance.now()-t0);
+    const isErr=(amount===99.99);
+    const mockPaymentId='demo-550e8400-'+Math.random().toString(36).slice(2,10);
+    document.getElementById(statusId).textContent='201 Created';
+    document.getElementById(timeId).textContent=`${ms}ms`;
+    document.getElementById(bodyId).textContent=JSON.stringify(
+      isErr
+        ? {paymentId:mockPaymentId,status:'ERROR',amount,currency:'BRL',details:{provider:'MOCK',error:'Forced error via amount 99.99'},createdAt:new Date().toISOString()}
+        : {paymentId:mockPaymentId,status:'APPROVED',amount,currency:'BRL',details:{provider:'MOCK',transactionId:'pix-demo-qrcode-data'},createdAt:new Date().toISOString()},
+      null,2
+    );
+    return;
+  }
+
   try{
     const key=`sandbox-${Date.now()}`;
     const res=await fetch('http://localhost:8080/v1/payments',{
@@ -1774,12 +1971,22 @@ const sections=document.querySelectorAll('.doc-section');
 const sidebarItems=document.querySelectorAll('.sidebar .nav-item');
 const tocItems=document.querySelectorAll('.toc .toc-item');
 const BREADCRUMB_MAP={
-  changelog:'Início › Changelog',intro:'Início › Introdução',auth:'Início › Autenticação',
-  glossary:'Início › Glossário',create:'API › Processar Pagamento',methods:'API › Métodos',
-  routing:'API › SmartRouter',webhooks:'API › Webhooks',errors:'API › Erros & Status',
-  ratelimit:'API › Rate Limiting',idempotency:'Funcionalidades › Idempotência',
-  circuit:'Funcionalidades › Circuit Breaker',security:'Funcionalidades › Segurança',
-  sandbox:'Guias › Sandbox',sdks:'Guias › SDKs'
+  changelog:'Início › Changelog',
+  intro:'Início › Introdução',
+  quickstart:'Início › Primeiros Passos',
+  auth:'Início › Autenticação',
+  glossary:'Início › Glossário',
+  create:'API › Processar Pagamento',
+  methods:'API › Métodos',
+  routing:'API › SmartRouter',
+  webhooks:'API › Webhooks',
+  errors:'API › Erros & Status',
+  ratelimit:'API › Rate Limiting',
+  idempotency:'Funcionalidades › Idempotência',
+  circuit:'Funcionalidades › Circuit Breaker',
+  security:'Funcionalidades › Segurança',
+  sandbox:'Guias › Sandbox',
+  sdks:'Guias › SDKs'
 };
 
 const obs=new IntersectionObserver(entries=>{
@@ -1799,8 +2006,13 @@ sections.forEach(s=>obs.observe(s));
 sidebarItems.forEach(item=>{
   item.addEventListener('click',e=>{
     e.preventDefault();
-    const t=document.querySelector(item.getAttribute('href'));
+    const href=item.getAttribute('href');
+    const t=document.querySelector(href);
     if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
+    const id=href.replace('#','');
+    const bc=document.getElementById('bcCurrent');
+    if(bc&&BREADCRUMB_MAP[id])bc.textContent=BREADCRUMB_MAP[id];
+    sidebarItems.forEach(i=>i.classList.toggle('active',i===item));
     if(window.innerWidth<=768)toggleSidebar();
   });
 });
@@ -1814,6 +2026,7 @@ document.querySelectorAll('.reveal').forEach(el=>revealObs.observe(el));
 // init
 renderCmd('');
 updateProgress();
+initMermaid();
 </script>
 </body>
 </html>
