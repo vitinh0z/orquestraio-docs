@@ -1905,7 +1905,8 @@ function switchTab(e){
 
 function applyPreferredLang(){
   const lang=localStorage.getItem('preferredLang');
-  if(!lang)return;
+  const allowed=['curl','javascript','python','go','json'];
+  if(!lang||!allowed.includes(lang))return;
   document.querySelectorAll('.lang-tab[data-lang="'+lang+'"]').forEach(t=>{
     const cb=t.closest('.codeblock');
     if(!cb)return;
