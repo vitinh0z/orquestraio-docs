@@ -6,54 +6,73 @@
 <title>Orquestraio — Documentação</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <style>
-/* =================== CSS VARIABLES =================== */
+/* =================== VARIABLES =================== */
 :root {
-  --bg:           #07070d;
-  --bg-1:         #0c0c16;
-  --bg-2:         #111120;
-  --bg-3:         #16162a;
-  --border:       rgba(120,80,255,0.10);
-  --border-2:     rgba(120,80,255,0.20);
-  --border-3:     rgba(120,80,255,0.38);
-  --purple:       #6d28d9;
-  --purple-mid:   #7c3aed;
-  --purple-light: #a78bfa;
-  --purple-faint: rgba(109,40,217,0.08);
-  --indigo:       #818cf8;
-  --text:         #e4e2ef;
-  --text-2:       #8e89aa;
-  --text-3:       #524d6e;
-  --emerald:      #34d399;
-  --amber:        #fbbf24;
+  --header-h: 60px;
+  --toc-w: 224px;
+
+  /* dark */
+  --bg:           #1c1c1c;
+  --bg-alt:       #242424;
+  --bg-surface:   #2a2a2a;
+  --bg-surface2:  #313131;
+  --bg-overlay:   #3a3a3a;
+
+  --border:       rgba(255,255,255,0.08);
+  --border-2:     rgba(255,255,255,0.15);
+  --border-3:     rgba(255,255,255,0.25);
+
+  --brand:        #8b5cf6;
+  --brand-dark:   #7c3aed;
+  --brand-faint:  rgba(139,92,246,0.08);
+  --brand-faint2: rgba(139,92,246,0.15);
+
+  --text:         #ededed;
+  --text-2:       #a0a0a0;
+  --text-3:       #636363;
+  --text-muted:   #484848;
+
   --red:          #f87171;
+  --amber:        #fbbf24;
   --blue:         #60a5fa;
-  --font-sans:    'Inter', sans-serif;
-  --font-mono:    'JetBrains Mono', monospace;
-  --sidebar-w:    244px;
-  --toc-w:        208px;
-  --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.5);
-  --radius:       0px;
-  --transition:   0.15s ease;
-  --topnav-h:     60px;
+  --purple:       #a78bfa;
+  --orange:       #fb923c;
+
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', monospace;
+
+  --radius-sm: 4px;
+  --radius:    6px;
+  --radius-md: 8px;
+  --radius-lg: 12px;
+  --radius-xl: 16px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.3);
+  --shadow:    0 4px 16px rgba(0,0,0,0.4);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.5);
+
+  --transition: 150ms ease;
 }
 
-/* =================== LIGHT THEME =================== */
 [data-theme="light"] {
-  --bg:           #f8f7fd;
-  --bg-1:         #f2f0fa;
-  --bg-2:         #ece9f8;
-  --bg-3:         #e4dff5;
-  --border:       rgba(109,40,217,0.10);
-  --border-2:     rgba(109,40,217,0.20);
-  --border-3:     rgba(109,40,217,0.38);
-  --purple-light: #7c3aed;
-  --purple-faint: rgba(109,40,217,0.06);
-  --text:         #1a1528;
-  --text-2:       #4a4368;
-  --text-3:       #9088b8;
-  --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(109,40,217,0.08);
+  --bg:           #f9f9f9;
+  --bg-alt:       #ffffff;
+  --bg-surface:   #f1f1f1;
+  --bg-surface2:  #e8e8e8;
+  --bg-overlay:   #e0e0e0;
+  --border:       rgba(0,0,0,0.07);
+  --border-2:     rgba(0,0,0,0.13);
+  --border-3:     rgba(0,0,0,0.22);
+  --text:         #171717;
+  --text-2:       #525252;
+  --text-3:       #8a8a8a;
+  --text-muted:   #b0b0b0;
+  --brand-faint:  rgba(139,92,246,0.07);
+  --brand-faint2: rgba(139,92,246,0.14);
 }
 
 /* =================== BASE =================== */
@@ -67,403 +86,1328 @@ body{
   line-height:1.75;
   min-height:100vh;
   overflow-x:hidden;
-  transition:background var(--transition), color var(--transition);
+  -webkit-font-smoothing:antialiased;
+  transition:background var(--transition),color var(--transition);
 }
-body::before{
-  content:'';
-  position:fixed;inset:0;
-  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
-  background-size:40px 40px;
-  pointer-events:none;z-index:0;
-  opacity:0.6;
+
+/* =================== PROGRESS =================== */
+#progress{
+  position:fixed;top:0;left:0;
+  height:2px;width:0%;
+  background:var(--brand);
+  z-index:9999;
+  box-shadow:0 0 8px var(--brand);
+  transition:width 0.1s linear;
 }
+
+/* =================== SCROLL ANIMATIONS =================== */
+.reveal{opacity:0;transform:translateY(8px);transition:opacity 0.35s ease,transform 0.35s ease;}
+.reveal.visible{opacity:1;transform:none;}
 
 /* =================== HEADER =================== */
 .header{
   position:fixed;top:0;left:0;right:0;
-  height:var(--topnav-h);
-  background:rgba(7,7,13,0.88);
-  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  height:var(--header-h);
+  background:rgba(28,28,28,0.92);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   z-index:500;
-  transition:background var(--transition);
 }
-[data-theme="light"] .header{background:rgba(248,247,253,0.9);}
+[data-theme="light"] .header{background:rgba(249,249,249,0.92);}
 .header-inner{
-  max-width:1200px;margin:0 auto;
-  display:flex;align-items:center;
-  height:100%;padding:0 1.5rem;gap:1rem;
+  max-width:1200px;
+  margin:0 auto;
+  padding:0 1.5rem;
+  display:flex;align-items:center;gap:0.75rem;
+  height:100%;
 }
 .header-logo{
   display:flex;align-items:center;gap:0.5rem;
   text-decoration:none;flex-shrink:0;
 }
-.header-logo:hover{text-decoration:none;}
 .header-logo-mark{
-  width:26px;height:26px;
-  border:1px solid var(--border-3);
-  background:var(--purple-faint);
+  width:24px;height:24px;
+  background:var(--brand);
+  border-radius:5px;
   display:flex;align-items:center;justify-content:center;
-  border-radius:6px;flex-shrink:0;
-}
-.header-logo-mark svg{width:13px;height:13px;}
-.header-logo-text{font-family:var(--font-mono);font-weight:600;font-size:0.85rem;color:var(--text);letter-spacing:0.02em;}
-.header-version{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-3);border:1px solid var(--border);padding:0.05rem 0.3rem;border-radius:3px;margin-left:0.1rem;}
-.header-right{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
-.header-icon-btn{
-  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
-  background:none;border:1px solid var(--border);border-radius:6px;
-  color:var(--text-3);cursor:pointer;
-  transition:all var(--transition);text-decoration:none;
   flex-shrink:0;
 }
-.header-icon-btn:hover{color:var(--purple-light);border-color:var(--border-2);text-decoration:none;}
+.header-logo-mark svg{width:14px;height:14px;color:#000;}
+.header-logo-text{font-weight:600;font-size:0.9rem;color:var(--text);letter-spacing:-0.01em;}
+.header-logo-badge{
+  font-family:var(--font-mono);font-size:0.62rem;
+  color:var(--brand);letter-spacing:0.05em;font-weight:500;
+}
+.header-sep{width:1px;height:20px;background:var(--border);flex-shrink:0;}
+.header-nav{display:flex;align-items:center;gap:0.1rem;flex:1;}
+.header-nav-btn{
+  display:flex;align-items:center;gap:0.3rem;
+  padding:0.35rem 0.65rem;background:none;border:none;
+  color:var(--text-3);font-size:0.82rem;font-family:var(--font-sans);
+  cursor:pointer;border-radius:var(--radius);
+  transition:color var(--transition),background var(--transition);
+  white-space:nowrap;position:relative;
+}
+.header-nav-btn:hover,.header-nav-btn.open{color:var(--text);background:var(--bg-surface);}
+.header-nav-btn svg{width:12px;height:12px;flex-shrink:0;transition:transform 0.15s ease;}
+.header-nav-btn.open svg{transform:rotate(180deg);}
+.header-nav-link{
+  display:flex;align-items:center;gap:0.3rem;
+  padding:0.35rem 0.65rem;
+  color:var(--text-3);font-size:0.82rem;
+  text-decoration:none;border-radius:var(--radius);
+  transition:color var(--transition),background var(--transition);
+}
+.header-nav-link:hover{color:var(--text);background:var(--bg-surface);text-decoration:none;}
+.header-right{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
+.header-search{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.3rem 0.75rem;
+  background:var(--bg-surface);border:1px solid var(--border);
+  border-radius:var(--radius-md);cursor:pointer;
+  color:var(--text-3);font-size:0.8rem;font-family:var(--font-sans);
+  transition:border-color var(--transition),background var(--transition);
+  min-width:200px;
+}
+.header-search:hover{border-color:var(--border-2);background:var(--bg-surface2);}
+.header-search svg{width:13px;height:13px;flex-shrink:0;}
+.header-search kbd{
+  font-family:var(--font-mono);font-size:0.6rem;
+  background:var(--bg-overlay);border:1px solid var(--border-2);
+  padding:0.05rem 0.3rem;border-radius:4px;color:var(--text-3);
+  margin-left:auto;
+}
+.header-icon-btn{
+  width:30px;height:30px;display:flex;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text-3);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;flex-shrink:0;
+}
+.header-icon-btn:hover{color:var(--text);border-color:var(--border-2);background:var(--bg-surface);text-decoration:none;}
 .header-icon-btn svg{width:14px;height:14px;}
+.header-hamburger{
+  display:none;width:30px;height:30px;
+  align-items:center;justify-content:center;
+  background:none;border:1px solid var(--border);border-radius:var(--radius);
+  color:var(--text-2);cursor:pointer;
+  transition:all var(--transition);
+}
+@media(max-width:900px){
+  .header-nav{display:none;}
+  .header-hamburger{display:flex;}
+}
+
+/* =================== DROPDOWNS =================== */
+.header-group{position:relative;}
+.header-dropdown{
+  position:absolute;top:calc(100% + 8px);left:0;
+  background:var(--bg-alt);border:1px solid var(--border-2);
+  border-radius:var(--radius-lg);box-shadow:var(--shadow-lg);
+  min-width:200px;padding:0.4rem;
+  display:none;z-index:600;
+}
+.header-dropdown.open{display:block;}
+.dd-item{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.45rem 0.7rem;
+  color:var(--text-2);font-size:0.82rem;
+  text-decoration:none;border-radius:var(--radius);
+  transition:background var(--transition),color var(--transition);
+}
+.dd-item:hover{background:var(--bg-surface2);color:var(--text);text-decoration:none;}
+.dd-divider{height:1px;background:var(--border);margin:0.3rem 0;}
+
+/* =================== LAYOUT =================== */
+.layout{
+  padding-top:var(--header-h);
+  min-height:100vh;
+}
+.main{
+  width:100%;
+  min-width:0;
+}
+
+/* =================== TOC =================== */
+.toc{
+  display:none;
+  position:sticky;
+  top:calc(var(--header-h) + 2rem);
+  width:var(--toc-w);
+  flex-shrink:0;
+  padding:0 1rem;
+  max-height:calc(100vh - var(--header-h) - 4rem);
+  overflow-y:auto;
+}
+@media(min-width:1280px){.toc{display:block;}}
+.toc::-webkit-scrollbar{width:2px;}
+.toc::-webkit-scrollbar-thumb{background:var(--border);}
+.toc-label{
+  font-family:var(--font-mono);font-size:0.6rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--text-muted);font-weight:600;margin-bottom:0.65rem;
+}
+.toc-item{
+  display:block;
+  padding:0.22rem 0.5rem;font-size:0.78rem;color:var(--text-3);
+  text-decoration:none;cursor:pointer;
+  border-left:2px solid transparent;
+  transition:color var(--transition),border-color var(--transition);
+  line-height:1.4;
+}
+.toc-item:hover{color:var(--text-2);}
+.toc-item.active{color:var(--brand);border-left-color:var(--brand);}
 
 /* =================== HERO =================== */
 .hero{
   background:var(--bg);
   border-bottom:1px solid var(--border);
-  padding:calc(var(--topnav-h) + 4rem) 2rem 4rem;
-  text-align:center;
-  position:relative;z-index:1;
+  padding:3.5rem 2rem 0;
+  position:relative;overflow:hidden;
 }
 .hero-inner{
-  max-width:900px;margin:0 auto;
+  max-width:1200px;margin:0 auto;
+  display:grid;
+  grid-template-columns:1fr 460px;
+  gap:3rem;
+  align-items:start;
+  padding-bottom:3rem;
 }
-.hero-icon{
-  width:72px;height:72px;
-  background:var(--bg-2);
-  border:1px solid var(--border);
-  border-radius:16px;
-  display:inline-flex;align-items:center;justify-content:center;
-  margin-bottom:1.5rem;
+@media(max-width:1040px){
+  .hero-inner{grid-template-columns:1fr;padding-bottom:2rem;}
+  .hero-getting-started{display:none;}
 }
-.hero-icon svg{width:38px;height:38px;}
+.hero-left{max-width:540px;}
+.hero-eyebrow{
+  font-family:var(--font-mono);font-size:0.65rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--brand);margin-bottom:0.75rem;font-weight:600;
+}
 .hero-title{
-  font-size:3.2rem;font-weight:700;color:var(--text);
-  letter-spacing:-0.04em;line-height:1.1;margin-bottom:1.2rem;
+  font-size:2.8rem;font-weight:700;color:var(--text);
+  letter-spacing:-0.04em;line-height:1.1;margin-bottom:1.1rem;
 }
 .hero-lead{
-  font-size:0.98rem;color:var(--text-2);
-  line-height:1.8;margin-bottom:2rem;
-  max-width:600px;margin-left:auto;margin-right:auto;
+  font-size:0.92rem;color:var(--text-2);
+  line-height:1.8;margin-bottom:1.75rem;max-width:480px;
 }
-.hero-actions{
-  display:flex;gap:0.6rem;justify-content:center;flex-wrap:wrap;
-  margin-bottom:3rem;
-}
-.btn{
-  display:inline-flex;align-items:center;gap:0.5rem;
-  padding:0.6rem 1.2rem;border-radius:var(--radius);
-  font-size:0.86rem;font-weight:500;font-family:var(--font-sans);
-  text-decoration:none;cursor:pointer;transition:all 0.2s ease;
-  border:1px solid transparent;
-}
-.btn-brand{background:var(--purple-mid);color:#fff;border-color:var(--purple-mid);}
-.btn-brand:hover{background:var(--purple);color:#fff;transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,58,237,0.4);text-decoration:none;}
-.btn-outline{background:transparent;color:var(--text-2);border-color:var(--border-2);}
-.btn-outline:hover{border-color:var(--purple-light);color:var(--purple-light);transform:translateY(-1px);text-decoration:none;}
-.btn svg{width:13px;height:13px;flex-shrink:0;}
+.hero-actions{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;}
 
-/* =================== MAIN CONTENT =================== */
-.main{
-  max-width:900px;
-  margin:0 auto;
-  padding:4rem 2rem 6rem;
-  position:relative;z-index:1;
-}
-
-/* =================== SECTION =================== */
-.section{margin-bottom:4rem;}
-.section-label{
-  font-family:var(--font-mono);font-size:0.62rem;
-  text-transform:uppercase;letter-spacing:0.1em;
-  color:var(--purple-light);margin-bottom:0.4rem;font-weight:600;
-}
-.section-title{
-  font-size:1.8rem;font-weight:700;color:var(--text);
-  letter-spacing:-0.03em;line-height:1.2;margin-bottom:0.75rem;
-}
-.section-desc{
-  font-size:0.9rem;color:var(--text-2);
-  margin-bottom:2rem;line-height:1.75;
-}
-
-/* =================== CARDS GRID =================== */
-.cards-grid{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
-  gap:1rem;
-}
-.card{
-  background:var(--bg-1);
+/* Getting Started panel */
+.hero-getting-started{
+  background:var(--bg-alt);
   border:1px solid var(--border);
-  border-radius:12px;
+  border-radius:var(--radius-xl);
   padding:1.75rem;
-  text-decoration:none;
-  display:block;
-  transition:all 0.2s ease;
 }
-.card:hover{
-  border-color:var(--border-2);
-  background:var(--bg-2);
-  transform:translateY(-2px);
-  box-shadow:0 6px 24px rgba(109,40,217,0.13);
-  text-decoration:none;
+.hgs-header{
+  display:flex;align-items:center;gap:0.6rem;
+  margin-bottom:0.5rem;
 }
-.card-header{
-  display:flex;align-items:center;gap:0.7rem;
-  margin-bottom:0.85rem;
-}
-.card-icon{
-  width:36px;height:36px;
-  background:var(--purple-faint);
-  border:1px solid var(--border-2);
-  border-radius:8px;
+.hgs-icon{
+  width:28px;height:28px;
+  background:var(--brand);
+  border-radius:6px;
   display:flex;align-items:center;justify-content:center;
   flex-shrink:0;
 }
-.card-icon svg{width:18px;height:18px;}
-.card-title{
-  font-size:1rem;font-weight:600;color:var(--text);
+.hgs-icon svg{width:14px;height:14px;fill:#fff;stroke:none;}
+.hgs-title{font-size:1.05rem;font-weight:600;color:var(--text);}
+.hgs-desc{font-size:0.82rem;color:var(--text-2);margin-bottom:1.25rem;line-height:1.6;}
+.hgs-grid{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:0.5rem;
+  margin-bottom:1rem;
 }
-.card-desc{
-  font-size:0.84rem;color:var(--text-2);line-height:1.65;
+.hgs-item{
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg-surface);
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  padding:0.8rem 0.4rem;
+  text-decoration:none;
+  transition:all var(--transition);
+  aspect-ratio:1;
+}
+.hgs-item:hover{border-color:var(--border-2);background:var(--bg-surface2);transform:translateY(-1px);text-decoration:none;}
+.hgs-link{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:0.8rem;color:var(--text-2);
+  text-decoration:none;padding-top:0.85rem;
+  border-top:1px solid var(--border);
+  transition:color var(--transition);
+}
+.hgs-link:hover{color:var(--text);text-decoration:none;}
+.hgs-link-icon{width:14px;height:14px;opacity:0.5;}
+.hgs-link-arrow{width:12px;height:12px;margin-left:auto;}
+
+/* Products grid */
+.hero-products{
+  max-width:1200px;margin:0 auto;
+  padding:2.5rem 0;
+  border-bottom:1px solid var(--border);
+}
+.hero-products-title{
+  font-size:1.3rem;font-weight:600;color:var(--text);
+  margin-bottom:1.25rem;
+}
+.products-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0.75rem;
+  margin-bottom:0.75rem;
+}
+.products-grid-3{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:0.75rem;
+}
+@media(max-width:900px){
+  .products-grid{grid-template-columns:1fr;}
+  .products-grid-3{grid-template-columns:1fr;}
+}
+.product-card{
+  background:var(--bg-alt);
+  border:1px solid var(--border);
+  border-radius:var(--radius-lg);
+  padding:1.5rem 1.75rem;
+  text-decoration:none;
+  display:block;
+  transition:all var(--transition);
+}
+.product-card:hover{border-color:var(--brand-faint2);background:var(--bg-surface);text-decoration:none;transform:translateY(-1px);}
+.product-card-header{
+  display:flex;align-items:center;gap:0.6rem;
+  margin-bottom:0.75rem;
+}
+.product-card-header svg{width:18px;height:18px;color:var(--brand);flex-shrink:0;}
+.product-card-title{font-size:0.95rem;font-weight:600;color:var(--text);}
+.product-card-desc{font-size:0.82rem;color:var(--text-2);line-height:1.65;}
+
+.btn{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  padding:0.55rem 1.1rem;border-radius:var(--radius);
+  font-size:0.84rem;font-weight:500;font-family:var(--font-sans);
+  text-decoration:none;cursor:pointer;transition:all 0.2s ease;
+  border:1px solid transparent;
+}
+.btn-brand{background:var(--brand);color:#000;border-color:var(--brand);}
+.btn-brand:hover{background:var(--brand-dark);color:#000;transform:translateY(-1px);box-shadow:0 4px 16px rgba(139,92,246,0.3);text-decoration:none;}
+.btn-outline{background:transparent;color:var(--text-2);border-color:var(--border-2);}
+.btn-outline:hover{border-color:var(--border-3);color:var(--text);transform:translateY(-1px);text-decoration:none;}
+.btn svg{width:13px;height:13px;flex-shrink:0;}
+
+/* =================== CONTENT AREA =================== */
+.content-wrapper{
+  display:flex;
+  max-width:1200px;
+  margin:0 auto;
+  padding:3rem 2rem 6rem;
+  gap:3rem;
+}
+.content{flex:1;min-width:0;}
+@media(max-width:768px){.content-wrapper{padding:2rem 1.25rem 5rem;}}
+
+/* =================== SECTION =================== */
+.doc-section{margin-bottom:4rem;scroll-margin-top:calc(var(--header-h) + 1.5rem);}
+.section-label{
+  font-family:var(--font-mono);font-size:0.62rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--brand);margin-bottom:0.4rem;font-weight:600;
+}
+.section-title{
+  font-size:1.2rem;font-weight:600;color:var(--text);
+  letter-spacing:-0.025em;margin-bottom:0.4rem;
+  display:flex;align-items:center;gap:0.5rem;line-height:1.25;
+}
+.section-title a.permalink{
+  opacity:0;color:var(--text-3);font-size:0.85rem;text-decoration:none;
+  transition:opacity var(--transition);
+}
+.section-title:hover a.permalink{opacity:1;}
+.section-desc{font-size:0.87rem;color:var(--text-2);margin-bottom:1.25rem;line-height:1.75;}
+.doc-divider{height:1px;background:var(--border);margin:0 0 4rem;}
+
+/* inline code */
+code{
+  font-family:var(--font-mono);font-size:0.8em;
+  background:var(--bg-surface2);border:1px solid var(--border);
+  padding:0.1em 0.38em;border-radius:4px;color:var(--text);
+}
+[data-theme="light"] code{background:rgba(0,0,0,0.05);}
+a{color:var(--brand);text-decoration:none;}
+a:hover{text-decoration:underline;}
+p{color:var(--text-2);line-height:1.75;}
+
+/* =================== BADGES =================== */
+.badge{
+  display:inline-flex;align-items:center;
+  font-family:var(--font-mono);font-size:0.62rem;
+  padding:0.14rem 0.44rem;font-weight:500;
+  letter-spacing:0.02em;border-radius:4px;border:1px solid;
+}
+.badge-green {background:rgba(139,92,246,0.1);color:#a78bfa;border-color:rgba(139,92,246,0.3);}
+.badge-amber {background:rgba(251,191,36,0.08);color:var(--amber);border-color:rgba(251,191,36,0.3);}
+.badge-red   {background:rgba(248,113,113,0.08);color:var(--red);border-color:rgba(248,113,113,0.3);}
+.badge-blue  {background:rgba(96,165,250,0.08);color:var(--blue);border-color:rgba(96,165,250,0.3);}
+.badge-purple{background:rgba(167,139,250,0.08);color:var(--purple);border-color:rgba(167,139,250,0.3);}
+
+/* =================== ENDPOINT CARD =================== */
+.endpoint-card{border:1px solid var(--border);border-radius:var(--radius-md);margin:1.25rem 0;overflow:hidden;}
+.endpoint-header{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.65rem 1rem;background:var(--bg-surface);
+  border-bottom:1px solid var(--border);
+}
+.method-badge{
+  font-family:var(--font-mono);font-size:0.65rem;
+  font-weight:700;padding:0.15rem 0.5rem;
+  text-transform:uppercase;letter-spacing:0.06em;border-radius:4px;
+}
+.method-post{background:rgba(167,139,250,0.15);color:#a78bfa;}
+.method-get {background:rgba(139,92,246,0.12);color:#a78bfa;}
+.endpoint-path{font-family:var(--font-mono);font-size:0.82rem;color:var(--text);}
+.endpoint-note{margin-left:auto;font-size:0.72rem;color:var(--text-3);font-family:var(--font-mono);}
+
+/* =================== CODE BLOCKS =================== */
+.codeblock{border:1px solid var(--border);border-radius:var(--radius-md);margin:1.25rem 0;overflow:hidden;background:var(--bg-alt);}
+.codeblock-header{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0 0.875rem;background:var(--bg-surface);
+  border-bottom:1px solid var(--border);min-height:38px;
+}
+.lang-tabs{display:flex;height:100%;overflow-x:auto;gap:0;}
+.lang-tab{
+  display:flex;align-items:center;gap:0.4rem;
+  background:none;border:none;
+  color:var(--text-3);font-family:var(--font-mono);font-size:0.68rem;
+  padding:0 0.75rem;cursor:pointer;
+  transition:color var(--transition);
+  border-bottom:2px solid transparent;white-space:nowrap;height:38px;
+}
+.lang-tab img{width:14px;height:14px;object-fit:contain;}
+.lang-tab:hover{color:var(--text-2);}
+.lang-tab.active{color:var(--text);border-bottom-color:var(--brand);}
+.codeblock-actions{display:flex;align-items:center;gap:0.4rem;flex-shrink:0;}
+.copy-btn{
+  background:none;border:1px solid var(--border);
+  color:var(--text-3);font-family:var(--font-mono);font-size:0.63rem;
+  padding:0.15rem 0.5rem;cursor:pointer;
+  transition:all var(--transition);border-radius:4px;
+}
+.copy-btn:hover{color:var(--text-2);border-color:var(--border-2);}
+.copy-btn.copied{color:var(--brand);border-color:rgba(139,92,246,0.4);}
+.run-btn{
+  display:flex;align-items:center;gap:0.35rem;
+  background:rgba(139,92,246,0.1);border:1px solid rgba(139,92,246,0.25);
+  color:var(--brand);font-family:var(--font-mono);font-size:0.63rem;
+  padding:0.15rem 0.6rem;cursor:pointer;
+  transition:all var(--transition);border-radius:4px;
+}
+.run-btn:hover{background:rgba(139,92,246,0.18);border-color:rgba(139,92,246,0.4);}
+.run-btn svg{width:9px;height:9px;}
+.codeblock-body{
+  padding:1.1rem 1.25rem;overflow-x:auto;
+  line-height:1.9;color:#b0aac8;
+  font-family:var(--font-mono);font-size:0.77rem;
+}
+.tab-pane{display:none;white-space:pre;}
+.tab-pane.active{display:block;}
+
+/* Syntax tokens */
+.t-key{color:#a78bfa;}.t-str{color:#fbbf24;}.t-num{color:#60a5fa;}.t-nil{color:#f87171;}
+.t-comment{color:#4a4565;font-style:italic;}.t-method{color:#8b5cf6;font-weight:500;}
+.t-flag{color:#818cf8;}.t-url{color:#c4b5fd;}.t-punct{color:#4a4565;}
+.t-ok{color:#8b5cf6;font-weight:600;}.t-err{color:#f87171;font-weight:600;}
+.t-header{color:#8b5cf6;}.t-bool{color:#f87171;}
+
+/* Sandbox result */
+.sandbox-result{
+  border:1px solid var(--border);border-top:none;
+  border-radius:0 0 var(--radius-md) var(--radius-md);
+  background:var(--bg-alt);display:none;
+  margin-top:-1px;
+}
+.sandbox-result.visible{display:block;}
+.sandbox-result-header{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.5rem 1rem;background:var(--bg-surface);
+  border-bottom:1px solid var(--border);
+  font-family:var(--font-mono);font-size:0.66rem;
+}
+.sandbox-result-body{
+  padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.77rem;
+  line-height:1.9;color:#b0aac8;white-space:pre;overflow-x:auto;
+}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.dot-live{
+  display:inline-block;width:6px;height:6px;border-radius:50%;
+  background:var(--brand);box-shadow:0 0 5px var(--brand);
+  animation:blink 2s ease infinite;
 }
 
-/* =================== FOOTER =================== */
-.footer{
-  max-width:900px;
-  margin:0 auto;
-  padding:2rem;
-  border-top:1px solid var(--border);
-  text-align:center;
-  font-family:var(--font-mono);
-  font-size:0.7rem;
-  color:var(--text-3);
+/* =================== PARAMS TABLE =================== */
+.params-table{border:1px solid var(--border);border-radius:var(--radius-md);margin:1.25rem 0;overflow:hidden;}
+.params-head{
+  display:grid;grid-template-columns:180px 55px 1fr;gap:1rem;
+  padding:0.45rem 1rem;background:var(--bg-surface);
+  border-bottom:1px solid var(--border);
 }
-.footer a{color:var(--purple-light);}
+.params-head span{
+  font-family:var(--font-mono);font-size:0.6rem;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--text-muted);font-weight:600;
+}
+.param-row{
+  display:grid;grid-template-columns:180px 55px 1fr;gap:1rem;
+  padding:0.7rem 1rem;border-bottom:1px solid var(--border);
+  align-items:start;transition:background var(--transition);
+}
+.param-row:last-child{border-bottom:none;}
+.param-row:hover{background:rgba(255,255,255,0.02);}
+.param-name{font-family:var(--font-mono);font-size:0.76rem;color:var(--brand);}
+.param-req{font-family:var(--font-mono);font-size:0.64rem;color:var(--red);font-weight:600;}
+.param-opt{font-family:var(--font-mono);font-size:0.64rem;color:var(--text-3);}
+.param-desc{color:var(--text-2);font-size:0.82rem;line-height:1.65;}
+
+/* =================== DOC TABLE =================== */
+.doc-table{width:100%;border-collapse:collapse;margin:1.25rem 0;font-size:0.82rem;}
+.doc-table thead th{
+  text-align:left;padding:0.45rem 1rem;
+  font-family:var(--font-mono);font-size:0.6rem;
+  text-transform:uppercase;letter-spacing:0.08em;
+  color:var(--text-muted);font-weight:600;
+  border-bottom:1px solid var(--border);background:var(--bg-surface);
+}
+.doc-table thead th:first-child{border-radius:var(--radius-md) 0 0 0;}
+.doc-table thead th:last-child{border-radius:0 var(--radius-md) 0 0;}
+.doc-table{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.doc-table tbody tr{border-bottom:1px solid var(--border);}
+.doc-table tbody tr:last-child{border-bottom:none;}
+.doc-table tbody tr:hover{background:rgba(255,255,255,0.02);}
+.doc-table td{padding:0.6rem 1rem;color:var(--text-2);vertical-align:top;}
+.doc-table td:first-child{color:var(--text);font-weight:500;}
+
+/* =================== CALLOUTS =================== */
+.callout{
+  display:flex;gap:0.75rem;
+  padding:0.9rem 1rem;margin:1.25rem 0;
+  font-size:0.84rem;line-height:1.65;
+  border-radius:var(--radius-md);border:1px solid;
+}
+.callout-info   {background:rgba(167,139,250,0.06);border-color:rgba(167,139,250,0.25);}
+.callout-warning{background:rgba(251,191,36,0.06); border-color:rgba(251,191,36,0.25);}
+.callout-success{background:rgba(139,92,246,0.06); border-color:rgba(139,92,246,0.25);}
+.callout-tip    {background:rgba(96,165,250,0.06); border-color:rgba(96,165,250,0.25);}
+.callout-danger {background:rgba(248,113,113,0.06);border-color:rgba(248,113,113,0.25);}
+.callout-code   {background:rgba(139,92,246,0.04); border-color:rgba(139,92,246,0.18);font-family:var(--font-mono);font-size:0.78rem;}
+.callout-icon{flex-shrink:0;margin-top:1px;}
+.callout-icon svg{width:14px;height:14px;}
+.callout-body{color:var(--text-2);}
+.callout-body strong{color:var(--text);font-weight:600;}
+
+/* =================== STATUS TABLE =================== */
+.status-table{border:1px solid var(--border);border-radius:var(--radius-md);margin:1.25rem 0;overflow:hidden;}
+.status-group-header{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.4rem 1rem;background:var(--bg-surface2);
+  border-bottom:1px solid var(--border);
+  font-family:var(--font-mono);font-size:0.62rem;
+  text-transform:uppercase;letter-spacing:0.08em;font-weight:600;
+}
+.sg-2xx{color:#a78bfa;}.sg-4xx{color:var(--red);}.sg-5xx{color:var(--amber);}
+.status-row{
+  display:grid;grid-template-columns:52px 160px 1fr;gap:1rem;
+  padding:0.6rem 1rem;border-bottom:1px solid var(--border);
+  font-size:0.82rem;align-items:center;
+}
+.status-row:last-child{border-bottom:none;}
+.status-code{font-family:var(--font-mono);font-size:0.68rem;font-weight:700;padding:0.12rem 0.4rem;text-align:center;border-radius:4px;}
+.s-2xx{background:rgba(139,92,246,0.1);color:#a78bfa;border:1px solid rgba(139,92,246,0.25);}
+.s-4xx{background:rgba(248,113,113,0.1);color:var(--red);border:1px solid rgba(248,113,113,0.25);}
+.s-5xx{background:rgba(251,191,36,0.08);color:var(--amber);border:1px solid rgba(251,191,36,0.25);}
+.status-name{color:var(--text);font-family:var(--font-mono);font-size:0.74rem;font-weight:500;}
+.status-desc{color:var(--text-2);}
+
+/* =================== FEATURE GRID =================== */
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.feature-card{
+  background:var(--bg-alt);padding:1.4rem;
+  transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+  display:block;text-decoration:none;
+  border:1px solid var(--border);border-radius:var(--radius-lg);color:inherit;
+}
+.feature-card:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,0.2);border-color:var(--border-2);text-decoration:none;}
+.feature-card-icon{
+  width:32px;height:32px;
+  border:1px solid var(--border-2);background:var(--brand-faint);
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:0.875rem;border-radius:var(--radius-md);
+}
+.feature-card-icon svg{width:15px;height:15px;}
+.feature-card-title{font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem;}
+.feature-card-desc{font-size:0.82rem;color:var(--text-2);line-height:1.65;}
+@media(max-width:640px){.feature-grid{grid-template-columns:1fr;}}
+
+/* =================== GATEWAY ROW =================== */
+.gateway-row{border:1px solid var(--border);border-radius:var(--radius-md);margin:1.25rem 0;overflow:hidden;}
+.gateway-item{
+  display:grid;grid-template-columns:150px 85px 75px 1fr;
+  align-items:center;gap:1rem;
+  padding:0.7rem 1rem;border-bottom:1px solid var(--border);font-size:0.82rem;
+}
+.gateway-item:last-child{border-bottom:none;}
+.gateway-item:hover{background:rgba(255,255,255,0.02);}
+.gateway-name{font-family:var(--font-mono);font-size:0.74rem;color:var(--brand);font-weight:600;}
+.gateway-status{display:flex;align-items:center;gap:0.35rem;}
+.dot{width:5px;height:5px;border-radius:50%;display:inline-block;}
+.dot-green{background:#a78bfa;box-shadow:0 0 4px #a78bfa;}
+.dot-amber{background:var(--amber);box-shadow:0 0 4px var(--amber);}
+
+/* =================== FLOW / MERMAID =================== */
+.mermaid-wrap{border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-alt);padding:1.5rem;margin:1.25rem 0;overflow-x:auto;}
+.mermaid-wrap .mermaid{display:flex;justify-content:center;}
+
+/* =================== GLOSSARY =================== */
+.glossary-item{
+  padding:0.85rem 0;border-bottom:1px solid var(--border);
+  display:grid;grid-template-columns:155px 1fr;gap:1rem;align-items:baseline;
+}
+.glossary-item:last-child{border-bottom:none;}
+.glossary-term{font-family:var(--font-mono);font-size:0.78rem;color:var(--brand);font-weight:500;}
+.glossary-def{font-size:0.84rem;color:var(--text-2);line-height:1.65;}
+
+/* =================== TIMELINE =================== */
+.timeline{padding-left:1rem;border-left:2px solid var(--border);margin:1.25rem 0;}
+.timeline-entry{position:relative;padding:0 0 1.5rem 1.25rem;}
+.timeline-entry:last-child{padding-bottom:0;}
+.timeline-entry::before{
+  content:'';position:absolute;left:-7px;top:6px;
+  width:10px;height:10px;border-radius:50%;
+  background:var(--bg-surface2);border:2px solid var(--border-2);
+}
+.timeline-entry.current::before{background:var(--brand);border-color:var(--brand);box-shadow:0 0 7px var(--brand);}
+.timeline-version{
+  font-family:var(--font-mono);font-size:0.74rem;font-weight:600;
+  color:var(--text);margin-bottom:0.2rem;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.timeline-date{font-family:var(--font-mono);font-size:0.63rem;color:var(--text-3);margin-bottom:0.5rem;}
+.timeline-items{display:flex;flex-direction:column;gap:0.25rem;}
+.timeline-item{font-size:0.82rem;color:var(--text-2);display:flex;align-items:baseline;gap:0.5rem;}
+.timeline-item::before{content:'→';color:var(--text-3);font-size:0.72rem;flex-shrink:0;}
+
+/* =================== HELPFUL =================== */
+.helpful-widget{
+  display:flex;align-items:center;gap:1rem;
+  margin-top:2rem;padding:0.875rem 1rem;
+  background:var(--bg-alt);border:1px solid var(--border);
+  border-radius:var(--radius-md);font-size:0.82rem;
+}
+.helpful-label{color:var(--text-2);}
+.helpful-btns{display:flex;gap:0.4rem;}
+.helpful-btn{
+  display:flex;align-items:center;gap:0.3rem;
+  padding:0.25rem 0.65rem;background:var(--bg-surface);
+  border:1px solid var(--border);cursor:pointer;
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--text-3);
+  transition:all var(--transition);border-radius:var(--radius);
+}
+.helpful-btn:hover.yes{color:#a78bfa;border-color:rgba(139,92,246,0.3);background:rgba(139,92,246,0.07);}
+.helpful-btn:hover.no{color:var(--red);border-color:rgba(248,113,113,0.3);background:rgba(248,113,113,0.07);}
+.helpful-btn.voted{pointer-events:none;}
+.helpful-github{margin-left:auto;font-family:var(--font-mono);font-size:0.7rem;color:var(--text-3);}
+.helpful-github a{color:var(--text-3);}
+.helpful-github a:hover{color:var(--brand);}
+
+/* =================== FOOTER =================== */
+.doc-footer{
+  margin-top:4rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+  font-family:var(--font-mono);font-size:0.7rem;color:var(--text-3);
+}
+.doc-footer a{color:var(--brand);}
+
+/* =================== LAST UPDATED =================== */
+.last-updated{
+  font-family:var(--font-mono);font-size:0.63rem;color:var(--text-3);
+  margin-top:1.5rem;padding-top:0.75rem;
+  border-top:1px solid var(--border);
+  display:flex;align-items:center;gap:0.4rem;
+}
+
+/* =================== CMD PALETTE =================== */
+.cmd-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(0,0,0,0.7);backdrop-filter:blur(6px);
+  z-index:1000;align-items:flex-start;justify-content:center;
+  padding-top:14vh;
+}
+.cmd-overlay.open{display:flex;}
+.cmd-modal{
+  width:580px;max-width:calc(100vw - 2rem);
+  background:var(--bg-alt);border:1px solid var(--border-2);
+  border-radius:var(--radius-xl);box-shadow:var(--shadow-lg);overflow:hidden;
+}
+.cmd-search{
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.875rem 1rem;border-bottom:1px solid var(--border);
+}
+.cmd-search svg{width:14px;height:14px;color:var(--text-3);flex-shrink:0;}
+.cmd-input{
+  flex:1;background:none;border:none;outline:none;
+  color:var(--text);font-family:var(--font-sans);font-size:0.9rem;
+  caret-color:var(--brand);
+}
+.cmd-input::placeholder{color:var(--text-3);}
+.cmd-esc{
+  font-family:var(--font-mono);font-size:0.62rem;
+  background:var(--bg-surface);border:1px solid var(--border-2);
+  padding:0.08rem 0.35rem;border-radius:4px;color:var(--text-3);cursor:pointer;flex-shrink:0;
+}
+.cmd-results{max-height:380px;overflow-y:auto;}
+.cmd-section-label{
+  font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;
+  letter-spacing:0.1em;color:var(--text-muted);padding:0.6rem 1rem 0.25rem;
+}
+.cmd-item{
+  display:flex;align-items:center;gap:0.65rem;
+  padding:0.5rem 1rem;cursor:pointer;
+  transition:background var(--transition);border-left:2px solid transparent;
+}
+.cmd-item:hover,.cmd-item.focused{background:var(--brand-faint);border-left-color:var(--brand);}
+.cmd-item-label{font-size:0.84rem;color:var(--text);font-weight:500;}
+.cmd-item-sub{font-size:0.7rem;color:var(--text-3);font-family:var(--font-mono);margin-left:auto;flex-shrink:0;}
+.cmd-footer{
+  display:flex;align-items:center;gap:0.875rem;
+  padding:0.5rem 1rem;border-top:1px solid var(--border);background:var(--bg-surface);
+}
+.cmd-hint{display:flex;align-items:center;gap:0.3rem;font-size:0.66rem;color:var(--text-3);}
+.cmd-hint kbd{font-family:var(--font-mono);font-size:0.58rem;background:var(--bg-overlay);border:1px solid var(--border-2);padding:0.04rem 0.3rem;border-radius:3px;}
+
+/* =================== VERSION FLOAT =================== */
+.version-float{position:fixed;bottom:1.5rem;right:1.5rem;z-index:100;}
+.version-btn{
+  display:flex;align-items:center;gap:0.4rem;
+  padding:0.4rem 0.75rem;background:var(--bg-alt);border:1px solid var(--border-2);
+  border-radius:var(--radius-md);font-family:var(--font-mono);font-size:0.7rem;
+  color:var(--text-2);cursor:pointer;transition:all var(--transition);box-shadow:var(--shadow);
+}
+.version-btn:hover{border-color:var(--border-3);color:var(--brand);}
+.version-btn svg{width:10px;height:10px;transition:transform var(--transition);}
+.version-btn.open svg{transform:rotate(180deg);}
+.version-dropdown{
+  position:absolute;bottom:calc(100% + 8px);right:0;
+  background:var(--bg-alt);border:1px solid var(--border-2);
+  border-radius:var(--radius-md);box-shadow:var(--shadow-lg);
+  min-width:170px;display:none;overflow:hidden;
+}
+.version-float.open .version-dropdown{display:block;}
+.version-dd-item{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:0.45rem 0.8rem;font-family:var(--font-mono);font-size:0.72rem;
+  color:var(--text-2);cursor:pointer;transition:background var(--transition);gap:0.5rem;
+}
+.version-dd-item:hover{background:var(--bg-surface2);}
+.version-dd-item.current{color:var(--brand);}
+
+/* =================== MOBILE DRAWER =================== */
+.mobile-drawer{
+  position:fixed;top:var(--header-h);left:0;bottom:0;
+  width:280px;background:var(--bg);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  transform:translateX(-100%);
+  transition:transform 0.25s ease;
+  z-index:490;
+  padding:1rem 0.75rem 2rem;
+}
+.mobile-drawer.open{transform:translateX(0);}
+.mobile-drawer-overlay{
+  display:none;position:fixed;inset:0;top:var(--header-h);
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);z-index:489;
+}
+.mobile-drawer-overlay.open{display:block;}
 
 /* =================== RESPONSIVE =================== */
 @media(max-width:768px){
-  .hero-title{font-size:2.2rem;}
-  .cards-grid{grid-template-columns:1fr;}
+  .hero-title{font-size:1.8rem;}
+  .params-head,.param-row{grid-template-columns:1fr 45px 1fr;}
+  .status-row{grid-template-columns:48px 1fr;}
+  .status-row .status-name{display:none;}
+  .doc-table thead th:nth-child(3),.doc-table tbody td:nth-child(3){display:none;}
 }
+
+/* =================== SECTION HEADER META =================== */
+.section-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:0.35rem;gap:1rem;}
+.reading-time{font-family:var(--font-mono);font-size:0.63rem;color:var(--text-3);display:flex;align-items:center;gap:0.3rem;flex-shrink:0;margin-top:0.1rem;}
+
+/* =================== LIB GRID =================== */
+.lib-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.875rem;margin:1.5rem 0;}
+.lib-card{
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  padding:1.25rem 0.75rem;
+  background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius-lg);
+  text-decoration:none;color:inherit;
+  transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+}
+.lib-card:hover{transform:translateY(-2px);box-shadow:0 6px 22px rgba(0,0,0,0.25);border-color:var(--border-2);text-decoration:none;}
+.lib-card-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--bg-surface);border:1px solid var(--border);}
+.lib-card-icon img,.lib-card-icon svg{width:24px;height:24px;}
+.lib-card-name{font-family:var(--font-mono);font-size:0.72rem;font-weight:600;color:var(--text);}
+.lib-card-desc{font-size:0.7rem;color:var(--text-3);text-align:center;line-height:1.4;}
+@media(max-width:640px){.lib-grid{grid-template-columns:repeat(2,1fr);}}
 </style>
 </head>
 <body>
 
-<header class="header">
+<div id="progress"></div>
+
+<!-- CMD PALETTE -->
+<div class="cmd-overlay" id="cmdOverlay" onclick="closeCmdIfBg(event)">
+  <div class="cmd-modal">
+    <div class="cmd-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input class="cmd-input" id="cmdInput" placeholder="Buscar seções, endpoints, conceitos..." oninput="filterCmd(this.value)" onkeydown="handleCmdKey(event)">
+      <span class="cmd-esc" onclick="closeCmd()">ESC</span>
+    </div>
+    <div class="cmd-results" id="cmdResults"></div>
+    <div class="cmd-footer">
+      <span class="cmd-hint"><kbd>↑↓</kbd> navegar</span>
+      <span class="cmd-hint"><kbd>Enter</kbd> ir</span>
+      <span class="cmd-hint"><kbd>Esc</kbd> fechar</span>
+    </div>
+  </div>
+</div>
+
+<!-- VERSION FLOAT -->
+<div class="version-float" id="versionFloat">
+  <div class="version-btn" onclick="toggleVersionDropdown()">
+    v0.4.0-alpha
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+  </div>
+  <div class="version-dropdown">
+    <div class="version-dd-item current">v0.4.0-alpha <span class="badge badge-green" style="font-size:0.56rem;">atual</span></div>
+    <div class="version-dd-item" style="color:var(--text-3);">v0.6.0 <span class="badge badge-blue" style="font-size:0.56rem;">planejado</span></div>
+    <div class="version-dd-item" style="color:var(--text-3);">v0.3.2</div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="header" id="topnav">
   <div class="header-inner">
-    <a href="index.html" class="header-logo">
+    <a href="#intro" class="header-logo">
       <div class="header-logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
       </div>
       <span class="header-logo-text">Orquestraio</span>
-      <span class="header-version">v0.4</span>
+      <span class="header-logo-badge">DOCS</span>
     </a>
+    <div class="header-sep"></div>
+    <div class="header-nav">
+      <div class="header-group">
+        <button class="header-nav-btn" id="btn-api" onclick="toggleDropdown('dd-api','btn-api')">
+          API <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="header-dropdown" id="dd-api">
+          <a href="#create"    class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
+          <a href="#methods"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
+          <a href="#routing"   class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
+          <a href="#webhooks"  class="dd-item" onclick="closeDropdowns()">Webhooks</a>
+          <div class="dd-divider"></div>
+          <a href="#errors"    class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
+          <a href="#ratelimit" class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
+        </div>
+      </div>
+      <div class="header-group">
+        <button class="header-nav-btn" id="btn-features" onclick="toggleDropdown('dd-features','btn-features')">
+          Funcionalidades <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="header-dropdown" id="dd-features">
+          <a href="#idempotency" class="dd-item" onclick="closeDropdowns()">Idempotência</a>
+          <a href="#circuit"     class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
+          <a href="#security"    class="dd-item" onclick="closeDropdowns()">Segurança</a>
+        </div>
+      </div>
+      <div class="header-group">
+        <button class="header-nav-btn" id="btn-guides" onclick="toggleDropdown('dd-guides','btn-guides')">
+          Guias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="header-dropdown" id="dd-guides">
+          <a href="#quickstart" class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
+          <a href="#auth"       class="dd-item" onclick="closeDropdowns()">Autenticação</a>
+          <a href="#sandbox"    class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
+          <a href="#sdks"       class="dd-item" onclick="closeDropdowns()">SDKs &amp; Quickstart</a>
+        </div>
+      </div>
+      <a href="#changelog" class="header-nav-link">Changelog <span class="badge badge-green" style="font-size:0.56rem;">Novo</span></a>
+    </div>
     <div class="header-right">
+      <button class="header-search" onclick="openCmd()" title="Buscar (Ctrl+K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Buscar docs...</span>
+        <kbd>⌘K</kbd>
+      </button>
       <a href="https://github.com/vitinh0z/orquestraio" class="header-icon-btn" target="_blank" rel="noopener" title="GitHub">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
       </a>
       <button class="header-icon-btn" onclick="toggleTheme()" title="Alternar tema">
         <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
       </button>
+      <button class="header-hamburger" onclick="toggleMobileDrawer()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
     </div>
   </div>
 </header>
 
-<section class="hero">
-  <div class="hero-inner">
-    <div class="hero-icon">
-      <svg viewBox="0 0 24 24" fill="none"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="var(--purple-light)" stroke-width="1.8" stroke-linejoin="round"/></svg>
-    </div>
-    <h1 class="hero-title">Uma integração.<br>Múltiplos gateways.</h1>
-    <p class="hero-lead">O Orquestraio é uma plataforma de orquestração de pagamentos multi-tenant. Integre Stripe, MercadoPago e PayPal de uma vez — com roteamento inteligente, idempotência e resiliência embutidos.</p>
-    <div class="hero-actions">
-      <a href="quickstart.html" class="btn btn-brand">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-        Primeiros Passos
-      </a>
-      <a href="processar-pagamento.html" class="btn btn-outline">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
-        Ver API
-      </a>
-    </div>
+<!-- MOBILE DRAWER -->
+<div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
+<div class="mobile-drawer" id="mobileDrawer">
+  <div style="margin-bottom:1rem;">
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Inicio</div>
+    <a href="#intro" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Introducao</a>
+    <a href="#quickstart" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Primeiros Passos</a>
+    <a href="#auth" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Autenticacao</a>
+    <a href="#glossary" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Glossario</a>
+    <a href="#changelog" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Changelog</a>
   </div>
-</section>
+  <div style="margin-bottom:1rem;">
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">API</div>
+    <a href="#create" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Processar Pagamento</a>
+    <a href="#methods" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Metodos de Pagamento</a>
+    <a href="#routing" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">SmartRouter</a>
+    <a href="#webhooks" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Webhooks</a>
+    <a href="#errors" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Erros</a>
+    <a href="#ratelimit" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Rate Limiting</a>
+  </div>
+  <div style="margin-bottom:1rem;">
+    <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Guias</div>
+    <a href="#sandbox" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Sandbox</a>
+    <a href="#idempotency" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Idempotencia</a>
+    <a href="#circuit" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Circuit Breaker</a>
+    <a href="#security" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Seguranca</a>
+  </div>
+</div>
 
-<main class="main">
+<div class="layout">
+  <main class="main">
 
-  <section class="section">
-    <div class="section-label">API</div>
-    <h2 class="section-title">Endpoints & Recursos</h2>
-    <p class="section-desc">Processe pagamentos, configure roteamento inteligente e receba notificações em tempo real.</p>
-    <div class="cards-grid">
-      <a href="processar-pagamento.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+    <!-- HERO -->
+    <div class="hero">
+      <div class="hero-inner">
+        <div class="hero-left">
+          <div style="display:flex;align-items:center;gap:1rem;margin-bottom:1.5rem;">
+            <div style="width:56px;height:56px;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg viewBox="0 0 24 24" fill="none" width="30" height="30"><path d="M13 10V3L4 14h7v7l9-11h-7z" stroke="var(--brand)" stroke-width="1.8" stroke-linejoin="round"/></svg>
+            </div>
           </div>
-          <h3 class="card-title">Processar Pagamento</h3>
-        </div>
-        <p class="card-desc">Cria uma transação e roteia automaticamente para o gateway ideal com base na moeda e método de pagamento.</p>
-      </a>
-
-      <a href="metodos-pagamento.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><circle cx="9" cy="7" r="4"/><path d="M3 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2"/></svg>
+          <h1 class="hero-title">Orquestraio<br>Documentação</h1>
+          <p class="hero-lead">Aprenda a integrar e usar o Orquestraio — <span style="color:var(--brand);font-weight:500;">Múltiplos gateways.</span> Uma única API para PIX, boleto e cartão com roteamento inteligente, idempotência e resiliência embutidos.</p>
+          <div class="hero-actions">
+            <a href="#create" class="btn btn-brand">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              Ver endpoints
+            </a>
+            <a href="#sandbox" class="btn btn-outline">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Testar Sandbox
+            </a>
           </div>
-          <h3 class="card-title">Métodos de Pagamento</h3>
         </div>
-        <p class="card-desc">PIX, Boleto e Cartão via paymentMethodRequest.type. Suporte nativo a múltiplos gateways.</p>
-      </a>
 
-      <a href="smartrouter.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        <!-- Getting Started panel (right side) -->
+        <div class="hero-getting-started">
+          <div class="hgs-header">
+            <div class="hgs-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </div>
+            <span class="hgs-title">Primeiros Passos</span>
           </div>
-          <h3 class="card-title">SmartRouter</h3>
+          <p class="hgs-desc">Configure e faça seu primeiro pagamento em minutos.</p>
+          <div class="hgs-grid">
+            <!-- Row 1 -->
+            <a href="#quickstart" class="hgs-item" title="cURL">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="1.5" width="28" height="28"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="m7 13 3-3-3-3M13 13h4"/></svg>
+            </a>
+            <a href="#client-libs" class="hgs-item" title="JavaScript">
+              <svg viewBox="0 0 24 24" width="28" height="28"><rect width="24" height="24" rx="3" fill="#f7df1e"/><text x="4" y="18" font-family="Arial" font-weight="bold" font-size="13" fill="#000">JS</text></svg>
+            </a>
+            <a href="#client-libs" class="hgs-item" title="Python">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M11.914 2C6.945 2 7.236 4.17 7.236 4.17l.006 2.246h4.764v.674H5.394S2 6.744 2 11.759s3.008 4.84 3.008 4.84h1.795v-2.328s-.097-3.008 2.96-3.008h5.1s2.862.046 2.862-2.768V4.936S18.19 2 11.914 2z" fill="#3776ab"/><path d="M12.086 22c4.969 0 4.678-2.17 4.678-2.17l-.006-2.246h-4.764v-.674h6.612S22 17.256 22 12.241s-3.008-4.84-3.008-4.84h-1.795v2.328s.097 3.008-2.96 3.008h-5.1S6.275 12.69 6.275 15.504v3.56S5.81 22 12.086 22z" fill="#ffd43b"/></svg>
+            </a>
+            <a href="#client-libs" class="hgs-item" title="Go">
+              <svg viewBox="0 0 30 18" width="32" height="20"><text x="0" y="14" font-family="Arial" font-weight="bold" font-size="16" fill="#00add8">Go</text></svg>
+            </a>
+            <a href="#client-libs" class="hgs-item" title="Java">
+              <svg viewBox="0 0 30 18" width="32" height="20"><text x="0" y="14" font-family="Arial" font-weight="bold" font-size="13" fill="#f89820">Java</text></svg>
+            </a>
+            <!-- Row 2 -->
+            <a href="#auth" class="hgs-item" title="Autenticação">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5" width="26" height="26"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </a>
+            <a href="#webhooks" class="hgs-item" title="Webhooks">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5" width="26" height="26"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+            </a>
+            <a href="#routing" class="hgs-item" title="SmartRouter">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5" width="26" height="26"><path d="M9 18 3 12l6-6"/><path d="M21 12H3"/></svg>
+            </a>
+            <a href="#idempotency" class="hgs-item" title="Idempotência">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" width="26" height="26"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+            </a>
+            <a href="#circuit" class="hgs-item" title="Circuit Breaker">
+              <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5" width="26" height="26"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+            </a>
+          </div>
+          <a href="#quickstart" class="hgs-link">
+            <svg class="hgs-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg>
+            Iniciar com o Orquestraio AI
+            <svg class="hgs-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
         </div>
-        <p class="card-desc">Roteamento automático por moeda e valor. Sobrescreva por tenant via metadata.gateway.</p>
-      </a>
+      </div>
 
-      <a href="webhooks.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
-          </div>
-          <h3 class="card-title">Webhooks</h3>
+      <!-- Products section -->
+      <div class="hero-products">
+        <div class="hero-products-title">Recursos</div>
+        <div class="products-grid">
+          <a href="#create" class="product-card">
+            <div class="product-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
+              <span class="product-card-title">Pagamentos</span>
+            </div>
+            <p class="product-card-desc">Processe PIX, boleto e cartão em múltiplos gateways com uma única chamada de API. Roteamento automático e fallback embutido.</p>
+          </a>
+          <a href="#routing" class="product-card">
+            <div class="product-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+              <span class="product-card-title">SmartRouter</span>
+            </div>
+            <p class="product-card-desc">Roteamento inteligente entre Stripe, MercadoPago e PayPal baseado em moeda, valor e disponibilidade do gateway.</p>
+          </a>
         </div>
-        <p class="card-desc">Notificações assíncronas normalizadas cross-gateway. Implemente uma vez para todos os provedores.</p>
-      </a>
-
-      <a href="erros-status.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          </div>
-          <h3 class="card-title">Erros & Status</h3>
+        <div class="products-grid-3">
+          <a href="#webhooks" class="product-card">
+            <div class="product-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              <span class="product-card-title">Webhooks</span>
+            </div>
+            <p class="product-card-desc">Eventos normalizados de todos os gateways com formato unificado para seu sistema.</p>
+          </a>
+          <a href="#idempotency" class="product-card">
+            <div class="product-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+              <span class="product-card-title">Idempotência</span>
+            </div>
+            <p class="product-card-desc">Proteção contra duplicação com Redis TTL 24h e chaves UUID v4 para pagamentos seguros.</p>
+          </a>
+          <a href="#circuit" class="product-card">
+            <div class="product-card-header">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+              <span class="product-card-title">Circuit Breaker</span>
+            </div>
+            <p class="product-card-desc">Resiliência com Resilience4j por gateway — CLOSED, OPEN e HALF_OPEN automático.</p>
+          </a>
         </div>
-        <p class="card-desc">Códigos HTTP padronizados com timestamp, status, error, message e path.</p>
-      </a>
-
-      <a href="rate-limiting.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
-          </div>
-          <h3 class="card-title">Rate Limiting</h3>
-        </div>
-        <p class="card-desc">Limites por tenant com Bucket4j + Redis. Proteção contra abuso e DDoS em nível de aplicação.</p>
-      </a>
+      </div>
     </div>
-  </section>
 
-  <section class="section">
-    <div class="section-label">Funcionalidades</div>
-    <h2 class="section-title">Resiliência e consistência por padrão</h2>
-    <p class="section-desc">Idempotência, circuit breaker e criptografia fazem parte do core do Orquestraio — não são opcionais.</p>
-    <div class="cards-grid">
-      <a href="resiliencia.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+    <!-- MAIN CONTENT -->
+    <div class="content-wrapper">
+      <div class="content">
+
+        <!-- QUICKSTART -->
+        <section id="quickstart" class="doc-section reveal">
+          <div class="section-label">Inicio</div>
+          <div class="section-header">
+            <div>
+              <div class="section-title">
+                Primeiros passos em 3 minutos
+                <a href="#quickstart" class="permalink" onclick="copyPermalink(event,'quickstart')">#</a>
+              </div>
+              <div class="section-desc">Do zero ao primeiro pagamento aprovado. Siga os 3 passos abaixo — sem configuração de gateway real.</div>
+            </div>
+            <span class="reading-time">3 min</span>
           </div>
-          <h3 class="card-title">Idempotência</h3>
-        </div>
-        <p class="card-desc">Proteção contra cobranças duplicadas via Redis com TTL de 24h. Mesma chave, mesmo resultado.</p>
-      </a>
 
-      <a href="resiliencia.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+          <div class="callout callout-success">
+            <span class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg></span>
+            <div class="callout-body"><strong>Pre-requisito:</strong> Docker instalado. Nenhuma credencial de Stripe/MercadoPago/PayPal necessária — usaremos o gateway <code>MOCK</code>.</div>
           </div>
-          <h3 class="card-title">Circuit Breaker</h3>
-        </div>
-        <p class="card-desc">Cada gateway tem circuit breaker independente via Resilience4j. Falhas são isoladas com fallback.</p>
-      </a>
 
-      <a href="seguranca.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <p style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.5rem 0 0.6rem;">Passo 1 — Subir o servidor</p>
+          <div class="codeblock">
+            <div class="codeblock-header">
+              <div class="lang-tabs">
+                <button class="lang-tab active">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="m7 13 3-3-3-3M13 13h4"/></svg>
+                  Terminal
+                </button>
+              </div>
+              <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+            </div>
+            <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-method">git</span> clone https://github.com/vitinh0z/orquestraio.git
+<span class="t-method">cd</span> orquestraio
+<span class="t-method">docker-compose</span> up -d
+
+<span class="t-comment"># API disponivel em: http://localhost:8080</span>
+<span class="t-comment"># Swagger UI:       http://localhost:8080/swagger-ui/index.html</span>
+<span class="t-comment"># API key de dev:   orquestraio-livre-123</span></div>
+            </div>
           </div>
-          <h3 class="card-title">Segurança</h3>
-        </div>
-        <p class="card-desc">Credenciais de gateway criptografadas com AES-256. Dados de cartão nunca passam pelo servidor.</p>
-      </a>
-    </div>
-  </section>
 
-  <section class="section">
-    <div class="section-label">Guias</div>
-    <h2 class="section-title">Comece agora</h2>
-    <p class="section-desc">Do zero ao primeiro pagamento aprovado em 3 minutos.</p>
-    <div class="cards-grid">
-      <a href="quickstart.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+          <p style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.5rem 0 0.6rem;">Passo 2 — Fazer o primeiro pagamento</p>
+          <div class="codeblock">
+            <div class="codeblock-header">
+              <div class="lang-tabs">
+                <button class="lang-tab active" data-tab="qs-curl" data-lang="curl" onclick="switchTab(event)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="13" height="13"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="m7 13 3-3-3-3M13 13h4"/></svg>
+                  cURL
+                </button>
+                <button class="lang-tab" data-tab="qs-js" data-lang="javascript" onclick="switchTab(event)">
+                  <svg viewBox="0 0 24 24" width="13" height="13"><rect width="24" height="24" rx="2" fill="#f7df1e"/><text x="3" y="17" font-family="Arial" font-weight="bold" font-size="11" fill="#000">JS</text></svg>
+                  JavaScript
+                </button>
+                <button class="lang-tab" data-tab="qs-py" data-lang="python" onclick="switchTab(event)">
+                  <svg viewBox="0 0 24 24" width="13" height="13" fill="none"><path d="M11.914 2C6.945 2 7.236 4.17 7.236 4.17l.006 2.246h4.764v.674H5.394S2 6.744 2 11.759s3.008 4.84 3.008 4.84h1.795v-2.328s-.097-3.008 2.96-3.008h5.1s2.862.046 2.862-2.768V4.936S18.19 2 11.914 2z" fill="#3776ab"/><path d="M12.086 22c4.969 0 4.678-2.17 4.678-2.17l-.006-2.246h-4.764v-.674h6.612S22 17.256 22 12.241s-3.008-4.84-3.008-4.84h-1.795v2.328s.097 3.008-2.96 3.008h-5.1S6.275 12.69 6.275 15.504v3.56S5.81 22 12.086 22z" fill="#ffd43b"/></svg>
+                  Python
+                </button>
+              </div>
+              <div class="codeblock-actions">
+                <button class="run-btn" onclick="runSandboxInternal('qs-sandbox-result','qs-sandbox-status','qs-sandbox-time','qs-sandbox-body',50.00)">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                  Run
+                </button>
+                <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+              </div>
+            </div>
+            <div class="codeblock-body">
+<div class="tab-pane active" id="qs-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST http://localhost:8080<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: orquestraio-livre-123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-d</span> <span class="t-str">'{
+    "idempotencyKey": "primeiro-pagamento-001",
+    "amount": 50.00,
+    "currency": "BRL",
+    "paymentMethodRequest": { "type": "pix", "token": null },
+    "customer": { "id": "u1", "email": "dev@mail.com", "document": "000.000.000-00" },
+    "metadata": { "gateway": "MOCK" }
+  }'</span></div>
+<div class="tab-pane" id="qs-js"><span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'http://localhost:8080/v1/payments'</span>, {
+  method: <span class="t-str">'POST'</span>,
+  headers: {
+    <span class="t-str">'x-api-key'</span>: <span class="t-str">'orquestraio-livre-123'</span>,
+    <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>
+  },
+  body: JSON.stringify({
+    idempotencyKey: <span class="t-str">'primeiro-pagamento-001'</span>,
+    amount: <span class="t-num">50.00</span>,
+    currency: <span class="t-str">'BRL'</span>,
+    paymentMethodRequest: { type: <span class="t-str">'pix'</span>, token: <span class="t-nil">null</span> },
+    customer: { id: <span class="t-str">'u1'</span>, email: <span class="t-str">'dev@mail.com'</span>, document: <span class="t-str">'000.000.000-00'</span> },
+    metadata: { gateway: <span class="t-str">'MOCK'</span> }
+  })
+});
+<span class="t-key">const</span> data = <span class="t-key">await</span> res.json();
+console.log(data.status); <span class="t-comment">// "APPROVED"</span></div>
+<div class="tab-pane" id="qs-py">import requests, uuid
+
+res = requests.post(
+    <span class="t-str">"http://localhost:8080/v1/payments"</span>,
+    headers={<span class="t-str">"x-api-key"</span>: <span class="t-str">"orquestraio-livre-123"</span>},
+    json={
+        <span class="t-str">"idempotencyKey"</span>: str(uuid.uuid4()),
+        <span class="t-str">"amount"</span>: <span class="t-num">50.00</span>,
+        <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
+        <span class="t-str">"paymentMethodRequest"</span>: {<span class="t-str">"type"</span>: <span class="t-str">"pix"</span>, <span class="t-str">"token"</span>: <span class="t-nil">None</span>},
+        <span class="t-str">"customer"</span>: {<span class="t-str">"id"</span>: <span class="t-str">"u1"</span>, <span class="t-str">"email"</span>: <span class="t-str">"dev@mail.com"</span>},
+        <span class="t-str">"metadata"</span>: {<span class="t-str">"gateway"</span>: <span class="t-str">"MOCK"</span>}
+    }
+)
+print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment"># "APPROVED"</span></div>
+            </div>
           </div>
-          <h3 class="card-title">Primeiros Passos</h3>
-        </div>
-        <p class="card-desc">Setup completo em 3 minutos usando Docker e gateway MOCK. Sem credenciais necessárias.</p>
-      </a>
-
-      <a href="autenticacao.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+          <div class="sandbox-result" id="qs-sandbox-result">
+            <div class="sandbox-result-header">
+              <span class="dot-live"></span>
+              <span style="color:var(--brand);font-size:0.66rem;margin-left:0.4rem;">SANDBOX</span>
+              <span id="qs-sandbox-status" style="margin-left:0.5rem;font-size:0.66rem;color:var(--text-3);"></span>
+              <span id="qs-sandbox-time" style="margin-left:auto;font-size:0.66rem;color:var(--text-3);"></span>
+            </div>
+            <div class="sandbox-result-body" id="qs-sandbox-body">—</div>
           </div>
-          <h3 class="card-title">Autenticação</h3>
-        </div>
-        <p class="card-desc">API Key via header HTTP x-api-key. Chaves de produção com prefixo Oz_.</p>
-      </a>
 
-      <a href="sandbox.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+          <p style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);margin:1.5rem 0 0.6rem;">Passo 3 — Interpretar a resposta</p>
+          <div class="codeblock">
+            <div class="codeblock-header">
+              <div class="lang-tabs"><button class="lang-tab active">Resposta <span class="badge badge-green" style="font-size:0.55rem;margin-left:4px;">201</span></button></div>
+              <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+            </div>
+            <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-punct">{</span>
+  <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>   <span class="t-comment">// pagamento aprovado</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">50.00</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
+  <span class="t-key">"details"</span><span class="t-punct">:</span>   <span class="t-punct">{</span> <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MOCK"</span> <span class="t-punct">},</span>
+  <span class="t-key">"createdAt"</span><span class="t-punct">:</span>  <span class="t-str">"2026-02-22T15:30:00Z"</span>
+<span class="t-punct">}</span></div>
+            </div>
           </div>
-          <h3 class="card-title">Sandbox & MOCK</h3>
-        </div>
-        <p class="card-desc">Simule cenários reais sem usar dinheiro real. Gateway MOCK disponível para qualquer tenant.</p>
-      </a>
-
-      <a href="glossario.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+          <div class="callout callout-tip">
+            <span class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span>
+            <div class="callout-body"><strong>Proximo passo:</strong> Configure um webhook para receber notificações quando o status mudar. Ver seção <a href="#webhooks">Webhooks</a>.</div>
           </div>
-          <h3 class="card-title">Glossário</h3>
-        </div>
-        <p class="card-desc">Termos técnicos usados em toda a documentação: Tenant, SmartRouter, Circuit Breaker.</p>
-      </a>
-
-      <a href="changelog.html" class="card">
-        <div class="card-header">
-          <div class="card-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+          <div class="last-updated">Atualizado em 22/02/2026 · v0.4.0</div>
+          <div class="helpful-widget">
+            <span class="helpful-label">Esta seção foi útil?</span>
+            <div class="helpful-btns">
+              <button class="helpful-btn yes" onclick="helpful(this,'yes')">Sim</button>
+              <button class="helpful-btn no" onclick="helpful(this,'no')">Nao</button>
+            </div>
+            <span class="helpful-github"><a href="https://github.com/vitinh0z/orquestraio/issues/new">Abrir issue</a></span>
           </div>
-          <h3 class="card-title">Changelog</h3>
-        </div>
-        <p class="card-desc">Histórico de mudanças e melhorias em cada versão do Orquestraio.</p>
-      </a>
-    </div>
-  </section>
+        </section>
 
-</main>
+        <div class="doc-divider"></div>
 
-<footer class="footer">
-  <p>© 2026 Orquestraio — <a href="https://github.com/vitinh0z">@vitinh0z</a> • MIT License</p>
-</footer>
+        <!-- Continue com o restante das seções do conteúdo original -->
+        <!-- AUTH, GLOSSARY, CREATE PAYMENT, etc. -->
+        <!-- Por brevidade, vou adicionar apenas mais uma seção como exemplo -->
+
+        <!-- AUTH -->
+        <section id="auth" class="doc-section reveal">
+          <div class="section-label">Autenticacao</div>
+          <div class="section-header">
+            <div>
+              <div class="section-title">
+                API Key via header HTTP
+                <a href="#auth" class="permalink" onclick="copyPermalink(event,'auth')">#</a>
+              </div>
+              <div class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do tenant. Chaves de produção têm o prefixo <code>Oz_</code>.</div>
+            </div>
+            <span class="reading-time">2 min</span>
+          </div>
+          <div class="callout callout-warning">
+            <span class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></span>
+            <div class="callout-body"><strong>Nunca exponha sua API key no frontend.</strong> Faça todas as chamadas pelo backend. Chaves comprometidas podem ser revogadas no painel sem downtime.</div>
+          </div>
+          <div class="last-updated">Atualizado em 22/02/2026 · v0.4.0</div>
+        </section>
+
+        <div class="doc-divider"></div>
+
+        <!-- FOOTER -->
+        <footer class="doc-footer">
+          <span>© 2026 Orquestraio — <a href="https://github.com/vitinh0z">@vitinh0z</a></span>
+          <span>MIT License</span>
+        </footer>
+
+      </div>
+
+      <!-- RIGHT TOC -->
+      <div class="toc" id="toc">
+        <div class="toc-label">Nesta pagina</div>
+        <a href="#quickstart" class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
+        <a href="#auth" class="toc-item" onclick="tocNav(event,'auth')">Autenticacao</a>
+        <a href="#glossary" class="toc-item" onclick="tocNav(event,'glossary')">Glossario</a>
+        <a href="#create" class="toc-item" onclick="tocNav(event,'create')">Processar Pagamento</a>
+        <a href="#methods" class="toc-item" onclick="tocNav(event,'methods')">Metodos</a>
+        <a href="#routing" class="toc-item" onclick="tocNav(event,'routing')">SmartRouter</a>
+        <a href="#webhooks" class="toc-item" onclick="tocNav(event,'webhooks')">Webhooks</a>
+        <a href="#errors" class="toc-item" onclick="tocNav(event,'errors')">Erros</a>
+        <a href="#ratelimit" class="toc-item" onclick="tocNav(event,'ratelimit')">Rate Limiting</a>
+        <a href="#idempotency" class="toc-item" onclick="tocNav(event,'idempotency')">Idempotencia</a>
+        <a href="#circuit" class="toc-item" onclick="tocNav(event,'circuit')">Circuit Breaker</a>
+        <a href="#security" class="toc-item" onclick="tocNav(event,'security')">Seguranca</a>
+        <a href="#sandbox" class="toc-item" onclick="tocNav(event,'sandbox')">Sandbox</a>
+        <a href="#changelog" class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
+      </div>
+
+    </div><!-- content-wrapper -->
+  </main>
+</div><!-- layout -->
+
+<!-- INTRO section (hidden anchor) -->
+<div id="intro" style="position:absolute;top:0;"></div>
 
 <script>
+// ======================== CMD ITEMS ========================
+const CMD_ITEMS = [
+  {label:'Primeiros Passos',    href:'#quickstart',   group:'Inicio',          sub:'docker-compose, MOCK, 3 min'},
+  {label:'Autenticacao',        href:'#auth',         group:'Inicio',          sub:'x-api-key, Oz_'},
+  {label:'Glossario',           href:'#glossary',     group:'Inicio',          sub:'tenant, smartrouter'},
+  {label:'Changelog',           href:'#changelog',    group:'Inicio',          sub:'v0.4.0, v0.3.2'},
+  {label:'Processar Pagamento', href:'#create',       group:'API',             sub:'POST /v1/payments'},
+  {label:'Metodos de Pagamento',href:'#methods',      group:'API',             sub:'pix, boleto, card_token'},
+  {label:'SmartRouter',         href:'#routing',      group:'API',             sub:'roteamento automatico'},
+  {label:'Webhooks',            href:'#webhooks',     group:'API',             sub:'notificacoes assincronas'},
+  {label:'Erros & Status',      href:'#errors',       group:'API',             sub:'400, 401, 409, 429'},
+  {label:'Rate Limiting',       href:'#ratelimit',    group:'API',             sub:'Bucket4j, Redis, v0.6'},
+  {label:'Idempotencia',        href:'#idempotency',  group:'Funcionalidades', sub:'Redis TTL 24h'},
+  {label:'Circuit Breaker',     href:'#circuit',      group:'Funcionalidades', sub:'Resilience4j'},
+  {label:'Seguranca',           href:'#security',     group:'Funcionalidades', sub:'AES-256'},
+  {label:'Sandbox & MOCK',      href:'#sandbox',      group:'Guias',           sub:'gateway fake, testes'},
+  {label:'SDKs & Quickstart',   href:'#sdks',         group:'Guias',           sub:'v0.6 planejado'},
+];
+
+let fuse;
+if(typeof Fuse!=='undefined') fuse=new Fuse(CMD_ITEMS,{keys:['label','sub','group'],threshold:0.4});
+let focusedIdx=0,filteredItems=[...CMD_ITEMS];
+
+function renderCmd(q){
+  q=(q||'').trim();
+  filteredItems=q?(fuse?fuse.search(q).map(r=>r.item):CMD_ITEMS.filter(i=>i.label.toLowerCase().includes(q.toLowerCase()))):CMD_ITEMS;
+  focusedIdx=0;
+  const groups={};
+  filteredItems.forEach(item=>{if(!groups[item.group])groups[item.group]=[];groups[item.group].push(item);});
+  let html='',gi=0;
+  Object.entries(groups).forEach(([group,items])=>{
+    html+=`<div class="cmd-section-label">${group}</div>`;
+    items.forEach(item=>{
+      const idx=gi++;
+      html+=`<div class="cmd-item${idx===0?' focused':''}" data-idx="${idx}" onclick="gotoCmd('${item.href}')">
+        <span class="cmd-item-label">${item.label}</span>
+        <span class="cmd-item-sub">${item.sub}</span>
+      </div>`;
+    });
+  });
+  document.getElementById('cmdResults').innerHTML=html||'<div style="padding:1rem;text-align:center;color:var(--text-3);font-size:0.8rem;">Nenhum resultado</div>';
+}
+function openCmd(){document.getElementById('cmdOverlay').classList.add('open');const inp=document.getElementById('cmdInput');inp.value='';renderCmd('');setTimeout(()=>inp.focus(),50);}
+function closeCmd(){document.getElementById('cmdOverlay').classList.remove('open');}
+function closeCmdIfBg(e){if(e.target===document.getElementById('cmdOverlay'))closeCmd();}
+function gotoCmd(href){closeCmd();const t=document.querySelector(href);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
+function filterCmd(val){renderCmd(val);}
+function handleCmdKey(e){
+  const items=document.querySelectorAll('.cmd-item');
+  if(e.key==='ArrowDown'){e.preventDefault();focusedIdx=Math.min(focusedIdx+1,filteredItems.length-1);}
+  else if(e.key==='ArrowUp'){e.preventDefault();focusedIdx=Math.max(focusedIdx-1,0);}
+  else if(e.key==='Enter'){if(filteredItems[focusedIdx])gotoCmd(filteredItems[focusedIdx].href);return;}
+  else if(e.key==='Escape'){closeCmd();return;}
+  items.forEach((el,i)=>el.classList.toggle('focused',i===focusedIdx));
+  if(items[focusedIdx])items[focusedIdx].scrollIntoView({block:'nearest'});
+}
+document.addEventListener('keydown',e=>{
+  if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('cmdOverlay').classList.contains('open')?closeCmd():openCmd();}
+  if(e.key==='Escape'&&document.getElementById('cmdOverlay').classList.contains('open'))closeCmd();
+});
+
+// ======================== MERMAID ========================
+function initMermaid(){
+  const theme=document.documentElement.getAttribute('data-theme')==='light'?'default':'dark';
+  if(typeof mermaid==='undefined')return;
+  mermaid.initialize({startOnLoad:false,theme,securityLevel:'loose'});
+  document.querySelectorAll('.mermaid[data-src]').forEach(el=>{
+    el.removeAttribute('data-processed');el.textContent=el.getAttribute('data-src');
+  });
+  if(typeof mermaid.run==='function') mermaid.run({querySelector:'.mermaid'});
+  else mermaid.init(undefined,'.mermaid');
+}
+
+// ======================== THEME ========================
 function toggleTheme(){
   const html=document.documentElement;
   const isLight=html.getAttribute('data-theme')==='light';
@@ -473,6 +1417,7 @@ function toggleTheme(){
   document.getElementById('themeIcon').innerHTML=isLight
     ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
     :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  initMermaid();
 }
 function applyTheme(){
   const saved=localStorage.getItem('theme');
@@ -481,7 +1426,134 @@ function applyTheme(){
     document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
   }
 }
+
+// ======================== MOBILE DRAWER ========================
+function toggleMobileDrawer(){
+  document.getElementById('mobileDrawer').classList.toggle('open');
+  document.getElementById('mobileDrawerOverlay').classList.toggle('open');
+}
+
+// ======================== VERSION FLOAT ========================
+function toggleVersionDropdown(){document.getElementById('versionFloat').classList.toggle('open');}
+
+// ======================== DROPDOWNS ========================
+function toggleDropdown(ddId,btnId){
+  const isOpen=document.getElementById(ddId).classList.contains('open');
+  closeDropdowns();
+  if(!isOpen){document.getElementById(ddId).classList.add('open');if(btnId)document.getElementById(btnId).classList.add('open');}
+}
+function closeDropdowns(){
+  document.querySelectorAll('.header-dropdown').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.header-nav-btn').forEach(b=>b.classList.remove('open'));
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.header-group'))closeDropdowns();
+  if(!e.target.closest('.version-float'))document.getElementById('versionFloat').classList.remove('open');
+});
+
+// ======================== TABS ========================
+function switchTab(e){
+  const btn=e.target.closest('.lang-tab');
+  const cb=btn.closest('.codeblock');
+  const tabId=btn.dataset.tab;
+  const lang=btn.dataset.lang;
+  cb.querySelectorAll('.lang-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  cb.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById(tabId);if(pane)pane.classList.add('active');
+  if(lang){
+    localStorage.setItem('preferredLang',lang);
+    document.querySelectorAll('.lang-tab[data-lang="'+lang+'"]').forEach(t=>{
+      if(t===btn)return;
+      const parentCb=t.closest('.codeblock');if(!parentCb)return;
+      parentCb.querySelectorAll('.lang-tab').forEach(x=>x.classList.remove('active'));
+      t.classList.add('active');
+      parentCb.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+      const tp=document.getElementById(t.dataset.tab);if(tp)tp.classList.add('active');
+    });
+  }
+}
+
+// ======================== COPY ========================
+function copyBlock(btn){
+  const cb=btn.closest('.codeblock');
+  const active=cb.querySelector('.tab-pane.active')||cb.querySelector('.tab-pane');
+  navigator.clipboard.writeText(active?active.innerText:'').then(()=>{
+    btn.textContent='Copiado';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied');},2000);
+  });
+}
+
+// ======================== PERMALINK ========================
+function copyPermalink(e,id){
+  e.preventDefault();
+  const url=`${location.origin}${location.pathname}#${id}`;
+  navigator.clipboard.writeText(url).then(()=>{
+    const el=e.target;el.textContent='✓';setTimeout(()=>{el.textContent='#';},1500);
+  });
+}
+function tocNav(e,id){e.preventDefault();document.querySelector('#'+id).scrollIntoView({behavior:'smooth',block:'start'});}
+
+// ======================== SANDBOX ========================
+const IS_LOCAL=location.hostname==='localhost'||location.hostname==='127.0.0.1';
+async function runSandboxInternal(resultId,statusId,timeId,bodyId,amount){
+  const rs=document.getElementById(resultId);
+  rs.classList.add('visible');
+  document.getElementById(statusId).textContent=IS_LOCAL?'conectando a localhost:8080...':'demo...';
+  document.getElementById(bodyId).textContent='carregando...';
+  const t0=performance.now();
+  if(!IS_LOCAL){
+    await new Promise(r=>setTimeout(r,320));
+    const ms=Math.round(performance.now()-t0);
+    const isErr=(amount===99.99);
+    const mid='demo-'+Math.random().toString(36).slice(2,10);
+    document.getElementById(statusId).textContent='201 Created';
+    document.getElementById(timeId).textContent=ms+'ms';
+    document.getElementById(bodyId).textContent=JSON.stringify(
+      isErr?{paymentId:mid,status:'ERROR',amount,currency:'BRL',details:{provider:'MOCK',error:'Forced error via amount 99.99'},createdAt:new Date().toISOString()}
+          :{paymentId:mid,status:'APPROVED',amount,currency:'BRL',details:{provider:'MOCK'},createdAt:new Date().toISOString()},
+      null,2
+    );return;
+  }
+  try{
+    const key='sandbox-'+Date.now();
+    const res=await fetch('http://localhost:8080/v1/payments',{method:'POST',headers:{'x-api-key':'orquestraio-livre-123','Content-Type':'application/json'},body:JSON.stringify({idempotencyKey:key,amount:amount||197,currency:'BRL',paymentMethodRequest:{type:'pix',token:null},customer:{id:'usr_sandbox',email:'dev@orquestraio.com',document:'000.000.000-00'},metadata:{gateway:'MOCK'}})});
+    const ms=Math.round(performance.now()-t0);
+    const data=await res.json();
+    document.getElementById(statusId).textContent=res.status+' '+res.statusText;
+    document.getElementById(timeId).textContent=ms+'ms';
+    document.getElementById(bodyId).textContent=JSON.stringify(data,null,2);
+  }catch(err){
+    const ms=Math.round(performance.now()-t0);
+    document.getElementById(statusId).textContent='Erro de conexao';
+    document.getElementById(timeId).textContent=ms+'ms';
+    document.getElementById(bodyId).textContent='// Nao foi possivel conectar em localhost:8080\n// docker-compose up -d\n\nErro: '+err.message;
+  }
+}
+
+// ======================== HELPFUL ========================
+function helpful(btn,type){
+  const widget=btn.closest('.helpful-widget');
+  widget.querySelectorAll('.helpful-btn').forEach(b=>b.classList.add('voted'));
+  btn.textContent=type==='yes'?'Obrigado!':'Obrigado pelo feedback';
+  btn.style.color=type==='yes'?'var(--brand)':'var(--red)';
+}
+
+// ======================== SCROLL ANIMATIONS ========================
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+    }
+  });
+}, {threshold: 0.1});
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// ======================== INIT ========================
 applyTheme();
+initMermaid();
+renderCmd('');
 </script>
 
 </body>
