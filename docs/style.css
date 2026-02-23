@@ -387,7 +387,7 @@ body{
   padding:3rem 2rem 6rem;
   gap:3rem;
 }
-.content{flex:1;min-width:0;}
+.content{flex:1;min-width:0;overflow-x:auto;}
 @media(max-width:768px){.content-wrapper{padding:2rem 1.25rem 5rem;}}
 
 /* =================== SECTION =================== */
@@ -592,8 +592,15 @@ p{color:var(--text-2);line-height:1.75;}
 
 /* =================== DOC TABLE =================== */
 .doc-table{
-  width:100%;border-collapse:collapse;margin:1.25rem 0;
-  font-size:0.82rem;table-layout:auto;display:table;
+  width:max-content;
+  min-width:100%;
+  border-collapse:collapse;
+  margin:1.25rem 0;
+  font-size:0.82rem;
+  table-layout:auto;
+  border:1px solid var(--border);
+  border-radius:var(--radius-md);
+  overflow:hidden;
 }
 .doc-table thead th{
   text-align:left;padding:0.45rem 1rem;
@@ -604,7 +611,6 @@ p{color:var(--text-2);line-height:1.75;}
 }
 .doc-table thead th:first-child{border-radius:var(--radius-md) 0 0 0;}
 .doc-table thead th:last-child{border-radius:0 var(--radius-md) 0 0;}
-.doc-table{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
 .doc-table tbody tr{border-bottom:1px solid var(--border);}
 .doc-table tbody tr:last-child{border-bottom:none;}
 .doc-table tbody tr:hover{background:rgba(255,255,255,0.02);}
