@@ -939,7 +939,7 @@ p{color:var(--text-2);line-height:1.75;}
   transition:color var(--transition),background var(--transition);
   border-left:2px solid transparent;font-weight:400;
 }
-.sidebar-item:hover{color:var(--text-2);background:var(--brand-faint);}
+.sidebar-item:hover{color:var(--text-2);}
 .sidebar-item.active{color:var(--brand);border-left-color:var(--brand);background:var(--brand-faint);font-weight:500;}
 @media(max-width:900px){
   .sidebar{display:none;}
