@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Segurança — Orquestraio Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-right">
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Inicio</div>
+    <a href="index.html" class="sidebar-item">Introducao</a>
+    <a href="quickstart.html" class="sidebar-item">Primeiros Passos</a>
+    <a href="autenticacao.html" class="sidebar-item">Autenticacao</a>
+    <a href="glossario.html" class="sidebar-item">Glossario</a>
+    <a href="changelog.html" class="sidebar-item">Changelog</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">API</div>
+    <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
+    <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
+    <a href="webhooks.html" class="sidebar-item">Webhooks</a>
+    <a href="erros-status.html" class="sidebar-item">Erros &amp; Status</a>
+    <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Funcionalidades</div>
+    <a href="resiliencia.html" class="sidebar-item">Resiliencia</a>
+    <a href="seguranca.html" class="sidebar-item active">Seguranca</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guias</div>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
+  </div>
+</aside>
+
+<div class="shell">
+  <main class="main">
+
+    <div class="section-label">Funcionalidades</div>
+    <h1 class="section-title">Segurança</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      5 min de leitura
+    </div>
+    <p class="section-desc">Camadas de segurança implementadas no Orquestraio — desde autenticação de requisições até criptografia de credenciais em repouso.</p>
+
+    <!-- AES-256 -->
+    <h2 id="credenciais">Credenciais de Gateway em Repouso (AES-256)</h2>
+    <p>As credenciais de cada gateway (chaves de API do Stripe, MercadoPago, PayPal) são armazenadas criptografadas no banco de dados usando <strong>AES-256-GCM</strong>. A chave mestre não é persistida no banco — ela é injetada via variável de ambiente no startup da aplicação.</p>
+
+    <table class="doc-table">
+      <thead><tr><th>Dado</th><th>Como é armazenado</th></tr></thead>
+      <tbody>
+        <tr><td>Chaves de API dos gateways</td><td>AES-256-GCM, criptografado em repouso</td></tr>
+        <tr><td>API keys dos tenants (<code>x-api-key</code>)</td><td>Hash SHA-256 — nunca o valor bruto</td></tr>
+        <tr><td>Dados do cliente (<code>customer</code>)</td><td>Armazenados normalmente — não são dados de cartão</td></tr>
+        <tr><td>Números de cartão</td><td>Nunca armazenados — processados somente via token</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-success">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>
+      <div class="callout-body"><strong>PCI-DSS scope reduzido:</strong> Como o Orquestraio não armazena dados brutos de cartão (somente tokens), o escopo de compliance PCI-DSS do seu sistema é significativamente reduzido. Você ainda é responsável pela tokenização no frontend.</div>
+    </div>
+
+    <!-- TLS -->
+    <h2 id="tls">TLS em Trânsito</h2>
+    <p>Toda comunicação entre o cliente e a API do Orquestraio exige <strong>TLS 1.2 ou superior</strong>. Requisições HTTP puro são rejeitadas. Internamente, a comunicação com os gateways também é realizada sobre HTTPS com validação de certificado.</p>
+
+    <div class="callout callout-warning">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <div class="callout-body"><strong>Ambientes de desenvolvimento:</strong> No ambiente local com Docker, TLS não é obrigatório (<code>http://localhost:8080</code>). Em produção, configure um reverse proxy (Nginx, Caddy) com certificado válido à frente da aplicação.</div>
+    </div>
+
+    <!-- API KEY SECURITY -->
+    <h2 id="api-key">Segurança das API Keys</h2>
+    <p>As API keys dos tenants são o único mecanismo de autenticação da API. O Orquestraio armazena apenas o <strong>hash SHA-256</strong> da chave — o valor original não pode ser recuperado após a criação.</p>
+
+    <table class="doc-table">
+      <thead><tr><th>Situação</th><th>Comportamento</th><th>Status HTTP</th></tr></thead>
+      <tbody>
+        <tr><td>Header <code>x-api-key</code> ausente</td><td>Rejeitado antes de qualquer processamento</td><td><code>401</code></td></tr>
+        <tr><td>Chave inválida (hash não encontrado)</td><td>Rejeitado pelo <code>ApiKeyAuthFilter</code></td><td><code>401</code></td></tr>
+        <tr><td>Chave válida, tenant <code>INACTIVE</code></td><td>Rejeitado pelo <code>GlobalExceptionHandler</code></td><td><code>403</code></td></tr>
+        <tr><td>Chave válida, tenant <code>ACTIVE</code></td><td>Requisição processada normalmente</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </span>
+      <div class="callout-body"><strong>Se sua chave for comprometida:</strong> Revogue imediatamente pelo painel de administração — a revogação é instantânea e não causa downtime. Uma nova chave pode ser gerada no mesmo momento. Nunca compartilhe chaves de produção (<code>Oz_live_</code>) entre ambientes.</div>
+    </div>
+
+    <!-- WEBHOOK HMAC -->
+    <h2 id="webhook-hmac">Verificação de Webhooks (HMAC-SHA256)</h2>
+    <p>Webhooks são assinados com HMAC-SHA256 usando um secret exclusivo por tenant. Verificar a assinatura é <strong>obrigatório em produção</strong> — sem isso, qualquer pessoa que conheça sua URL de webhook pode injetar eventos falsos.</p>
+
+    <p>Cada notificação inclui o header <code>X-Orquestraio-Signature</code> no formato:</p>
+
+    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:1rem;overflow-x:auto;margin:1.125rem 0;"><code style="background:none;border:none;padding:0;font-size:0.78rem;line-height:1.8;color:var(--text-2);">X-Orquestraio-Signature: sha256=a1b2c3d4e5f6...</code></pre>
+
+    <p>Para validar, compute o HMAC-SHA256 do body bruto da requisição usando seu webhook secret, e compare com o valor do header.</p>
+
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs">
+          <button class="lang-tab active" data-tab="hmac-js" onclick="switchTab(event)">JavaScript</button>
+          <button class="lang-tab" data-tab="hmac-py" onclick="switchTab(event)">Python</button>
+          <button class="lang-tab" data-tab="hmac-java" onclick="switchTab(event)">Java</button>
+        </div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active" id="hmac-js"><span class="t-key">const</span> crypto = require(<span class="t-str">'crypto'</span>);
+
+<span class="t-key">function</span> verifyWebhookSignature(rawBody, signatureHeader, secret) {
+  <span class="t-key">const</span> expected = <span class="t-str">'sha256='</span> + crypto
+    .createHmac(<span class="t-str">'sha256'</span>, secret)
+    .update(rawBody)          <span class="t-comment">// rawBody deve ser Buffer ou string sem parse</span>
+    .digest(<span class="t-str">'hex'</span>);
+
+  <span class="t-comment">// Comparação segura — evita timing attacks</span>
+  <span class="t-key">return</span> crypto.timingSafeEqual(
+    Buffer.from(expected),
+    Buffer.from(signatureHeader)
+  );
+}
+
+<span class="t-comment">// Uso em Express — IMPORTANTE: usar express.raw() antes do json()</span>
+app.post(<span class="t-str">'/webhooks/orquestraio'</span>, express.raw({type: <span class="t-str">'application/json'</span>}), (req, res) => {
+  <span class="t-key">const</span> sig = req.headers[<span class="t-str">'x-orquestraio-signature'</span>];
+  <span class="t-key">const</span> secret = process.env.ORQUESTRAIO_WEBHOOK_SECRET;
+
+  <span class="t-key">if</span> (!verifyWebhookSignature(req.body, sig, secret)) {
+    <span class="t-key">return</span> res.status(<span class="t-num">401</span>).json({ error: <span class="t-str">'Assinatura invalida'</span> });
+  }
+
+  <span class="t-key">const</span> event = JSON.parse(req.body);
+  <span class="t-comment">// processar evento...</span>
+  res.status(<span class="t-num">200</span>).json({ received: <span class="t-bool">true</span> });
+});</div>
+<div class="tab-pane" id="hmac-py">import hmac, hashlib, os
+from flask import request, jsonify
+
+<span class="t-key">def</span> verify_webhook_signature(raw_body: bytes, signature_header: str, secret: str) -> bool:
+    expected = <span class="t-str">'sha256='</span> + hmac.new(
+        secret.encode(),
+        raw_body,
+        hashlib.sha256
+    ).hexdigest()
+    <span class="t-comment"># compare_digest evita timing attacks</span>
+    <span class="t-key">return</span> hmac.compare_digest(expected, signature_header)
+
+@app.route(<span class="t-str">'/webhooks/orquestraio'</span>, methods=[<span class="t-str">'POST'</span>])
+<span class="t-key">def</span> webhook():
+    sig = request.headers.get(<span class="t-str">'X-Orquestraio-Signature'</span>, <span class="t-str">''</span>)
+    secret = os.environ[<span class="t-str">'ORQUESTRAIO_WEBHOOK_SECRET'</span>]
+
+    <span class="t-key">if</span> not verify_webhook_signature(request.get_data(), sig, secret):
+        <span class="t-key">return</span> jsonify({<span class="t-str">'error'</span>: <span class="t-str">'Assinatura invalida'</span>}), <span class="t-num">401</span>
+
+    event = request.json
+    <span class="t-comment"># processar evento...</span>
+    <span class="t-key">return</span> jsonify({<span class="t-str">'received'</span>: <span class="t-bool">True</span>}), <span class="t-num">200</span></div>
+<div class="tab-pane" id="hmac-java">import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.MessageDigest;
+
+public class WebhookVerifier {
+
+    public static boolean verify(byte[] rawBody, String signatureHeader, String secret)
+            throws Exception {
+        Mac mac = Mac.getInstance("HmacSHA256");
+        mac.init(new SecretKeySpec(secret.getBytes(), "HmacSHA256"));
+        String computed = "sha256=" + bytesToHex(mac.doFinal(rawBody));
+
+        // MessageDigest.isEqual faz comparação em tempo constante
+        return MessageDigest.isEqual(computed.getBytes(), signatureHeader.getBytes());
+    }
+
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) sb.append(String.format("%02x", b));
+        return sb.toString();
+    }
+}</div>
+      </div>
+    </div>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </span>
+      <div class="callout-body">
+        <strong>Nunca use == para comparar assinaturas.</strong> Comparação direta de strings é vulnerável a timing attacks — um atacante pode inferir a assinatura correta medindo o tempo de resposta. Sempre use <code>crypto.timingSafeEqual</code> (Node.js), <code>hmac.compare_digest</code> (Python) ou <code>MessageDigest.isEqual</code> (Java).
+      </div>
+    </div>
+
+    <!-- BEST PRACTICES -->
+    <h2 id="boas-praticas">Checklist de Segurança para Produção</h2>
+
+    <div style="border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;margin:1.25rem 0;">
+      <div style="padding:0.5rem 1rem;background:var(--bg-surface);border-bottom:1px solid var(--border);font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);">Checklist</div>
+      <div style="padding:1rem;display:flex;flex-direction:column;gap:0.6rem;">
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> Usar chave <code>Oz_live_</code> apenas em produção, nunca em desenvolvimento
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> API key armazenada em variável de ambiente, nunca no código-fonte
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> TLS ativo no servidor de produção (certificado válido)
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> Assinatura HMAC verificada em todos os endpoints de webhook
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> Webhook secret armazenado como segredo separado da API key
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> Tokenização de cartões feita pelo SDK do gateway no frontend (nunca dados brutos no backend)
+        </label>
+        <label style="display:flex;align-items:baseline;gap:0.75rem;cursor:pointer;font-size:0.84rem;color:var(--text-2);">
+          <input type="checkbox" style="margin-top:2px;accent-color:var(--brand);"> Plano de revogação de chave comprometida documentado na equipe
+        </label>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  const newTheme=isLight?'dark':'light';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('theme',newTheme);
+  document.getElementById('themeIcon').innerHTML=isLight
+    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function applyTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+applyTheme();
+function switchTab(e){
+  const btn=e.target.closest('.lang-tab');
+  const cb=btn.closest('.codeblock');
+  const tabId=btn.dataset.tab;
+  cb.querySelectorAll('.lang-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  cb.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById(tabId);if(pane)pane.classList.add('active');
+}
+function copyBlock(btn){
+  const cb=btn.closest('.codeblock');
+  const active=cb.querySelector('.tab-pane.active')||cb.querySelector('.tab-pane');
+  navigator.clipboard.writeText(active?active.innerText:'').then(()=>{
+    btn.textContent='Copiado';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied');},2000);
+  });
+}
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
