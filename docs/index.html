@@ -38,6 +38,7 @@
   --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.5);
   --radius:       0px;
   --transition:   0.15s ease;
+  --topnav-h:     60px;
 }
 
 /* =================== LIGHT THEME =================== */
@@ -109,24 +110,12 @@ body::before{
 
 /* =================== LAYOUT =================== */
 .shell{
-  display:grid;
-  grid-template-columns:var(--sidebar-w) 1fr var(--toc-w);
   min-height:100vh;
   position:relative;z-index:1;
 }
 
-/* =================== SIDEBAR =================== */
-.sidebar{
-  position:fixed;top:0;left:0;
-  width:var(--sidebar-w);
-  height:100vh;
-  overflow-y:auto;
-  border-right:1px solid var(--border);
-  background:var(--bg-1);
-  display:flex;flex-direction:column;
-  z-index:200;
-  transition:transform var(--transition),background var(--transition);
-}
+/* =================== SIDEBAR (hidden - replaced by topnav) =================== */
+.sidebar{display:none;}
 .sidebar::-webkit-scrollbar{width:3px;}
 .sidebar::-webkit-scrollbar-thumb{background:var(--border-2);}
 
@@ -221,18 +210,8 @@ body::before{
 .sidebar-shortcuts{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-3);display:flex;gap:0.6rem;flex-wrap:wrap;}
 .sidebar-shortcuts kbd{background:var(--bg-3);border:1px solid var(--border-2);padding:0.05rem 0.3rem;}
 
-/* =================== HAMBURGER =================== */
-.hamburger{
-  display:none;
-  position:fixed;top:0.75rem;left:0.75rem;
-  width:32px;height:32px;z-index:300;
-  background:var(--bg-1);border:1px solid var(--border-2);
-  cursor:pointer;align-items:center;justify-content:center;
-  color:var(--text-2);transition:all var(--transition);
-}
-.hamburger:hover{color:var(--purple-light);border-color:var(--border-3);}
-.hamburger svg{width:14px;height:14px;}
-@media(max-width:768px){.hamburger{display:flex;}}
+/* =================== HAMBURGER (replaced by topnav hamburger) =================== */
+.hamburger{display:none;}
 
 /* =================== COMMAND PALETTE =================== */
 .cmd-overlay{
@@ -326,18 +305,10 @@ body::before{
 .version-dd-item.current{color:var(--purple-light);}
 
 /* =================== MAIN =================== */
-.main{grid-column:2;min-width:0;padding:2.5rem 3rem 6rem;}
+.main{max-width:840px;width:100%;margin:0 auto;padding:calc(var(--topnav-h) + 2.5rem) 2rem 6rem;}
 
-/* =================== FLOATING TOC =================== */
-.toc{
-  grid-column:3;
-  position:sticky;top:0;
-  height:100vh;
-  overflow-y:auto;
-  padding:2rem 1.25rem 2rem 1rem;
-  border-left:1px solid var(--border);
-  background:var(--bg-1);
-}
+/* =================== FLOATING TOC (hidden - replaced by topnav) =================== */
+.toc{display:none;}
 .toc::-webkit-scrollbar{width:2px;}
 .toc::-webkit-scrollbar-thumb{background:var(--border);}
 .toc-label{
@@ -361,19 +332,168 @@ body::before{
 .toc-progress-bar{flex:1;height:2px;background:var(--border);overflow:hidden;}
 .toc-progress-fill{height:100%;background:linear-gradient(90deg,var(--purple-mid),var(--indigo));width:0%;transition:width 0.2s linear;}
 
+/* =================== TOP NAVIGATION =================== */
+.topnav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--topnav-h);
+  background:rgba(7,7,13,0.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  z-index:500;
+  transition:background var(--transition);
+}
+[data-theme="light"] .topnav{background:rgba(248,247,253,0.9);}
+.topnav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;
+  height:100%;padding:0 1.5rem;gap:1rem;
+}
+.topnav-logo{
+  display:flex;align-items:center;gap:0.5rem;
+  text-decoration:none;flex-shrink:0;
+}
+.topnav-logo:hover{text-decoration:none;}
+.topnav-logo-mark{
+  width:26px;height:26px;
+  border:1px solid var(--border-3);
+  background:var(--purple-faint);
+  display:flex;align-items:center;justify-content:center;
+  border-radius:6px;flex-shrink:0;
+}
+.topnav-logo-mark svg{width:13px;height:13px;}
+.topnav-logo-text{font-family:var(--font-mono);font-weight:600;font-size:0.85rem;color:var(--text);letter-spacing:0.02em;}
+.topnav-version{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-3);border:1px solid var(--border);padding:0.05rem 0.3rem;border-radius:3px;margin-left:0.1rem;}
+.topnav-sep{width:1px;height:20px;background:var(--border);margin:0 0.5rem;flex-shrink:0;}
+.topnav-links{display:flex;align-items:center;gap:0.2rem;flex:1;}
+.topnav-group{position:relative;}
+.topnav-btn{
+  display:flex;align-items:center;gap:0.3rem;
+  padding:0.35rem 0.6rem;background:none;border:none;
+  color:var(--text-3);font-size:0.82rem;font-family:var(--font-sans);
+  cursor:pointer;border-radius:6px;
+  transition:color var(--transition),background var(--transition);
+  white-space:nowrap;
+}
+.topnav-btn:hover,.topnav-btn.open{color:var(--text);background:rgba(120,80,255,0.07);}
+.topnav-btn svg{width:12px;height:12px;transition:transform 0.15s ease;}
+.topnav-btn.open svg{transform:rotate(180deg);}
+.topnav-link{
+  display:flex;align-items:center;gap:0.3rem;
+  padding:0.35rem 0.6rem;
+  color:var(--text-3);font-size:0.82rem;font-family:var(--font-sans);
+  text-decoration:none;border-radius:6px;
+  transition:color var(--transition),background var(--transition);
+  white-space:nowrap;
+}
+.topnav-link:hover{color:var(--text);background:rgba(120,80,255,0.07);text-decoration:none;}
+.topnav-dropdown{
+  position:absolute;top:calc(100% + 6px);left:0;
+  background:var(--bg-1);border:1px solid var(--border-2);
+  border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.4);
+  min-width:200px;padding:0.4rem;
+  display:none;z-index:600;
+}
+.topnav-dropdown.open{display:block;}
+.dd-item{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.45rem 0.65rem;
+  color:var(--text-2);font-size:0.82rem;
+  text-decoration:none;border-radius:6px;
+  transition:background var(--transition),color var(--transition);
+  white-space:nowrap;
+}
+.dd-item:hover{background:rgba(120,80,255,0.08);color:var(--purple-light);text-decoration:none;}
+.dd-divider{height:1px;background:var(--border);margin:0.3rem 0;}
+.topnav-right{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
+.topnav-search{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.35rem 0.75rem;
+  background:var(--bg-2);border:1px solid var(--border);
+  border-radius:8px;cursor:pointer;
+  color:var(--text-3);font-size:0.8rem;font-family:var(--font-sans);
+  transition:border-color var(--transition);
+  white-space:nowrap;
+}
+.topnav-search:hover{border-color:var(--border-2);color:var(--text-2);}
+.topnav-search svg{width:13px;height:13px;flex-shrink:0;}
+.topnav-search kbd{font-family:var(--font-mono);font-size:0.6rem;background:var(--bg-3);border:1px solid var(--border-2);padding:0.05rem 0.3rem;border-radius:3px;color:var(--text-3);}
+.topnav-search span{display:none;}
+@media(min-width:640px){.topnav-search span{display:inline;}}
+.topnav-icon-btn{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--border);border-radius:6px;
+  color:var(--text-3);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;
+  flex-shrink:0;
+}
+.topnav-icon-btn:hover{color:var(--purple-light);border-color:var(--border-2);text-decoration:none;}
+.topnav-icon-btn svg{width:14px;height:14px;}
+.topnav-hamburger{
+  width:32px;height:32px;display:none;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--border);border-radius:6px;
+  color:var(--text-2);cursor:pointer;
+  transition:all var(--transition);
+}
+.topnav-hamburger:hover{color:var(--purple-light);border-color:var(--border-2);}
+.topnav-hamburger svg{width:15px;height:15px;}
+@media(max-width:900px){
+  .topnav-links{display:none;}
+  .topnav-sep{display:none;}
+  .topnav-hamburger{display:flex;}
+}
+
+/* Mobile drawer */
+.mobile-drawer{
+  position:fixed;top:var(--topnav-h);left:0;bottom:0;
+  width:280px;background:var(--bg-1);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  transform:translateX(-100%);
+  transition:transform 0.25s ease;
+  z-index:490;
+  padding:1rem 0.75rem 2rem;
+}
+.mobile-drawer.open{transform:translateX(0);}
+.mobile-drawer-overlay{
+  display:none;position:fixed;inset:0;top:var(--topnav-h);
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(3px);
+  z-index:489;
+}
+.mobile-drawer-overlay.open{display:block;}
+.mobile-nav-group{margin-bottom:1.25rem;}
+.mobile-nav-label{font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-3);padding:0.25rem 0.5rem;margin-bottom:0.25rem;}
+.mobile-nav-item{display:flex;align-items:center;gap:0.4rem;padding:0.4rem 0.5rem;color:var(--text-2);font-size:0.85rem;text-decoration:none;border-radius:6px;transition:background var(--transition),color var(--transition);}
+.mobile-nav-item:hover{background:rgba(120,80,255,0.08);color:var(--purple-light);text-decoration:none;}
+.mobile-nav-item.active{background:rgba(124,58,237,0.1);color:var(--purple-light);}
+
+/* =================== CLIENT LIBRARIES GRID =================== */
+.lib-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:0.75rem;margin:1.5rem 0;}
+.lib-card{
+  display:flex;flex-direction:column;align-items:center;gap:0.5rem;
+  padding:1.25rem 0.75rem;
+  background:var(--bg-1);border:1px solid var(--border);border-radius:12px;
+  text-decoration:none;color:inherit;
+  transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;
+}
+.lib-card:hover{transform:translateY(-2px);box-shadow:0 6px 24px rgba(109,40,217,0.13);border-color:var(--border-2);text-decoration:none;}
+.lib-card-icon{width:36px;height:36px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-size:1.1rem;}
+.lib-card-name{font-family:var(--font-mono);font-size:0.72rem;font-weight:600;color:var(--text);}
+.lib-card-desc{font-size:0.7rem;color:var(--text-3);text-align:center;line-height:1.4;}
+@media(max-width:640px){.lib-grid{grid-template-columns:repeat(2,1fr);}}
+
 /* =================== PAGE HERO =================== */
-.page-hero{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);}
+.page-hero{margin-bottom:2.5rem;padding-bottom:2rem;border-bottom:1px solid var(--border);padding-top:2rem;}
 .eyebrow{font-family:var(--font-mono);font-size:0.64rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--purple-light);margin-bottom:0.875rem;}
-.hero-title{font-size:2rem;font-weight:600;color:var(--text);letter-spacing:-0.03em;line-height:1.15;margin-bottom:0.875rem;}
+.hero-title{font-size:2.5rem;font-weight:700;color:var(--text);letter-spacing:-0.04em;line-height:1.1;margin-bottom:1rem;}
 .hero-title em{font-style:normal;background:linear-gradient(135deg,var(--purple-light),var(--indigo));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .hero-lead{font-size:0.9rem;color:var(--text-2);max-width:520px;line-height:1.8;margin-bottom:1.25rem;}
 .hero-actions{display:flex;gap:0.45rem;flex-wrap:wrap;}
-.btn-primary{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.875rem;background:var(--purple-mid);color:#fff;font-size:0.76rem;font-weight:500;font-family:var(--font-sans);border:1px solid var(--purple-mid);text-decoration:none;cursor:pointer;transition:background var(--transition);}
-.btn-primary:hover{background:var(--purple);color:#fff;}
-.btn-ghost{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.875rem;background:transparent;color:var(--text-2);font-size:0.76rem;font-family:var(--font-sans);border:1px solid var(--border-2);text-decoration:none;cursor:pointer;transition:all var(--transition);}
-.btn-ghost:hover{border-color:var(--purple-light);color:var(--purple-light);}
-.btn-sandbox{display:inline-flex;align-items:center;gap:0.4rem;padding:0.45rem 0.875rem;background:rgba(52,211,153,0.08);color:var(--emerald);font-size:0.76rem;font-family:var(--font-sans);border:1px solid rgba(52,211,153,0.2);text-decoration:none;cursor:pointer;transition:all var(--transition);}
-.btn-sandbox:hover{background:rgba(52,211,153,0.14);border-color:rgba(52,211,153,0.4);}
+.btn-primary{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.25rem;background:var(--purple-mid);color:#fff;font-size:0.85rem;font-weight:500;font-family:var(--font-sans);border:1px solid var(--purple-mid);border-radius:6px;text-decoration:none;cursor:pointer;transition:all 0.2s ease;}
+.btn-primary:hover{background:var(--purple);transform:translateY(-1px);box-shadow:0 4px 20px rgba(124,58,237,0.4);color:#fff;}
+.btn-ghost{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.25rem;background:transparent;color:var(--text-2);font-size:0.85rem;font-family:var(--font-sans);border:1px solid var(--border-2);border-radius:6px;text-decoration:none;cursor:pointer;transition:all 0.2s ease;}
+.btn-ghost:hover{border-color:var(--purple-light);color:var(--purple-light);transform:translateY(-1px);}
+.btn-sandbox{display:inline-flex;align-items:center;gap:0.5rem;padding:0.6rem 1.25rem;background:rgba(52,211,153,0.08);color:var(--emerald);font-size:0.85rem;font-family:var(--font-sans);border:1px solid rgba(52,211,153,0.2);border-radius:6px;text-decoration:none;cursor:pointer;transition:all 0.2s ease;}
+.btn-sandbox:hover{background:rgba(52,211,153,0.14);border-color:rgba(52,211,153,0.4);transform:translateY(-1px);}
 
 /* =================== SECTION =================== */
 .doc-section{margin-bottom:3rem;scroll-margin-top:1.5rem;}
@@ -503,13 +623,13 @@ a:hover{text-decoration:underline;}
 .status-desc{color:var(--text-2);}
 
 /* =================== FEATURE GRID =================== */
-.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;margin:1.125rem 0;background:var(--border);}
-.feature-card{background:var(--bg-1);padding:1.25rem;transition:background var(--transition),border-color var(--transition);display:block;text-decoration:none;border:1px solid transparent;color:inherit;}
-.feature-card:hover{background:var(--bg-2);border-color:var(--border-3);text-decoration:none;}
-.feature-card-icon{width:24px;height:24px;border:1px solid var(--border-2);background:var(--purple-faint);display:flex;align-items:center;justify-content:center;margin-bottom:0.7rem;}
-.feature-card-icon svg{width:11px;height:11px;}
-.feature-card-title{font-family:var(--font-mono);font-size:0.72rem;font-weight:600;color:var(--text);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.4rem;}
-.feature-card-desc{font-size:0.78rem;color:var(--text-2);line-height:1.65;}
+.feature-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.5rem 0;}
+.feature-card{background:var(--bg-1);padding:1.5rem;transition:transform 0.2s ease,box-shadow 0.2s ease,border-color 0.2s ease;display:block;text-decoration:none;border:1px solid var(--border);border-radius:12px;color:inherit;}
+.feature-card:hover{transform:translateY(-2px);box-shadow:0 8px 30px rgba(109,40,217,0.15);border-color:var(--border-3);text-decoration:none;}
+.feature-card-icon{width:32px;height:32px;border:1px solid var(--border-2);background:var(--purple-faint);display:flex;align-items:center;justify-content:center;margin-bottom:0.875rem;border-radius:8px;}
+.feature-card-icon svg{width:15px;height:15px;}
+.feature-card-title{font-family:var(--font-sans);font-size:0.9rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;display:flex;align-items:center;gap:0.4rem;}
+.feature-card-desc{font-size:0.82rem;color:var(--text-2);line-height:1.65;}
 
 /* =================== GATEWAY ROW =================== */
 .gateway-row{border:1px solid var(--border);margin:1.125rem 0;}
@@ -573,14 +693,9 @@ a:hover{text-decoration:underline;}
 .doc-footer a{color:var(--purple-light);}
 
 /* =================== RESPONSIVE =================== */
-@media(max-width:1280px){
-  .shell{grid-template-columns:var(--sidebar-w) 1fr;}
-  .toc{display:none;}
-}
 @media(max-width:768px){
-  .shell{grid-template-columns:1fr;}
-  .main{padding:3.5rem 1.25rem 5rem;}
-  .hero-title{font-size:1.7rem;}
+  .main{padding:calc(var(--topnav-h) + 1.5rem) 1.25rem 5rem;}
+  .hero-title{font-size:1.9rem;}
   .feature-grid{grid-template-columns:1fr;}
   .params-head,.param-row{grid-template-columns:1fr 45px 1fr;}
   .status-row{grid-template-columns:48px 1fr;}
@@ -595,13 +710,107 @@ a:hover{text-decoration:underline;}
 <!-- Progress Bar -->
 <div id="progress"></div>
 
-<!-- Hamburger -->
-<button class="hamburger" id="hamburger" aria-label="Menu" onclick="toggleSidebar()">
-  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
-</button>
+<!-- Mobile Drawer Overlay -->
+<div class="mobile-drawer-overlay" id="mobileDrawerOverlay" onclick="toggleMobileDrawer()"></div>
 
-<!-- Sidebar Overlay -->
-<div class="sidebar-overlay" id="sidebarOverlay" onclick="toggleSidebar()"></div>
+<!-- TOP NAVIGATION -->
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="#intro" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-sep"></div>
+    <div class="topnav-links">
+      <div class="topnav-group">
+        <button class="topnav-btn" id="btn-api" onclick="toggleDropdown('dd-api','btn-api')">
+          API <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="topnav-dropdown" id="dd-api">
+          <a href="#create"    class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
+          <a href="#methods"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
+          <a href="#routing"   class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
+          <a href="#webhooks"  class="dd-item" onclick="closeDropdowns()">Webhooks</a>
+          <div class="dd-divider"></div>
+          <a href="#errors"    class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
+          <a href="#ratelimit" class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
+        </div>
+      </div>
+      <div class="topnav-group">
+        <button class="topnav-btn" id="btn-features" onclick="toggleDropdown('dd-features','btn-features')">
+          Funcionalidades <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="topnav-dropdown" id="dd-features">
+          <a href="#idempotency" class="dd-item" onclick="closeDropdowns()">Idempotência</a>
+          <a href="#circuit"     class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
+          <a href="#security"    class="dd-item" onclick="closeDropdowns()">Segurança</a>
+        </div>
+      </div>
+      <div class="topnav-group">
+        <button class="topnav-btn" id="btn-guides" onclick="toggleDropdown('dd-guides','btn-guides')">
+          Guias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
+        </button>
+        <div class="topnav-dropdown" id="dd-guides">
+          <a href="#quickstart" class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
+          <a href="#auth"       class="dd-item" onclick="closeDropdowns()">Autenticação</a>
+          <a href="#sandbox"    class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
+          <a href="#sdks"       class="dd-item" onclick="closeDropdowns()">SDKs &amp; Quickstart</a>
+        </div>
+      </div>
+      <a href="#changelog" class="topnav-link">Changelog <span class="tag tag-new" style="font-size:0.56rem;">Novo</span></a>
+    </div>
+    <div class="topnav-right">
+      <button class="topnav-search" onclick="openCmd()" title="Buscar (⌘K)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <span>Buscar...</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <a href="https://github.com/vitinh0z/orchestra.io" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+      <button class="topnav-hamburger" onclick="toggleMobileDrawer()" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<!-- Mobile Navigation Drawer -->
+<div class="mobile-drawer" id="mobileDrawer">
+  <div class="mobile-nav-group">
+    <div class="mobile-nav-label">API</div>
+    <a href="#create"    class="mobile-nav-item" onclick="toggleMobileDrawer()">Processar Pagamento</a>
+    <a href="#methods"   class="mobile-nav-item" onclick="toggleMobileDrawer()">Métodos de Pagamento</a>
+    <a href="#routing"   class="mobile-nav-item" onclick="toggleMobileDrawer()">SmartRouter</a>
+    <a href="#webhooks"  class="mobile-nav-item" onclick="toggleMobileDrawer()">Webhooks</a>
+    <a href="#errors"    class="mobile-nav-item" onclick="toggleMobileDrawer()">Erros &amp; Status</a>
+    <a href="#ratelimit" class="mobile-nav-item" onclick="toggleMobileDrawer()">Rate Limiting</a>
+  </div>
+  <div class="mobile-nav-group">
+    <div class="mobile-nav-label">Funcionalidades</div>
+    <a href="#idempotency" class="mobile-nav-item" onclick="toggleMobileDrawer()">Idempotência</a>
+    <a href="#circuit"     class="mobile-nav-item" onclick="toggleMobileDrawer()">Circuit Breaker</a>
+    <a href="#security"    class="mobile-nav-item" onclick="toggleMobileDrawer()">Segurança</a>
+  </div>
+  <div class="mobile-nav-group">
+    <div class="mobile-nav-label">Guias</div>
+    <a href="#quickstart" class="mobile-nav-item" onclick="toggleMobileDrawer()">Primeiros Passos</a>
+    <a href="#auth"       class="mobile-nav-item" onclick="toggleMobileDrawer()">Autenticação</a>
+    <a href="#sandbox"    class="mobile-nav-item" onclick="toggleMobileDrawer()">Sandbox &amp; MOCK</a>
+    <a href="#sdks"       class="mobile-nav-item" onclick="toggleMobileDrawer()">SDKs &amp; Quickstart</a>
+  </div>
+  <div class="mobile-nav-group">
+    <div class="mobile-nav-label">Referência</div>
+    <a href="#changelog" class="mobile-nav-item" onclick="toggleMobileDrawer()">Changelog</a>
+    <a href="#glossary"  class="mobile-nav-item" onclick="toggleMobileDrawer()">Glossário</a>
+  </div>
+</div>
 
 <!-- Command Palette -->
 <div class="cmd-overlay" id="cmdOverlay" onclick="closeCmdIfBg(event)">
@@ -637,67 +846,6 @@ a:hover{text-decoration:underline;}
 
 <div class="shell">
 
-<!-- ======================== SIDEBAR ======================== -->
-<aside class="sidebar" id="sidebar">
-  <a href="#intro" class="logo-area">
-    <div class="logo-mark">
-      <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
-    </div>
-    <span class="logo-text">Orquestraio</span>
-    <span class="logo-version-badge">v0.4</span>
-  </a>
-  <div class="sidebar-actions">
-    <div class="search-trigger" onclick="openCmd()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-      Buscar...
-      <span class="search-kbd">⌘K</span>
-    </div>
-    <button class="theme-toggle" onclick="toggleTheme()" title="Alternar tema">
-      <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-    </button>
-  </div>
-  <nav class="nav">
-    <div class="nav-group">
-      <div class="nav-group-label">Início</div>
-      <a href="#changelog" class="nav-item">Changelog <span class="nav-badge tag tag-new">Novo</span></a>
-      <a href="#intro"     class="nav-item active">Introdução</a>
-      <a href="#quickstart" class="nav-item">Primeiros Passos</a>
-      <a href="#auth"      class="nav-item">Autenticação</a>
-      <a href="#glossary"  class="nav-item">Glossário</a>
-    </div>
-    <div class="nav-group">
-      <div class="nav-group-label">API</div>
-      <a href="#create"    class="nav-item">Processar Pagamento</a>
-      <a href="#methods"   class="nav-item">Métodos de Pagamento</a>
-      <a href="#routing"   class="nav-item">SmartRouter</a>
-      <a href="#webhooks"  class="nav-item">Webhooks</a>
-      <a href="#errors"    class="nav-item">Erros &amp; Status</a>
-      <a href="#ratelimit" class="nav-item">Rate Limiting <span class="nav-badge tag tag-planned">v0.6</span></a>
-    </div>
-    <div class="nav-group">
-      <div class="nav-group-label">Funcionalidades</div>
-      <a href="#idempotency" class="nav-item">Idempotência</a>
-      <a href="#circuit"     class="nav-item">Circuit Breaker</a>
-      <a href="#security"    class="nav-item">Segurança</a>
-    </div>
-    <div class="nav-group">
-      <div class="nav-group-label">Guias</div>
-      <a href="#sandbox" class="nav-item">Sandbox &amp; MOCK</a>
-      <a href="#sdks"    class="nav-item">SDKs &amp; Quickstart</a>
-    </div>
-  </nav>
-  <div class="sidebar-footer">
-    <div class="sidebar-footer-links">
-      <a href="https://github.com/vitinh0z/orchestra.io">GitHub</a>
-      <a href="#">Changelog</a>
-      <a href="#">Status</a>
-    </div>
-    <div class="sidebar-shortcuts">
-      <span><kbd>⌘K</kbd> buscar</span>
-      <span><kbd>?</kbd> atalhos</span>
-    </div>
-  </div>
-</aside>
 
 <!-- ======================== MAIN ======================== -->
 <main class="main">
@@ -762,14 +910,17 @@ a:hover{text-decoration:underline;}
     <p class="hero-lead">O Orquestraio é uma plataforma de orquestração de pagamentos multi-tenant. Integre Stripe, MercadoPago e PayPal de uma vez — com roteamento inteligente, idempotência e resiliência embutidos.</p>
     <div class="hero-actions">
       <a href="#create" class="btn-primary">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         Ver endpoints
       </a>
       <a href="#sandbox" class="btn-sandbox">
-        <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Testar no Sandbox
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        Testar Sandbox
       </a>
-      <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost">GitHub</a>
+      <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost" target="_blank" rel="noopener">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+        GitHub
+      </a>
     </div>
   </section>
 
@@ -1656,6 +1807,50 @@ def webhook():
 
   <div class="doc-divider"></div>
 
+  <!-- CLIENT LIBRARIES -->
+  <section id="client-libs" class="doc-section reveal">
+    <div class="section-label">Guias</div>
+    <div class="section-header">
+      <div>
+        <div class="section-title">Exemplos por Linguagem <a href="#client-libs" class="permalink" onclick="copyPermalink(event,'client-libs')">🔗</a></div>
+        <div class="section-desc">Integre o Orquestraio em minutos usando sua linguagem favorita. Todos os exemplos funcionam com o gateway <code>MOCK</code> — sem credenciais reais.</div>
+      </div>
+      <span class="reading-time">⏱ ~2 min</span>
+    </div>
+    <div class="lib-grid">
+      <a href="#quickstart" class="lib-card">
+        <div class="lib-card-icon" style="background:rgba(248,113,113,0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.5" width="20" height="20"><path d="M8 9l5 5-5 5"/><path d="M3 3l18 18"/></svg>
+        </div>
+        <span class="lib-card-name">cURL</span>
+        <span class="lib-card-desc">Linha de comando</span>
+      </a>
+      <a href="#quickstart" class="lib-card">
+        <div class="lib-card-icon" style="background:rgba(251,191,36,0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" width="20" height="20"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/></svg>
+        </div>
+        <span class="lib-card-name">JavaScript</span>
+        <span class="lib-card-desc">Node.js / Browser</span>
+      </a>
+      <a href="#quickstart" class="lib-card">
+        <div class="lib-card-icon" style="background:rgba(96,165,250,0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        </div>
+        <span class="lib-card-name">Python</span>
+        <span class="lib-card-desc">requests / httpx</span>
+      </a>
+      <a href="#quickstart" class="lib-card">
+        <div class="lib-card-icon" style="background:rgba(52,211,153,0.1);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5" width="20" height="20"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        </div>
+        <span class="lib-card-name">Go</span>
+        <span class="lib-card-desc">net/http</span>
+      </a>
+    </div>
+  </section>
+
+  <div class="doc-divider"></div>
+
   <!-- SDKs -->
   <section id="sdks" class="doc-section reveal">
     <div class="section-label">Guias</div>
@@ -1707,33 +1902,6 @@ def webhook():
 
 </main>
 
-<!-- ======================== TOC ======================== -->
-<nav class="toc" id="toc">
-  <div class="toc-label">Nesta página</div>
-  <div class="toc-progress">
-    <span id="tocProgressPct">0%</span>
-    <div class="toc-progress-bar"><div class="toc-progress-fill" id="tocProgressFill"></div></div>
-  </div>
-  <a href="#changelog"   class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
-  <a href="#intro"       class="toc-item" onclick="tocNav(event,'intro')">Introdução</a>
-  <a href="#quickstart"  class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
-  <a href="#auth"        class="toc-item" onclick="tocNav(event,'auth')">Autenticação</a>
-  <a href="#glossary"    class="toc-item" onclick="tocNav(event,'glossary')">Glossário</a>
-  <div class="toc-divider"></div>
-  <a href="#create"      class="toc-item" onclick="tocNav(event,'create')">Processar Pagamento</a>
-  <a href="#methods"     class="toc-item" onclick="tocNav(event,'methods')">Métodos</a>
-  <a href="#routing"     class="toc-item" onclick="tocNav(event,'routing')">SmartRouter</a>
-  <a href="#webhooks"    class="toc-item" onclick="tocNav(event,'webhooks')">Webhooks</a>
-  <a href="#errors"      class="toc-item" onclick="tocNav(event,'errors')">Erros &amp; Status</a>
-  <a href="#ratelimit"   class="toc-item" onclick="tocNav(event,'ratelimit')">Rate Limiting</a>
-  <div class="toc-divider"></div>
-  <a href="#idempotency" class="toc-item" onclick="tocNav(event,'idempotency')">Idempotência</a>
-  <a href="#circuit"     class="toc-item" onclick="tocNav(event,'circuit')">Circuit Breaker</a>
-  <a href="#security"    class="toc-item" onclick="tocNav(event,'security')">Segurança</a>
-  <div class="toc-divider"></div>
-  <a href="#sandbox"     class="toc-item" onclick="tocNav(event,'sandbox')">Sandbox &amp; MOCK</a>
-  <a href="#sdks"        class="toc-item" onclick="tocNav(event,'sdks')">SDKs &amp; Quickstart</a>
-</nav>
 
 </div><!-- end shell -->
 
@@ -1864,10 +2032,10 @@ function applyPreferredTheme(){
   }
 }
 
-// ======================== SIDEBAR MOBILE ========================
-function toggleSidebar(){
-  document.getElementById('sidebar').classList.toggle('open');
-  document.getElementById('sidebarOverlay').classList.toggle('open');
+// ======================== MOBILE DRAWER ========================
+function toggleMobileDrawer(){
+  document.getElementById('mobileDrawer').classList.toggle('open');
+  document.getElementById('mobileDrawerOverlay').classList.toggle('open');
 }
 
 // ======================== VERSION FLOAT ========================
@@ -1875,7 +2043,22 @@ function toggleVersionDropdown(){
   document.getElementById('versionFloat').classList.toggle('open');
   document.querySelector('.version-btn').classList.toggle('open');
 }
+
+// ======================== TOP NAV DROPDOWNS ========================
+function toggleDropdown(ddId, btnId){
+  const isOpen = document.getElementById(ddId).classList.contains('open');
+  closeDropdowns();
+  if(!isOpen){
+    document.getElementById(ddId).classList.add('open');
+    if(btnId) document.getElementById(btnId).classList.add('open');
+  }
+}
+function closeDropdowns(){
+  document.querySelectorAll('.topnav-dropdown').forEach(d=>d.classList.remove('open'));
+  document.querySelectorAll('.topnav-btn').forEach(b=>b.classList.remove('open'));
+}
 document.addEventListener('click',e=>{
+  if(!e.target.closest('.topnav-group')) closeDropdowns();
   if(!e.target.closest('.version-float')) document.getElementById('versionFloat').classList.remove('open');
 });
 
@@ -2034,8 +2217,8 @@ window.addEventListener('scroll',updateProgress,{passive:true});
 
 // ======================== SCROLL SPY (sidebar + toc) ========================
 const sections=document.querySelectorAll('.doc-section');
-const sidebarItems=document.querySelectorAll('.sidebar .nav-item');
-const tocItems=document.querySelectorAll('.toc .toc-item');
+const sidebarItems=document.querySelectorAll('.mobile-nav-item');
+const tocItems=[];
 const CATEGORY_MAP={
   changelog:'Início',intro:'Início',quickstart:'Início',auth:'Início',glossary:'Início',
   create:'API',methods:'API',routing:'API',webhooks:'API',errors:'API',ratelimit:'API',
@@ -2067,17 +2250,13 @@ sections.forEach(s=>obs.observe(s));
 // nav clicks
 sidebarItems.forEach(item=>{
   item.addEventListener('click',e=>{
-    e.preventDefault();
     const href=item.getAttribute('href');
-    const t=document.querySelector(href);
-    if(t)t.scrollIntoView({behavior:'smooth',block:'start'});
-    const id=href.replace('#','');
+    const id=href&&href.replace('#','');
     const bcCat=document.getElementById('bcCategory');
     const bc=document.getElementById('bcCurrent');
     if(bcCat&&CATEGORY_MAP[id])bcCat.textContent=CATEGORY_MAP[id];
     if(bc&&SECTION_MAP[id])bc.textContent=SECTION_MAP[id];
     sidebarItems.forEach(i=>i.classList.toggle('active',i===item));
-    if(window.innerWidth<=768)toggleSidebar();
   });
 });
 
