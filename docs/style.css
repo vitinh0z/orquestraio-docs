@@ -203,17 +203,14 @@ body{
 
 /* =================== LAYOUT (index.html) =================== */
 .layout{
-  display:flex;
+  display:block;
   padding-top:var(--header-h);
   min-height:100vh;
 }
 .main{
-  flex:1;
   min-width:0;
   padding:3rem 4rem 6rem;
   width:100%;
-  max-width:1280px;
-  margin:0 auto;
 }
 @media(max-width:900px){
   .main{padding:2rem 1.5rem 5rem;}
@@ -418,7 +415,8 @@ code{
   font-family:var(--font-mono);font-size:0.8em;
   background:var(--bg-surface2);border:1px solid var(--border);
   padding:0.1em 0.38em;border-radius:4px;color:var(--text);
-  word-break:break-all;
+  word-break:normal;
+  overflow-wrap:anywhere;
 }
 [data-theme="light"] code{background:rgba(0,0,0,0.05);}
 a{color:var(--brand);text-decoration:none;}
@@ -553,13 +551,14 @@ p{color:var(--text-2);line-height:1.75;}
 /* =================== PARAMS TABLE =================== */
 .params-table{
   border:1px solid var(--border);border-radius:var(--radius-md);
-  margin:1.25rem 0;overflow:hidden;
-  width:100%;
+  margin:1.25rem 0;overflow-x:auto;
+  width:100%;display:block;
 }
 .params-head{
-  display:grid;grid-template-columns:140px 48px 1fr;gap:0.75rem;
+  display:grid;grid-template-columns:140px 48px minmax(420px,1fr);gap:0.75rem;
   padding:0.45rem 1rem;background:var(--bg-surface);
   border-bottom:1px solid var(--border);
+  min-width:760px;
 }
 .params-head span{
   font-family:var(--font-mono);font-size:0.6rem;
@@ -567,10 +566,10 @@ p{color:var(--text-2);line-height:1.75;}
   color:var(--text-muted);font-weight:600;
 }
 .param-row{
-  display:grid;grid-template-columns:140px 48px 1fr;gap:0.75rem;
+  display:grid;grid-template-columns:140px 48px minmax(420px,1fr);gap:0.75rem;
   padding:0.75rem 1rem;border-bottom:1px solid var(--border);
   align-items:start;transition:background var(--transition);
-  min-width:0;
+  min-width:760px;
 }
 .param-row:last-child{border-bottom:none;}
 .param-row:hover{background:rgba(255,255,255,0.02);}
@@ -593,14 +592,8 @@ p{color:var(--text-2);line-height:1.75;}
 
 /* =================== DOC TABLE =================== */
 .doc-table{
-  display:block;
-  width:100%;
-  max-width:100%;
-  overflow-x:auto;
-  border-collapse:collapse;
-  margin:1.25rem 0;
-  font-size:0.82rem;
-  table-layout:auto;
+  width:100%;border-collapse:collapse;margin:1.25rem 0;
+  font-size:0.82rem;table-layout:auto;display:table;
 }
 .doc-table thead th{
   text-align:left;padding:0.45rem 1rem;
@@ -617,16 +610,20 @@ p{color:var(--text-2);line-height:1.75;}
 .doc-table tbody tr:hover{background:rgba(255,255,255,0.02);}
 .doc-table td{
   padding:0.6rem 1rem;color:var(--text-2);vertical-align:top;
-  word-break:break-word;overflow-wrap:break-word;
+  white-space:normal;word-break:normal;overflow-wrap:anywhere;
 }
 .doc-table td:first-child{color:var(--text);font-weight:500;}
 
 /* =================== CALLOUTS =================== */
 .callout{
-  display:flex;gap:0.75rem;
+  display:block;
   padding:0.9rem 1rem;margin:1.25rem 0;
   font-size:0.84rem;line-height:1.65;
   border-radius:var(--radius-md);border:1px solid;
+}
+.callout:has(.callout-icon){
+  display:flex;
+  gap:0.75rem;
 }
 .callout-info   {background:rgba(167,139,250,0.06);border-color:rgba(167,139,250,0.25);}
 .callout-warning{background:rgba(251,191,36,0.06); border-color:rgba(251,191,36,0.25);}
@@ -993,15 +990,12 @@ p{color:var(--text-2);line-height:1.75;}
 
 /* =================== DOC SHELL LAYOUT =================== */
 .shell{
-  display:flex;
+  display:block;
   min-height:100vh;
   position:relative;z-index:1;
+  padding-left:var(--sidebar-w);
 }
 .shell .main{
-  flex:none;
-  /* Reserva espaço da sidebar sem comprimir o conteúdo. */
-  margin-left:var(--sidebar-w);
-  width:calc(100% - var(--sidebar-w));
   max-width:none;
   min-width:0;
   padding:calc(var(--topnav-h) + 2.5rem) 2.5rem 6rem;
@@ -1009,7 +1003,8 @@ p{color:var(--text-2);line-height:1.75;}
   word-break:break-word;
 }
 @media(max-width:900px){
-  .shell .main{margin-left:0;padding:calc(var(--topnav-h) + 1.5rem) 1.25rem 5rem;}
+  .shell{padding-left:0;}
+  .shell .main{padding:calc(var(--topnav-h) + 1.5rem) 1.25rem 5rem;}
 }
 
 /* Títulos dentro do shell main */
