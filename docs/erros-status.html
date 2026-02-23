@@ -46,7 +46,7 @@
     <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
     <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
     <a href="webhooks.html" class="sidebar-item">Webhooks</a>
-    <a href="erros-status.html" class="sidebar-item active">Erros & Status</a>
+    <a href="erros-status.html" class="sidebar-item active">Erros &amp; Status</a>
     <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
   </div>
   <div class="sidebar-section">
@@ -56,7 +56,7 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">Guias</div>
-    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
   </div>
 </aside>
 
@@ -64,7 +64,11 @@
   <main class="main">
 
     <div class="section-label">API</div>
-    <h1 class="section-title">Erros & Status HTTP</h1>
+    <h1 class="section-title">Erros &amp; Status HTTP</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      4 min de leitura
+    </div>
     <p class="section-desc">A API retorna erros em formato padronizado via <code>GlobalExceptionHandler</code>. Todos os erros incluem os campos <code>timestamp</code> (Unix ms), <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code> — definidos pela classe <code>StandardError</code>.</p>
 
     <div class="callout callout-info" style="margin-bottom:1.5rem;">
@@ -92,9 +96,14 @@
         <span class="status-desc">Lançado pelo <code>GlobalExceptionHandler</code> ao capturar <code>MethodArgumentNotValidException</code>. Ocorre quando campos <code>@NotNull</code>, <code>@NotBlank</code> ou <code>@DecimalMin</code> falham na validação do <code>PaymentRequestDTO</code>.</span>
       </div>
       <div class="status-row">
+        <span class="status-code s-4xx">401</span>
+        <span class="status-name">Unauthorized</span>
+        <span class="status-desc">O header <code>x-api-key</code> está ausente ou contém uma chave que não existe no banco (hash SHA-256 não encontrado). Retornado pelo <code>ApiKeyAuthFilter</code> antes de qualquer processamento de negócio. Verifique se a chave está correta e incluída em todas as requisições.</span>
+      </div>
+      <div class="status-row">
         <span class="status-code s-4xx">403</span>
         <span class="status-name">Forbidden</span>
-        <span class="status-desc">Lançado quando o tenant associado à <code>x-api-key</code> está com status <code>INACTIVE</code> no banco. O <code>GlobalExceptionHandler</code> mapeia <code>TenantInactiveException</code> → <code>403</code>.</span>
+        <span class="status-desc">A <code>x-api-key</code> é válida, mas o tenant associado está com status <code>INACTIVE</code> no banco. O <code>GlobalExceptionHandler</code> mapeia <code>TenantInactiveException</code> → <code>403</code>. Diferente do <code>401</code>: a chave existe, mas o acesso foi bloqueado administrativamente.</span>
       </div>
       <div class="status-row">
         <span class="status-code s-4xx">404</span>
@@ -126,6 +135,7 @@
       <div class="codeblock-header">
         <div class="lang-tabs">
           <button class="lang-tab active" data-tab="err-400" onclick="switchTab(event)">400 Validação</button>
+          <button class="lang-tab" data-tab="err-401" onclick="switchTab(event)">401 Unauthorized</button>
           <button class="lang-tab" data-tab="err-403" onclick="switchTab(event)">403 Forbidden</button>
           <button class="lang-tab" data-tab="err-409" onclick="switchTab(event)">409 Conflict</button>
           <button class="lang-tab" data-tab="err-500" onclick="switchTab(event)">500 Server Error</button>
@@ -142,7 +152,17 @@
   <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"amount: não deve ser nulo; currency: não deve ser vazio"</span><span class="t-punct">,</span>
   <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
 <span class="t-punct">}</span></div>
-<div class="tab-pane" id="err-403"><span class="t-comment">// TenantInactiveException — tenant desativado</span>
+<div class="tab-pane" id="err-401"><span class="t-comment">// ApiKeyAuthFilter — header ausente ou chave não encontrada</span>
+<span class="t-comment">// Retornado ANTES de qualquer lógica de negócio</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161380000</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">401</span><span class="t-punct">,</span>
+  <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Nao autorizado"</span><span class="t-punct">,</span>
+  <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"API key ausente ou invalida."</span><span class="t-punct">,</span>
+  <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
+<span class="t-punct">}</span></div>
+<div class="tab-pane" id="err-403"><span class="t-comment">// TenantInactiveException — chave válida mas tenant desativado</span>
+<span class="t-comment">// Diferente do 401: a chave existe, mas o acesso foi bloqueado</span>
 <span class="t-punct">{</span>
   <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161450000</span><span class="t-punct">,</span>
   <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">403</span><span class="t-punct">,</span>
@@ -172,6 +192,11 @@
     <div class="callout" style="margin-top:1.5rem;">
       <strong>Dica de depuração</strong><br>
       O campo <code>timestamp</code> é um <code>Long</code> Unix em milissegundos (gerado via <code>System.currentTimeMillis()</code>). Use-o para correlacionar a chamada com os logs internos. Ao abrir um suporte, inclua sempre o <code>timestamp</code> e o <code>path</code> exatos da resposta de erro.
+    </div>
+
+    <div class="callout callout-tip" style="margin-top:1rem;">
+      <strong>401 vs 403 — qual a diferença?</strong><br>
+      <code>401</code> significa que a identidade é desconhecida — o header <code>x-api-key</code> está ausente ou a chave não existe no sistema. <code>403</code> significa que a identidade é conhecida, mas o acesso foi negado — a chave existe, mas o tenant foi desativado. Trate os dois de forma diferente: <code>401</code> geralmente indica um bug de configuração; <code>403</code> requer contato com o suporte.
     </div>
 
   </main>
@@ -214,6 +239,6 @@ function copyBlock(btn){
   });
 }
 </script>
-
+<script src="shared.js"></script>
 </body>
 </html>
