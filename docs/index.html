@@ -915,7 +915,7 @@ a:hover{text-decoration:underline;}
       </a>
       <a href="#sandbox" class="btn-sandbox">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
-        Testar Sandbox
+        Testar no Sandbox
       </a>
       <a href="https://github.com/vitinh0z/orchestra.io" class="btn-ghost" target="_blank" rel="noopener">
         <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
@@ -1819,29 +1819,29 @@ def webhook():
     </div>
     <div class="lib-grid">
       <a href="#quickstart" class="lib-card">
-        <div class="lib-card-icon" style="background:rgba(248,113,113,0.1);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#f87171" stroke-width="1.5" width="20" height="20"><path d="M8 9l5 5-5 5"/><path d="M3 3l18 18"/></svg>
+        <div class="lib-card-icon" style="background:rgba(248,113,113,0.1);color:var(--red);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M8 9l5 5-5 5"/><path d="M3 3l18 18"/></svg>
         </div>
         <span class="lib-card-name">cURL</span>
         <span class="lib-card-desc">Linha de comando</span>
       </a>
       <a href="#quickstart" class="lib-card">
-        <div class="lib-card-icon" style="background:rgba(251,191,36,0.1);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" width="20" height="20"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/></svg>
+        <div class="lib-card-icon" style="background:rgba(251,191,36,0.1);color:var(--amber);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5l6.74-6.76z"/></svg>
         </div>
         <span class="lib-card-name">JavaScript</span>
         <span class="lib-card-desc">Node.js / Browser</span>
       </a>
       <a href="#quickstart" class="lib-card">
-        <div class="lib-card-icon" style="background:rgba(96,165,250,0.1);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+        <div class="lib-card-icon" style="background:rgba(96,165,250,0.1);color:var(--blue);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
         </div>
         <span class="lib-card-name">Python</span>
         <span class="lib-card-desc">requests / httpx</span>
       </a>
       <a href="#quickstart" class="lib-card">
-        <div class="lib-card-icon" style="background:rgba(52,211,153,0.1);">
-          <svg viewBox="0 0 24 24" fill="none" stroke="#34d399" stroke-width="1.5" width="20" height="20"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+        <div class="lib-card-icon" style="background:rgba(52,211,153,0.1);color:var(--emerald);">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="20" height="20"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
         </div>
         <span class="lib-card-name">Go</span>
         <span class="lib-card-desc">net/http</span>
@@ -2251,7 +2251,7 @@ sections.forEach(s=>obs.observe(s));
 sidebarItems.forEach(item=>{
   item.addEventListener('click',e=>{
     const href=item.getAttribute('href');
-    const id=href&&href.replace('#','');
+    const id=href?.replace('#','') || '';
     const bcCat=document.getElementById('bcCategory');
     const bc=document.getElementById('bcCurrent');
     if(bcCat&&CATEGORY_MAP[id])bcCat.textContent=CATEGORY_MAP[id];
