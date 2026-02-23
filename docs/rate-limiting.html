@@ -10,27 +10,18 @@
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <nav class="topnav" id="topnav">
   <div class="topnav-inner">
     <a href="index.html" class="topnav-logo">
-      <div class="topnav-logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
-      </div>
-      <span class="topnav-logo-text">Orquestraio</span>
-      <span class="topnav-version">v0.4</span>
+      <div class="topnav-logo-mark"><svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg></div>
+      <span class="topnav-logo-text">Orquestraio</span><span class="topnav-version">v0.4</span>
     </a>
     <div class="topnav-right">
-      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
-      </a>
-      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
-        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-      </button>
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema"><svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg></button>
     </div>
   </div>
 </nav>
-
 <aside class="sidebar">
   <div class="sidebar-section">
     <div class="sidebar-section-label">Inicio</div>
@@ -46,8 +37,8 @@
     <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
     <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
     <a href="webhooks.html" class="sidebar-item">Webhooks</a>
-    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
-    <a href="rate-limiting.html" class="sidebar-item active">Rate Limiting <span class="badge tag-blue">v0.6</span></a>
+    <a href="erros-status.html" class="sidebar-item">Erros &amp; Status</a>
+    <a href="rate-limiting.html" class="sidebar-item active">Rate Limiting <span class="badge badge-blue">v0.6</span></a>
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">Funcionalidades</div>
@@ -56,29 +47,32 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">Guias</div>
-    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
   </div>
 </aside>
-
 <div class="shell">
   <main class="main">
-
     <div class="section-label">API</div>
     <h1 class="section-title">Rate Limiting <span class="tag tag-blue">v0.6</span></h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      2 min de leitura
+    </div>
     <p class="section-desc">Limites por tenant com <strong>Bucket4j + Redis</strong>. Proteção contra abuso e DDoS em nível de aplicação.</p>
 
-    <div class="callout callout-warning">
+    <!-- callout-planned: visual diferenciado para features não implementadas -->
+    <div class="callout callout-planned">
       <span class="callout-icon">
-        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-3)" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
       </span>
-      <div class="callout-body"><strong>Em desenvolvimento (v0.6.0).</strong> Rate limiting não está ativo ainda. Os headers e comportamento abaixo já estão especificados e serão implementados sem breaking changes.</div>
+      <div class="callout-body"><strong>Em desenvolvimento — v0.6.0.</strong> Rate limiting não está ativo na versão atual. Os limites, headers e comportamento abaixo já estão especificados e serão implementados sem breaking changes na API.</div>
     </div>
 
     <table class="doc-table">
       <thead><tr><th>Plano</th><th>Limite</th><th>Janela</th><th>Burst</th></tr></thead>
       <tbody>
-      <tr><td>Free</td><td>100 req</td><td>por minuto</td><td>20 req/s</td></tr>
-      <tr><td>Premium</td><td>1.000 req</td><td>por minuto</td><td>200 req/s</td></tr>
+        <tr><td>Free</td><td>100 req</td><td>por minuto</td><td>20 req/s</td></tr>
+        <tr><td>Premium</td><td>1.000 req</td><td>por minuto</td><td>200 req/s</td></tr>
       </tbody>
     </table>
 
@@ -92,30 +86,14 @@ Retry-After: 42</code></pre>
     <p>O campo <code>Retry-After</code> indica quantos segundos você deve aguardar antes de tentar novamente.</p>
 
     <p style="margin-top:2rem;color:var(--text-3);font-size:0.82rem;">Rate limiting é implementado com <strong>Bucket4j</strong> e armazenado no Redis com TTL automático. Cada tenant tem seu próprio bucket isolado.</p>
-
   </main>
 </div>
-
 <script>
-function toggleTheme(){
-  const html=document.documentElement;
-  const isLight=html.getAttribute('data-theme')==='light';
-  const newTheme=isLight?'dark':'light';
-  html.setAttribute('data-theme',newTheme);
-  localStorage.setItem('theme',newTheme);
-  document.getElementById('themeIcon').innerHTML=isLight
-    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
-    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-}
-function applyTheme(){
-  const saved=localStorage.getItem('theme');
-  if(saved==='light'){
-    document.documentElement.setAttribute('data-theme','light');
-    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
-  }
-}
+function toggleTheme(){const html=document.documentElement;const isLight=html.getAttribute('data-theme')==='light';const newTheme=isLight?'dark':'light';html.setAttribute('data-theme',newTheme);localStorage.setItem('theme',newTheme);document.getElementById('themeIcon').innerHTML=isLight?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+:'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}
+function applyTheme(){const saved=localStorage.getItem('theme');if(saved==='light'){document.documentElement.setAttribute('data-theme','light');document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';}}
 applyTheme();
 </script>
-
+<script src="shared.js"></script>
 </body>
 </html>
