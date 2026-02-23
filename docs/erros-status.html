@@ -65,69 +65,114 @@
 
     <div class="section-label">API</div>
     <h1 class="section-title">Erros & Status HTTP</h1>
-    <p class="section-desc">A API retorna erros em formato padronizado com <code>timestamp</code>, <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code>.</p>
+    <p class="section-desc">A API retorna erros em formato padronizado via <code>GlobalExceptionHandler</code>. Todos os erros incluem os campos <code>timestamp</code> (Unix ms), <code>status</code>, <code>error</code>, <code>message</code> e <code>path</code> — definidos pela classe <code>StandardError</code>.</p>
+
+    <div class="callout callout-info" style="margin-bottom:1.5rem;">
+      <strong>Estrutura StandardError</strong><br>
+      Todos os erros retornados pela API seguem este contrato exato. O campo <code>timestamp</code> é um <code>Long</code> em milissegundos Unix, útil para correlacionar com logs internos via <code>System.currentTimeMillis()</code>.
+    </div>
 
     <div class="status-table">
       <div class="status-group-header sg-2xx">2xx — Sucesso</div>
       <div class="status-row">
         <span class="status-code s-2xx">201</span>
         <span class="status-name">Created</span>
-        <span class="status-desc">Pagamento criado com sucesso.</span>
+        <span class="status-desc">Pagamento criado com sucesso. O <code>PaymentController</code> retorna <code>ResponseEntity.status(HttpStatus.CREATED).body(response)</code>.</span>
+      </div>
+      <div class="status-row">
+        <span class="status-code s-2xx">200</span>
+        <span class="status-name">OK</span>
+        <span class="status-desc">Retornado quando o <code>idempotencyKey</code> já existe com status <code>APPROVED</code> ou <code>FAILED</code> — o payload original é devolvido sem reprocessamento.</span>
       </div>
 
       <div class="status-group-header sg-4xx" style="border-top:1px solid var(--border);">4xx — Erro do cliente</div>
       <div class="status-row">
         <span class="status-code s-4xx">400</span>
         <span class="status-name">Bad Request</span>
-        <span class="status-desc">Campos inválidos ou ausentes. Leia <code>message</code> para detalhes.</span>
-      </div>
-      <div class="status-row">
-        <span class="status-code s-4xx">401</span>
-        <span class="status-name">Unauthorized</span>
-        <span class="status-desc">Header <code>x-api-key</code> ausente ou chave inválida.</span>
+        <span class="status-desc">Lançado pelo <code>GlobalExceptionHandler</code> ao capturar <code>MethodArgumentNotValidException</code>. Ocorre quando campos <code>@NotNull</code>, <code>@NotBlank</code> ou <code>@DecimalMin</code> falham na validação do <code>PaymentRequestDTO</code>.</span>
       </div>
       <div class="status-row">
         <span class="status-code s-4xx">403</span>
         <span class="status-name">Forbidden</span>
-        <span class="status-desc">Tenant inativo. Entre em contato com o suporte.</span>
+        <span class="status-desc">Lançado quando o tenant associado à <code>x-api-key</code> está com status <code>INACTIVE</code> no banco. O <code>GlobalExceptionHandler</code> mapeia <code>TenantInactiveException</code> → <code>403</code>.</span>
+      </div>
+      <div class="status-row">
+        <span class="status-code s-4xx">404</span>
+        <span class="status-name">Not Found</span>
+        <span class="status-desc">Recurso solicitado não encontrado. O <code>GlobalExceptionHandler</code> mapeia <code>ResourceNotFoundException</code> → <code>404</code>.</span>
       </div>
       <div class="status-row">
         <span class="status-code s-4xx">409</span>
         <span class="status-name">Conflict</span>
-        <span class="status-desc">idempotencyKey já está em processamento ativo.</span>
+        <span class="status-desc">O <code>idempotencyKey</code> enviado já está associado a uma transação com status <code>PROCESSING</code>. O <code>GlobalExceptionHandler</code> mapeia <code>IdempotencyConflictException</code> → <code>409</code>.</span>
       </div>
       <div class="status-row">
         <span class="status-code s-4xx">429</span>
         <span class="status-name">Too Many Requests</span>
-        <span class="status-desc">Limite excedido. Ver <a href="rate-limiting.html">Rate Limiting</a>.</span>
+        <span class="status-desc">Limite de requisições excedido para a <code>x-api-key</code>. Ver <a href="rate-limiting.html">Rate Limiting</a>.</span>
       </div>
 
       <div class="status-group-header sg-5xx" style="border-top:1px solid var(--border);">5xx — Erro do servidor</div>
       <div class="status-row">
         <span class="status-code s-5xx">500</span>
         <span class="status-name">Server Error</span>
-        <span class="status-desc">Erro inesperado. Abra uma issue com <code>path</code> e <code>timestamp</code>.</span>
+        <span class="status-desc">Exceção não tratada capturada pelo handler genérico <code>handleGenericException(Exception)</code>. Inclua <code>path</code> e <code>timestamp</code> ao reportar problemas via suporte.</span>
       </div>
     </div>
 
-    <h2>Exemplo de Resposta de Erro</h2>
+    <h2>Exemplos de Resposta de Erro</h2>
+
     <div class="codeblock">
       <div class="codeblock-header">
-        <div class="lang-tabs"><button class="lang-tab active">JSON (409 Conflict)</button></div>
+        <div class="lang-tabs">
+          <button class="lang-tab active" data-tab="err-400" onclick="switchTab(event)">400 Validação</button>
+          <button class="lang-tab" data-tab="err-403" onclick="switchTab(event)">403 Forbidden</button>
+          <button class="lang-tab" data-tab="err-409" onclick="switchTab(event)">409 Conflict</button>
+          <button class="lang-tab" data-tab="err-500" onclick="switchTab(event)">500 Server Error</button>
+        </div>
         <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
       </div>
       <div class="codeblock-body">
-<div class="tab-pane active"><span class="t-punct">{</span>
+<div class="tab-pane active" id="err-400"><span class="t-comment">// MethodArgumentNotValidException — campo obrigatório ausente</span>
+<span class="t-comment">// Gerado quando "amount" ou "currency" não são enviados no body</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">400</span><span class="t-punct">,</span>
+  <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Dados inválidos"</span><span class="t-punct">,</span>
+  <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"amount: não deve ser nulo; currency: não deve ser vazio"</span><span class="t-punct">,</span>
+  <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
+<span class="t-punct">}</span></div>
+<div class="tab-pane" id="err-403"><span class="t-comment">// TenantInactiveException — tenant desativado</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161450000</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">403</span><span class="t-punct">,</span>
+  <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Acesso negado"</span><span class="t-punct">,</span>
+  <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"Tenant inativo. Entre em contato com o suporte."</span><span class="t-punct">,</span>
+  <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
+<span class="t-punct">}</span></div>
+<div class="tab-pane" id="err-409"><span class="t-comment">// IdempotencyConflictException — pagamento já em processamento</span>
+<span class="t-punct">{</span>
   <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161400000</span><span class="t-punct">,</span>
   <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">409</span><span class="t-punct">,</span>
   <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Conflito de Idempotencia"</span><span class="t-punct">,</span>
   <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"Pagamento já está em processamento ativo."</span><span class="t-punct">,</span>
   <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
 <span class="t-punct">}</span></div>
+<div class="tab-pane" id="err-500"><span class="t-comment">// handleGenericException — exceção não prevista</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"timestamp"</span><span class="t-punct">:</span> <span class="t-num">1740161500000</span><span class="t-punct">,</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-num">500</span><span class="t-punct">,</span>
+  <span class="t-key">"error"</span><span class="t-punct">:</span> <span class="t-str">"Erro interno do servidor"</span><span class="t-punct">,</span>
+  <span class="t-key">"message"</span><span class="t-punct">:</span> <span class="t-str">"Ocorreu um erro inesperado. Tente novamente em instantes."</span><span class="t-punct">,</span>
+  <span class="t-key">"path"</span><span class="t-punct">:</span> <span class="t-str">"/v1/payments"</span>
+<span class="t-punct">}</span></div>
       </div>
     </div>
 
-    <p style="margin-top:2rem;">Todos os erros incluem um <code>timestamp</code> Unix em milissegundos para correlação com logs internos. Inclua esse valor ao reportar problemas.</p>
+    <div class="callout" style="margin-top:1.5rem;">
+      <strong>Dica de depuração</strong><br>
+      O campo <code>timestamp</code> é um <code>Long</code> Unix em milissegundos (gerado via <code>System.currentTimeMillis()</code>). Use-o para correlacionar a chamada com os logs internos. Ao abrir um suporte, inclua sempre o <code>timestamp</code> e o <code>path</code> exatos da resposta de erro.
+    </div>
 
   </main>
 </div>
@@ -151,6 +196,15 @@ function applyTheme(){
   }
 }
 applyTheme();
+function switchTab(e){
+  const btn=e.target.closest('.lang-tab');
+  const cb=btn.closest('.codeblock');
+  const tabId=btn.dataset.tab;
+  cb.querySelectorAll('.lang-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  cb.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById(tabId);if(pane)pane.classList.add('active');
+}
 function copyBlock(btn){
   const cb=btn.closest('.codeblock');
   const active=cb.querySelector('.tab-pane.active')||cb.querySelector('.tab-pane');

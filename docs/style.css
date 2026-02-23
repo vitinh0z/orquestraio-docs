@@ -4,13 +4,13 @@
   --toc-w: 224px;
 
   /* dark */
-  --bg:           #1c1c1c;
-  --bg-alt:       #242424;
-  --bg-surface:   #2a2a2a;
-  --bg-surface2:  #313131;
-  --bg-overlay:   #3a3a3a;
+  --bg:           #050505;
+  --bg-alt:       #0a0a0a;
+  --bg-surface:   #121212;
+  --bg-surface2:  #1a1a1a;
+  --bg-overlay:   #222222;
 
-  --border:       rgba(255,255,255,0.08);
+  --border:       rgba(255,255,255,0.10);
   --border-2:     rgba(255,255,255,0.15);
   --border-3:     rgba(255,255,255,0.25);
 
@@ -96,7 +96,7 @@ body{
 .header{
   position:fixed;top:0;left:0;right:0;
   height:var(--header-h);
-  background:rgba(28,28,28,0.92);
+  background:rgba(5,5,5,0.92);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   z-index:500;
@@ -207,12 +207,19 @@ body{
 
 /* =================== LAYOUT =================== */
 .layout{
+  display:flex;
   padding-top:var(--header-h);
   min-height:100vh;
 }
 .main{
-  width:100%;
+  flex:1;
+  margin-left:var(--sidebar-w);
   min-width:0;
+  padding:3rem 4rem 6rem;
+  max-width:1000px;
+}
+@media(max-width:900px){
+  .main{margin-left:0;padding:2rem 1.5rem 5rem;}
 }
 
 /* =================== TOC =================== */
@@ -871,7 +878,7 @@ p{color:var(--text-2);line-height:1.75;}
 .topnav{
   position:fixed;top:0;left:0;right:0;
   height:var(--topnav-h);
-  background:rgba(28,28,28,0.92);
+  background:rgba(5,5,5,0.92);
   backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
   border-bottom:1px solid var(--border);
   z-index:500;
@@ -947,13 +954,15 @@ p{color:var(--text-2);line-height:1.75;}
 
 /* =================== DOC SHELL LAYOUT =================== */
 .shell{
+  display:flex;
   min-height:100vh;
   position:relative;z-index:1;
 }
 .shell .main{
+  flex:1;
   margin-left:var(--sidebar-w);
   max-width:840px;
-  width:100%;
+  min-width:0;
   padding:calc(var(--topnav-h) + 2.5rem) 2rem 6rem;
 }
 @media(max-width:900px){

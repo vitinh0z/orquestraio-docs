@@ -65,7 +65,7 @@
 
     <div class="section-label">API</div>
     <h1 class="section-title">Processar Pagamento <span class="tag tag-green">Novo</span></h1>
-    <p class="section-desc">Cria uma transação e roteia automaticamente para o gateway ideal com base na moeda e método de pagamento.</p>
+    <p class="section-desc">Cria uma transação e roteia automaticamente para o gateway ideal com base na moeda e método de pagamento. O endpoint é protegido pelo filtro <code>ApiKeyAuthFilter</code> e toda lógica de negócio é orquestrada pelo <code>ProcessPaymentUseCase</code>.</p>
 
     <div class="endpoint-card">
       <div class="endpoint-header">
@@ -75,39 +75,50 @@
       </div>
     </div>
 
-    <h2>Parâmetros</h2>
+    <h2>Parâmetros do Payload (PaymentRequestDTO)</h2>
+    <p style="margin-bottom:1rem;color:var(--text-2);">Todos os campos anotados com <code>@NotNull</code> ou <code>@NotBlank</code> são obrigatórios. A ausência de qualquer um deles resulta em <code>400 Bad Request</code> via <code>MethodArgumentNotValidException</code>.</p>
     <div class="params-table">
       <div class="params-head"><span>Campo</span><span>Req.</span><span>Descricao</span></div>
       <div class="param-row">
         <span class="param-name">idempotencyKey</span>
         <span class="param-req">sim</span>
-        <span class="param-desc">Identificador único por transação. Use UUID v4 vinculado ao ID do pedido no seu sistema.</span>
+        <span class="param-desc">Anotado com <code>@NotBlank</code>. Identificador único por transação — use UUID v4 vinculado ao ID do pedido no seu sistema. O backend armazena o hash deste valor para detectar reenvios duplicados.</span>
       </div>
       <div class="param-row">
         <span class="param-name">amount</span>
         <span class="param-req">sim</span>
-        <span class="param-desc">Valor em ponto flutuante. Mínimo: <code>0.01</code>.</span>
+        <span class="param-desc">Anotado com <code>@NotNull</code> e <code>@DecimalMin("0.01")</code>. Valor em <code>BigDecimal</code>. Mínimo: <code>0.01</code>. Envie sem arredondamento — o gateway recebe o valor exato.</span>
       </div>
       <div class="param-row">
         <span class="param-name">currency</span>
         <span class="param-req">sim</span>
-        <span class="param-desc">Código ISO 4217: <code>BRL</code>, <code>USD</code>, <code>EUR</code>. Define o gateway que o SmartRouter selecionará.</span>
+        <span class="param-desc">Anotado com <code>@NotBlank</code>. Código ISO 4217: <code>BRL</code>, <code>USD</code>, <code>EUR</code>. Este valor é passado ao <code>SmartRouter</code> que seleciona o gateway de menor custo para a moeda informada.</span>
       </div>
       <div class="param-row">
         <span class="param-name">paymentMethodRequest</span>
         <span class="param-req">sim</span>
-        <span class="param-desc">Objeto com <code>type</code> (<code>pix</code>, <code>boleto</code>, <code>card_token</code>) e <code>token</code> — obrigatório somente para cartão.</span>
+        <span class="param-desc">Anotado com <code>@NotNull @Valid</code>. Objeto com: <code>type</code> (<code>pix</code>, <code>boleto</code>, <code>card_token</code>) obrigatório; e <code>token</code> — obrigatório apenas quando <code>type</code> é <code>card_token</code>, nulo para Pix e boleto.</span>
       </div>
       <div class="param-row">
         <span class="param-name">customer</span>
         <span class="param-req">sim</span>
-        <span class="param-desc">Objeto com <code>id</code>, <code>email</code> e <code>document</code> (CPF/CNPJ) do pagador.</span>
+        <span class="param-desc">Anotado com <code>@NotNull @Valid</code>. Objeto com: <code>id</code> (ID interno do seu sistema), <code>email</code> anotado com <code>@Email @NotBlank</code>, e <code>document</code> (CPF/CNPJ) anotado com <code>@NotBlank</code>.</span>
       </div>
       <div class="param-row">
         <span class="param-name">metadata.gateway</span>
         <span class="param-opt">não</span>
-        <span class="param-desc">Força um gateway específico: <code>STRIPE</code>, <code>MERCADO_PAGO</code>, <code>PAYPAL</code>, <code>MOCK</code>. Sobrescreve o SmartRouter.</span>
+        <span class="param-desc">Força um gateway específico: <code>STRIPE</code>, <code>MERCADO_PAGO</code>, <code>PAYPAL</code>, <code>MOCK</code>. Quando presente, o <code>SmartRouter</code> é bypassed e o gateway indicado é usado diretamente.</span>
       </div>
+    </div>
+
+    <div class="callout callout-info" style="margin-top:1.5rem;">
+      <strong>Idempotência</strong><br>
+      O <code>ProcessPaymentUseCase</code> verifica o <code>idempotencyKey</code> antes de criar qualquer transação. Se uma entrada com o mesmo key já existir no banco e estiver com status <code>PROCESSING</code>, a API retorna <code>409 Conflict</code> imediatamente. Se já estiver <code>APPROVED</code> ou <code>FAILED</code>, o payload da transação original é retornado com <code>200 OK</code> — garantindo exatamente-uma-vez semântica (at-most-once delivery) sem cobranças duplicadas.
+    </div>
+
+    <div class="callout" style="margin-top:1rem;">
+      <strong>SmartRouter</strong><br>
+      Quando <code>metadata.gateway</code> não é fornecido, o <code>SmartRouter</code> seleciona o gateway com base na <code>currency</code> e no <code>type</code> do método de pagamento. Exemplo: <code>BRL</code> + <code>pix</code> → <code>MERCADO_PAGO</code>; <code>USD</code> + <code>card_token</code> → <code>STRIPE</code>. A seleção considera também a saúde dos gateways (circuit breaker) — se o gateway primário estiver degradado, o roteamento é feito para o secundário automaticamente.
     </div>
 
     <h2>Exemplo de Requisição</h2>
@@ -117,7 +128,7 @@
           <button class="lang-tab active" data-tab="pay-curl" onclick="switchTab(event)">cURL</button>
           <button class="lang-tab" data-tab="pay-js" onclick="switchTab(event)">JavaScript</button>
           <button class="lang-tab" data-tab="pay-py" onclick="switchTab(event)">Python</button>
-          <button class="lang-tab" data-tab="pay-json" onclick="switchTab(event)">JSON</button>
+          <button class="lang-tab" data-tab="pay-json" onclick="switchTab(event)">JSON Completo</button>
         </div>
         <div class="codeblock-actions">
           <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
@@ -125,98 +136,111 @@
       </div>
       <div class="codeblock-body">
 <div class="tab-pane active" id="pay-curl"><span class="t-method">curl</span> <span class="t-flag">-X</span> POST https://api.orquestraio.com<span class="t-url">/v1/payments</span> <span class="t-punct">\</span>
-  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_abc123"</span> <span class="t-punct">\</span>
+  <span class="t-flag">-H</span> <span class="t-str">"x-api-key: Oz_live_sk_abc123def456"</span> <span class="t-punct">\</span>
   <span class="t-flag">-H</span> <span class="t-str">"Content-Type: application/json"</span> <span class="t-punct">\</span>
   <span class="t-flag">-d</span> <span class="t-str">'{
-  "idempotencyKey": "pedido-98765",
-  "amount": 197.00,
+  "idempotencyKey": "550e8400-e29b-41d4-a716-446655440000",
+  "amount": 197.90,
   "currency": "BRL",
   "paymentMethodRequest": {
     "type": "pix",
     "token": null
   },
   "customer": {
-    "id": "usr_001",
-    "email": "cliente@exemplo.com",
-    "document": "123.456.789-00"
+    "id": "usr_7f3a21b",
+    "email": "joao.silva@exemplo.com.br",
+    "document": "123.456.789-09"
   }
 }'</span></div>
 <div class="tab-pane" id="pay-js"><span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
   method: <span class="t-str">'POST'</span>,
   headers: {
-    <span class="t-str">'x-api-key'</span>: process.env.ORQUESTRAIO_KEY,
+    <span class="t-str">'x-api-key'</span>: process.env.ORQUESTRAIO_API_KEY,
     <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>
   },
   body: JSON.stringify({
-    idempotencyKey: <span class="t-str">'pedido-98765'</span>,
-    amount: <span class="t-num">197.00</span>,
+    idempotencyKey: crypto.randomUUID(), <span class="t-comment">// UUID vinculado ao seu order_id</span>
+    amount: <span class="t-num">197.90</span>,
     currency: <span class="t-str">'BRL'</span>,
     paymentMethodRequest: {
-      type: <span class="t-str">'pix'</span>,
-      token: <span class="t-nil">null</span>
+      type: <span class="t-str">'card_token'</span>,
+      token: <span class="t-str">'tok_4f8a2b1c9d'</span>  <span class="t-comment">// obrigatório para card_token</span>
     },
     customer: {
-      id: <span class="t-str">'usr_001'</span>,
-      email: <span class="t-str">'cliente@exemplo.com'</span>,
-      document: <span class="t-str">'123.456.789-00'</span>
+      id: <span class="t-str">'usr_7f3a21b'</span>,
+      email: <span class="t-str">'joao.silva@exemplo.com.br'</span>,
+      document: <span class="t-str">'123.456.789-09'</span>
     }
   })
 });
+
+<span class="t-key">if</span> (!res.ok) {
+  <span class="t-key">const</span> err = <span class="t-key">await</span> res.json();
+  console.error(<span class="t-str">`Erro ${err.status}: ${err.message}`</span>);
+}
 <span class="t-key">const</span> payment = <span class="t-key">await</span> res.json();</div>
-<div class="tab-pane" id="pay-py">import requests, uuid
+<div class="tab-pane" id="pay-py">import requests, uuid, os
 
 res = requests.post(
     <span class="t-str">"https://api.orquestraio.com/v1/payments"</span>,
-    headers={<span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"ORQUESTRAIO_KEY"</span>]},
+    headers={
+        <span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"ORQUESTRAIO_API_KEY"</span>],
+        <span class="t-str">"Content-Type"</span>: <span class="t-str">"application/json"</span>
+    },
     json={
         <span class="t-str">"idempotencyKey"</span>: str(uuid.uuid4()),
-        <span class="t-str">"amount"</span>: <span class="t-num">197.00</span>,
+        <span class="t-str">"amount"</span>: <span class="t-num">197.90</span>,
         <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
         <span class="t-str">"paymentMethodRequest"</span>: {
             <span class="t-str">"type"</span>: <span class="t-str">"pix"</span>,
             <span class="t-str">"token"</span>: <span class="t-nil">None</span>
         },
         <span class="t-str">"customer"</span>: {
-            <span class="t-str">"id"</span>: <span class="t-str">"usr_001"</span>,
-            <span class="t-str">"email"</span>: <span class="t-str">"cliente@exemplo.com"</span>
+            <span class="t-str">"id"</span>: <span class="t-str">"usr_7f3a21b"</span>,
+            <span class="t-str">"email"</span>: <span class="t-str">"joao.silva@exemplo.com.br"</span>,
+            <span class="t-str">"document"</span>: <span class="t-str">"123.456.789-09"</span>
         }
-    }
-)</div>
-<div class="tab-pane" id="pay-json"><span class="t-punct">{</span>
-  <span class="t-key">"idempotencyKey"</span><span class="t-punct">:</span> <span class="t-str">"pedido-98765"</span><span class="t-punct">,</span>
-  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span><span class="t-punct">,</span>
-  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span><span class="t-punct">,</span>
+    },
+    timeout=30
+)
+res.raise_for_status()
+payment = res.json()</div>
+<div class="tab-pane" id="pay-json"><span class="t-comment">// Pagamento por cartão com gateway forçado</span>
+<span class="t-punct">{</span>
+  <span class="t-key">"idempotencyKey"</span><span class="t-punct">:</span> <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">349.99</span><span class="t-punct">,</span>
+  <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"USD"</span><span class="t-punct">,</span>
   <span class="t-key">"paymentMethodRequest"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"pix"</span><span class="t-punct">,</span>
-    <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-nil">null</span>
+    <span class="t-key">"type"</span><span class="t-punct">:</span> <span class="t-str">"card_token"</span><span class="t-punct">,</span>
+    <span class="t-key">"token"</span><span class="t-punct">:</span> <span class="t-str">"tok_4f8a2b1c9d"</span>
   <span class="t-punct">},</span>
   <span class="t-key">"customer"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_001"</span><span class="t-punct">,</span>
-    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"cliente@exemplo.com"</span><span class="t-punct">,</span>
-    <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-00"</span>
+    <span class="t-key">"id"</span><span class="t-punct">:</span> <span class="t-str">"usr_7f3a21b"</span><span class="t-punct">,</span>
+    <span class="t-key">"email"</span><span class="t-punct">:</span> <span class="t-str">"joao.silva@exemplo.com.br"</span><span class="t-punct">,</span>
+    <span class="t-key">"document"</span><span class="t-punct">:</span> <span class="t-str">"123.456.789-09"</span>
   <span class="t-punct">},</span>
   <span class="t-key">"metadata"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
-    <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span>
+    <span class="t-key">"gateway"</span><span class="t-punct">:</span> <span class="t-str">"STRIPE"</span>  <span class="t-comment">// bypass do SmartRouter</span>
   <span class="t-punct">}</span>
 <span class="t-punct">}</span></div>
       </div>
     </div>
 
-    <h2>Resposta</h2>
+    <h2>Resposta de Sucesso</h2>
     <div class="codeblock">
       <div class="codeblock-header">
-        <div class="lang-tabs"><button class="lang-tab active">JSON <span class="tag tag-green" style="font-size:0.55rem;margin-left:4px;">201</span></button></div>
+        <div class="lang-tabs"><button class="lang-tab active">JSON <span class="tag tag-green" style="font-size:0.55rem;margin-left:4px;">201 Created</span></button></div>
         <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
       </div>
       <div class="codeblock-body">
 <div class="tab-pane active"><span class="t-punct">{</span>
   <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
   <span class="t-key">"status"</span><span class="t-punct">:</span> <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>
-  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.00</span><span class="t-punct">,</span>
+  <span class="t-key">"amount"</span><span class="t-punct">:</span> <span class="t-num">197.90</span><span class="t-punct">,</span>
   <span class="t-key">"currency"</span><span class="t-punct">:</span> <span class="t-str">"BRL"</span><span class="t-punct">,</span>
   <span class="t-key">"details"</span><span class="t-punct">:</span> <span class="t-punct">{</span>
     <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MERCADO_PAGO"</span><span class="t-punct">,</span>
-    <span class="t-key">"transactionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126580014br.gov.bcb.pix..."</span>
+    <span class="t-key">"transactionId"</span><span class="t-punct">:</span> <span class="t-str">"00020126580014br.gov.bcb.pix0136a867e..."</span>
   <span class="t-punct">},</span>
   <span class="t-key">"createdAt"</span><span class="t-punct">:</span> <span class="t-str">"2026-02-21T15:30:00Z"</span>
 <span class="t-punct">}</span></div>
