@@ -46,7 +46,7 @@
     <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
     <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
     <a href="webhooks.html" class="sidebar-item">Webhooks</a>
-    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
+    <a href="erros-status.html" class="sidebar-item">Erros &amp; Status</a>
     <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
   </div>
   <div class="sidebar-section">
@@ -56,7 +56,7 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">Guias</div>
-    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
   </div>
 </aside>
 
@@ -65,7 +65,11 @@
 
     <div class="section-label">Autenticacao</div>
     <h1 class="section-title">API Key via header HTTP</h1>
-    <p class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do tenant. Chaves de produção têm o prefixo <code>Oz_</code>.</p>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      4 min de leitura
+    </div>
+    <p class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do tenant. Requisições sem header válido retornam <code>401 Unauthorized</code> antes de qualquer processamento.</p>
 
     <div class="callout callout-warning">
       <span class="callout-icon">
@@ -76,9 +80,93 @@
 
     <pre style="background:var(--bg-2);border:1px solid var(--border);padding:1rem;overflow-x:auto;margin:1.125rem 0;"><code style="background:none;border:none;padding:0;font-size:0.78rem;line-height:1.8;color:var(--text-2);">x-api-key: Oz_live_a1b2c3d4e5f6g7h8i9j0</code></pre>
 
-    <p>A chave de desenvolvimento incluída no <code>data.sql</code> é <code>orquestraio-livre-123</code>. Use-a para testes locais com o gateway MOCK.</p>
+    <!-- PREFIXOS -->
+    <h2 id="prefixos">Prefixos: <code>Oz_live_</code> vs <code>Oz_test_</code></h2>
+    <p>O prefixo da chave indica o ambiente ao qual ela pertence. Nunca use uma chave de produção em testes — isso gera transações reais e cobranças reais.</p>
 
-    <p style="margin-top:2rem;color:var(--text-3);font-size:0.82rem;">Todas as requisições sem header válido retornam <code>401 Unauthorized</code> imediatamente, antes de qualquer processamento.</p>
+    <table class="doc-table">
+      <thead><tr><th>Prefixo</th><th>Ambiente</th><th>Gateways disponíveis</th><th>Gera cobranças?</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>Oz_live_</code></td>
+          <td>Produção</td>
+          <td>Stripe, MercadoPago, PayPal</td>
+          <td><strong style="color:var(--red);">Sim</strong></td>
+        </tr>
+        <tr>
+          <td><code>Oz_test_</code></td>
+          <td>Teste / Staging</td>
+          <td>MOCK, sandboxes dos gateways</td>
+          <td>Não</td>
+        </tr>
+        <tr>
+          <td><code>orquestraio-livre-123</code></td>
+          <td>Desenvolvimento local</td>
+          <td>Somente MOCK</td>
+          <td>Não</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>A chave de desenvolvimento <code>orquestraio-livre-123</code> está incluída no <code>data.sql</code> e é carregada automaticamente pelo Docker. Use-a para testes locais com o gateway <code>MOCK</code>.</p>
+
+    <!-- GERAR REVOGAR -->
+    <h2 id="gerenciar">Gerar e Revogar Chaves</h2>
+    <p>API keys são gerenciadas pelo painel de administração do Orquestraio ou diretamente no banco via <code>data.sql</code> em ambiente de desenvolvimento.</p>
+
+    <div style="border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;margin:1.25rem 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);">
+        <div style="padding:1rem;border-right:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:0.5rem;">Gerar nova chave</div>
+          <p style="font-size:0.82rem;margin:0;">Acesse o painel → Configurações → API Keys → <strong>Nova Chave</strong>. O valor completo é exibido <em>uma única vez</em> — copie e armazene com segurança. O Orquestraio guarda apenas o hash.</p>
+        </div>
+        <div style="padding:1rem;">
+          <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:0.5rem;">Revogar chave</div>
+          <p style="font-size:0.82rem;margin:0;">Acesse o painel → Configurações → API Keys → <strong>Revogar</strong>. A revogação é <strong>instantânea</strong> — todas as requisições usando aquela chave passam a retornar <code>401</code> imediatamente. Nenhum downtime.</p>
+        </div>
+      </div>
+      <div style="padding:0.875rem 1rem;background:var(--bg-surface);font-size:0.8rem;color:var(--text-2);">
+        <strong>Rotação recomendada:</strong> Troque chaves de produção a cada 90 dias ou imediatamente após qualquer suspeita de comprometimento.
+      </div>
+    </div>
+
+    <!-- ESTADOS -->
+    <h2 id="estados">Estados da Chave e Respostas</h2>
+    <p>Entender a diferença entre <code>401</code> e <code>403</code> ajuda a diagnosticar problemas rapidamente:</p>
+
+    <table class="doc-table">
+      <thead><tr><th>Estado</th><th>HTTP</th><th>Causa</th><th>Ação</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Header ausente</td>
+          <td><code>401</code></td>
+          <td>Nenhum header <code>x-api-key</code> enviado</td>
+          <td>Adicione o header em todas as requisições</td>
+        </tr>
+        <tr>
+          <td>Chave inválida</td>
+          <td><code>401</code></td>
+          <td>Hash SHA-256 não encontrado no banco</td>
+          <td>Verifique se a chave está correta</td>
+        </tr>
+        <tr>
+          <td>Tenant inativo</td>
+          <td><code>403</code></td>
+          <td>Tenant com status <code>INACTIVE</code></td>
+          <td>Entre em contato com o suporte</td>
+        </tr>
+        <tr>
+          <td>Chave revogada</td>
+          <td><code>401</code></td>
+          <td>Chave removida do banco</td>
+          <td>Gere uma nova chave e atualize suas configurações</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+      <strong>Boas práticas de armazenamento:</strong> Armazene a API key em variável de ambiente (<code>ORQUESTRAIO_API_KEY</code>), nunca no código-fonte ou em arquivos commitados. Em produção, use um secret manager (AWS Secrets Manager, HashiCorp Vault, etc.).
+    </div>
 
   </main>
 </div>
@@ -103,6 +191,6 @@ function applyTheme(){
 }
 applyTheme();
 </script>
-
+<script src="shared.js"></script>
 </body>
 </html>
