@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/fuse.js/7.0.0/fuse.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
-  <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
 
@@ -53,7 +53,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
       </div>
       <span class="header-logo-text">Orquestraio</span>
-      <span class="header-logo-badge">DOCS</span>
     </a>
     <div class="header-sep"></div>
     <div class="header-nav">
@@ -62,13 +61,13 @@
           API <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="header-dropdown" id="dd-api">
-          <a href="processar-pagamento.html"    class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
-          <a href="metodos.html"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
-          <a href="smartrouter.html"   class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
-          <a href="webhooks.html"  class="dd-item" onclick="closeDropdowns()">Webhooks</a>
+          <a href="processar-pagamento.html" class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
+          <a href="metodos-pagamento.html"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
+          <a href="smartrouter.html"          class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
+          <a href="webhooks.html"             class="dd-item" onclick="closeDropdowns()">Webhooks</a>
           <div class="dd-divider"></div>
-          <a href="erros-status.html"    class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
-          <a href="rate-limiting.html" class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
+          <a href="erros-status.html"         class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
+          <a href="rate-limiting.html"        class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
         </div>
       </div>
       <div class="header-group">
@@ -77,8 +76,8 @@
         </button>
         <div class="header-dropdown" id="dd-features">
           <a href="resiliencia.html" class="dd-item" onclick="closeDropdowns()">Idempotência</a>
-          <a href="resiliencia.html"     class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
-          <a href="seguranca.html"    class="dd-item" onclick="closeDropdowns()">Segurança</a>
+          <a href="resiliencia.html" class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
+          <a href="seguranca.html"   class="dd-item" onclick="closeDropdowns()">Segurança</a>
         </div>
       </div>
       <div class="header-group">
@@ -86,10 +85,9 @@
           Guias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="header-dropdown" id="dd-guides">
-          <a href="quickstart.html" class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
-          <a href="autenticacao.html"       class="dd-item" onclick="closeDropdowns()">Autenticação</a>
-          <a href="sandbox.html"    class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
-          <a href="#sdks"       class="dd-item" onclick="closeDropdowns()">SDKs &amp; Quickstart</a>
+          <a href="quickstart.html"   class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
+          <a href="autenticacao.html" class="dd-item" onclick="closeDropdowns()">Autenticação</a>
+          <a href="sandbox.html"      class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
         </div>
       </div>
       <a href="changelog.html" class="header-nav-link">Changelog <span class="badge badge-green" style="font-size:0.56rem;">Novo</span></a>
@@ -118,27 +116,27 @@
 <div class="mobile-drawer" id="mobileDrawer">
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Inicio</div>
-    <a href="#intro" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Introducao</a>
-    <a href="quickstart.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Primeiros Passos</a>
-    <a href="autenticacao.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Autenticacao</a>
-    <a href="glossario.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Glossario</a>
-    <a href="changelog.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Changelog</a>
+    <a href="#intro" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Introducao</a>
+    <a href="quickstart.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Primeiros Passos</a>
+    <a href="autenticacao.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Autenticacao</a>
+    <a href="glossario.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Glossario</a>
+    <a href="changelog.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Changelog</a>
   </div>
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">API</div>
-    <a href="processar-pagamento.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Processar Pagamento</a>
-    <a href="metodos.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Metodos de Pagamento</a>
-    <a href="smartrouter.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">SmartRouter</a>
-    <a href="webhooks.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Webhooks</a>
-    <a href="erros-status.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Erros</a>
-    <a href="rate-limiting.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Rate Limiting</a>
+    <a href="processar-pagamento.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Metodos de Pagamento</a>
+    <a href="smartrouter.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">SmartRouter</a>
+    <a href="webhooks.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Webhooks</a>
+    <a href="erros-status.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Erros</a>
+    <a href="rate-limiting.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Rate Limiting</a>
   </div>
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Guias</div>
-    <a href="sandbox.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Sandbox</a>
-    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Idempotencia</a>
-    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Circuit Breaker</a>
-    <a href="seguranca.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Seguranca</a>
+    <a href="sandbox.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Sandbox</a>
+    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Idempotencia</a>
+    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Circuit Breaker</a>
+    <a href="seguranca.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);" onclick="toggleMobileDrawer()">Seguranca</a>
   </div>
 </div>
 
@@ -168,7 +166,7 @@
           </div>
         </div>
 
-        <!-- Getting Started panel (right side) -->
+        <!-- Getting Started panel -->
         <div class="hero-getting-started">
           <div class="hgs-header">
             <div class="hgs-icon">
@@ -178,23 +176,21 @@
           </div>
           <p class="hgs-desc">Configure e faça seu primeiro pagamento em minutos.</p>
           <div class="hgs-grid">
-            <!-- Row 1 -->
             <a href="quickstart.html" class="hgs-item" title="cURL">
               <svg viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="1.5" width="28" height="28"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="m7 13 3-3-3-3M13 13h4"/></svg>
             </a>
-            <a href="#client-libs" class="hgs-item" title="JavaScript">
+            <a href="quickstart.html" class="hgs-item" title="JavaScript">
               <svg viewBox="0 0 24 24" width="28" height="28"><rect width="24" height="24" rx="3" fill="#f7df1e"/><text x="4" y="18" font-family="Arial" font-weight="bold" font-size="13" fill="#000">JS</text></svg>
             </a>
-            <a href="#client-libs" class="hgs-item" title="Python">
+            <a href="quickstart.html" class="hgs-item" title="Python">
               <svg viewBox="0 0 24 24" width="28" height="28" fill="none"><path d="M11.914 2C6.945 2 7.236 4.17 7.236 4.17l.006 2.246h4.764v.674H5.394S2 6.744 2 11.759s3.008 4.84 3.008 4.84h1.795v-2.328s-.097-3.008 2.96-3.008h5.1s2.862.046 2.862-2.768V4.936S18.19 2 11.914 2z" fill="#3776ab"/><path d="M12.086 22c4.969 0 4.678-2.17 4.678-2.17l-.006-2.246h-4.764v-.674h6.612S22 17.256 22 12.241s-3.008-4.84-3.008-4.84h-1.795v2.328s.097 3.008-2.96 3.008h-5.1S6.275 12.69 6.275 15.504v3.56S5.81 22 12.086 22z" fill="#ffd43b"/></svg>
             </a>
-            <a href="#client-libs" class="hgs-item" title="Go">
+            <a href="quickstart.html" class="hgs-item" title="Go">
               <svg viewBox="0 0 30 18" width="32" height="20"><text x="0" y="14" font-family="Arial" font-weight="bold" font-size="16" fill="#00add8">Go</text></svg>
             </a>
-            <a href="#client-libs" class="hgs-item" title="Java">
+            <a href="quickstart.html" class="hgs-item" title="Java">
               <svg viewBox="0 0 30 18" width="32" height="20"><text x="0" y="14" font-family="Arial" font-weight="bold" font-size="13" fill="#f89820">Java</text></svg>
             </a>
-            <!-- Row 2 -->
             <a href="autenticacao.html" class="hgs-item" title="Autenticação">
               <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5" width="26" height="26"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </a>
@@ -211,11 +207,6 @@
               <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5" width="26" height="26"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </a>
           </div>
-          <a href="quickstart.html" class="hgs-link">
-            <svg class="hgs-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg>
-            Iniciar com o Orquestraio AI
-            <svg class="hgs-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-          </a>
         </div>
       </div>
 
@@ -399,7 +390,7 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
             <div class="codeblock-body">
 <div class="tab-pane active"><span class="t-punct">{</span>
   <span class="t-key">"paymentId"</span><span class="t-punct">:</span>  <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
-  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>   <span class="t-comment">// pagamento aprovado</span>
+  <span class="t-key">"status"</span><span class="t-punct">:</span>    <span class="t-str">"APPROVED"</span><span class="t-punct">,</span>
   <span class="t-key">"amount"</span><span class="t-punct">:</span>    <span class="t-num">50.00</span><span class="t-punct">,</span>
   <span class="t-key">"currency"</span><span class="t-punct">:</span>  <span class="t-str">"BRL"</span><span class="t-punct">,</span>
   <span class="t-key">"details"</span><span class="t-punct">:</span>   <span class="t-punct">{</span> <span class="t-key">"provider"</span><span class="t-punct">:</span> <span class="t-str">"MOCK"</span> <span class="t-punct">},</span>
@@ -424,11 +415,6 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
 
         <div class="doc-divider"></div>
 
-        <!-- Continue com o restante das seções do conteúdo original -->
-        <!-- AUTH, GLOSSARY, CREATE PAYMENT, etc. -->
-        <!-- Por brevidade, vou adicionar apenas mais uma seção como exemplo -->
-
-        <!-- AUTH -->
         <section id="auth" class="doc-section reveal">
           <div class="section-label">Autenticacao</div>
           <div class="section-header">
@@ -450,7 +436,6 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
 
         <div class="doc-divider"></div>
 
-        <!-- FOOTER -->
         <footer class="doc-footer">
           <span>© 2026 Orquestraio — <a href="https://github.com/vitinh0z">@vitinh0z</a></span>
           <span>MIT License</span>
@@ -461,47 +446,41 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
       <!-- RIGHT TOC -->
       <div class="toc" id="toc">
         <div class="toc-label">Nesta pagina</div>
-        <a href="quickstart.html" class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
-        <a href="autenticacao.html" class="toc-item" onclick="tocNav(event,'auth')">Autenticacao</a>
-        <a href="glossario.html" class="toc-item" onclick="tocNav(event,'glossary')">Glossario</a>
-        <a href="processar-pagamento.html" class="toc-item" onclick="tocNav(event,'create')">Processar Pagamento</a>
-        <a href="metodos.html" class="toc-item" onclick="tocNav(event,'methods')">Metodos</a>
-        <a href="smartrouter.html" class="toc-item" onclick="tocNav(event,'routing')">SmartRouter</a>
-        <a href="webhooks.html" class="toc-item" onclick="tocNav(event,'webhooks')">Webhooks</a>
-        <a href="erros-status.html" class="toc-item" onclick="tocNav(event,'errors')">Erros</a>
-        <a href="rate-limiting.html" class="toc-item" onclick="tocNav(event,'ratelimit')">Rate Limiting</a>
-        <a href="resiliencia.html" class="toc-item" onclick="tocNav(event,'idempotency')">Idempotencia</a>
-        <a href="resiliencia.html" class="toc-item" onclick="tocNav(event,'circuit')">Circuit Breaker</a>
-        <a href="seguranca.html" class="toc-item" onclick="tocNav(event,'security')">Seguranca</a>
-        <a href="sandbox.html" class="toc-item" onclick="tocNav(event,'sandbox')">Sandbox</a>
-        <a href="changelog.html" class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
+        <a href="quickstart.html" class="toc-item">Primeiros Passos</a>
+        <a href="autenticacao.html" class="toc-item">Autenticacao</a>
+        <a href="glossario.html" class="toc-item">Glossario</a>
+        <a href="processar-pagamento.html" class="toc-item">Processar Pagamento</a>
+        <a href="smartrouter.html" class="toc-item">SmartRouter</a>
+        <a href="webhooks.html" class="toc-item">Webhooks</a>
+        <a href="erros-status.html" class="toc-item">Erros</a>
+        <a href="rate-limiting.html" class="toc-item">Rate Limiting</a>
+        <a href="resiliencia.html" class="toc-item">Idempotencia</a>
+        <a href="resiliencia.html" class="toc-item">Circuit Breaker</a>
+        <a href="seguranca.html" class="toc-item">Seguranca</a>
+        <a href="sandbox.html" class="toc-item">Sandbox</a>
+        <a href="changelog.html" class="toc-item">Changelog</a>
       </div>
-
-    </div><!-- content-wrapper -->
+    </div>
   </main>
-</div><!-- layout -->
+</div>
 
-<!-- INTRO section (hidden anchor) -->
 <div id="intro" style="position:absolute;top:0;"></div>
 
 <script>
-// ======================== CMD ITEMS ========================
 const CMD_ITEMS = [
-  {label:'Primeiros Passos',    href:'#quickstart',   group:'Inicio',          sub:'docker-compose, MOCK, 3 min'},
+  {label:'Primeiros Passos',    href:'#quickstart',   group:'Inicio',          sub:'docker-compose, MOCK'},
   {label:'Autenticacao',        href:'#auth',         group:'Inicio',          sub:'x-api-key, Oz_'},
-  {label:'Glossario',           href:'#glossary',     group:'Inicio',          sub:'tenant, smartrouter'},
-  {label:'Changelog',           href:'#changelog',    group:'Inicio',          sub:'v0.4.0, v0.3.2'},
-  {label:'Processar Pagamento', href:'#create',       group:'API',             sub:'POST /v1/payments'},
-  {label:'Metodos de Pagamento',href:'#methods',      group:'API',             sub:'pix, boleto, card_token'},
-  {label:'SmartRouter',         href:'#routing',      group:'API',             sub:'roteamento automatico'},
-  {label:'Webhooks',            href:'#webhooks',     group:'API',             sub:'notificacoes assincronas'},
-  {label:'Erros & Status',      href:'#errors',       group:'API',             sub:'400, 401, 409, 429'},
-  {label:'Rate Limiting',       href:'#ratelimit',    group:'API',             sub:'Bucket4j, Redis, v0.6'},
-  {label:'Idempotencia',        href:'#idempotency',  group:'Funcionalidades', sub:'Redis TTL 24h'},
-  {label:'Circuit Breaker',     href:'#circuit',      group:'Funcionalidades', sub:'Resilience4j'},
-  {label:'Seguranca',           href:'#security',     group:'Funcionalidades', sub:'AES-256'},
-  {label:'Sandbox & MOCK',      href:'#sandbox',      group:'Guias',           sub:'gateway fake, testes'},
-  {label:'SDKs & Quickstart',   href:'#sdks',         group:'Guias',           sub:'v0.6 planejado'},
+  {label:'Glossario',           href:'glossario.html',group:'Inicio',          sub:'tenant, smartrouter'},
+  {label:'Changelog',           href:'changelog.html',group:'Inicio',          sub:'v0.4.0, v0.3.2'},
+  {label:'Processar Pagamento', href:'processar-pagamento.html',group:'API',   sub:'POST /v1/payments'},
+  {label:'SmartRouter',         href:'smartrouter.html',         group:'API',  sub:'roteamento automatico'},
+  {label:'Webhooks',            href:'webhooks.html',            group:'API',  sub:'notificacoes assincronas'},
+  {label:'Erros & Status',      href:'erros-status.html',        group:'API',  sub:'400, 401, 409, 429'},
+  {label:'Rate Limiting',       href:'rate-limiting.html',       group:'API',  sub:'Bucket4j, Redis'},
+  {label:'Idempotencia',        href:'resiliencia.html',group:'Funcionalidades',sub:'Redis TTL 24h'},
+  {label:'Circuit Breaker',     href:'resiliencia.html',group:'Funcionalidades',sub:'Resilience4j'},
+  {label:'Seguranca',           href:'seguranca.html', group:'Funcionalidades',sub:'AES-256'},
+  {label:'Sandbox & MOCK',      href:'sandbox.html',   group:'Guias',          sub:'gateway fake, testes'},
 ];
 
 let fuse;
@@ -530,7 +509,7 @@ function renderCmd(q){
 function openCmd(){document.getElementById('cmdOverlay').classList.add('open');const inp=document.getElementById('cmdInput');inp.value='';renderCmd('');setTimeout(()=>inp.focus(),50);}
 function closeCmd(){document.getElementById('cmdOverlay').classList.remove('open');}
 function closeCmdIfBg(e){if(e.target===document.getElementById('cmdOverlay'))closeCmd();}
-function gotoCmd(href){closeCmd();const t=document.querySelector(href);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}
+function gotoCmd(href){closeCmd();if(href.startsWith('#')){const t=document.querySelector(href);if(t)t.scrollIntoView({behavior:'smooth',block:'start'});}else{location.href=href;}}
 function filterCmd(val){renderCmd(val);}
 function handleCmdKey(e){
   const items=document.querySelectorAll('.cmd-item');
@@ -546,19 +525,12 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&document.getElementById('cmdOverlay').classList.contains('open'))closeCmd();
 });
 
-// ======================== MERMAID ========================
 function initMermaid(){
   const theme=document.documentElement.getAttribute('data-theme')==='light'?'default':'dark';
   if(typeof mermaid==='undefined')return;
   mermaid.initialize({startOnLoad:false,theme,securityLevel:'loose'});
-  document.querySelectorAll('.mermaid[data-src]').forEach(el=>{
-    el.removeAttribute('data-processed');el.textContent=el.getAttribute('data-src');
-  });
-  if(typeof mermaid.run==='function') mermaid.run({querySelector:'.mermaid'});
-  else mermaid.init(undefined,'.mermaid');
 }
 
-// ======================== THEME ========================
 function toggleTheme(){
   const html=document.documentElement;
   const isLight=html.getAttribute('data-theme')==='light';
@@ -578,16 +550,13 @@ function applyTheme(){
   }
 }
 
-// ======================== MOBILE DRAWER ========================
 function toggleMobileDrawer(){
   document.getElementById('mobileDrawer').classList.toggle('open');
   document.getElementById('mobileDrawerOverlay').classList.toggle('open');
 }
 
-// ======================== VERSION FLOAT ========================
 function toggleVersionDropdown(){document.getElementById('versionFloat').classList.toggle('open');}
 
-// ======================== DROPDOWNS ========================
 function toggleDropdown(ddId,btnId){
   const isOpen=document.getElementById(ddId).classList.contains('open');
   closeDropdowns();
@@ -602,7 +571,6 @@ document.addEventListener('click',e=>{
   if(!e.target.closest('.version-float'))document.getElementById('versionFloat').classList.remove('open');
 });
 
-// ======================== TABS ========================
 function switchTab(e){
   const btn=e.target.closest('.lang-tab');
   const cb=btn.closest('.codeblock');
@@ -625,7 +593,6 @@ function switchTab(e){
   }
 }
 
-// ======================== COPY ========================
 function copyBlock(btn){
   const cb=btn.closest('.codeblock');
   const active=cb.querySelector('.tab-pane.active')||cb.querySelector('.tab-pane');
@@ -635,7 +602,6 @@ function copyBlock(btn){
   });
 }
 
-// ======================== PERMALINK ========================
 function copyPermalink(e,id){
   e.preventDefault();
   const url=`${location.origin}${location.pathname}#${id}`;
@@ -643,9 +609,7 @@ function copyPermalink(e,id){
     const el=e.target;el.textContent='✓';setTimeout(()=>{el.textContent='#';},1500);
   });
 }
-function tocNav(e,id){e.preventDefault();document.querySelector('#'+id).scrollIntoView({behavior:'smooth',block:'start'});}
 
-// ======================== SANDBOX ========================
 const IS_LOCAL=location.hostname==='localhost'||location.hostname==='127.0.0.1';
 async function runSandboxInternal(resultId,statusId,timeId,bodyId,amount){
   const rs=document.getElementById(resultId);
@@ -682,7 +646,6 @@ async function runSandboxInternal(resultId,statusId,timeId,bodyId,amount){
   }
 }
 
-// ======================== HELPFUL ========================
 function helpful(btn,type){
   const widget=btn.closest('.helpful-widget');
   widget.querySelectorAll('.helpful-btn').forEach(b=>b.classList.add('voted'));
@@ -690,18 +653,13 @@ function helpful(btn,type){
   btn.style.color=type==='yes'?'var(--brand)':'var(--red)';
 }
 
-// ======================== SCROLL ANIMATIONS ========================
 const observer = new IntersectionObserver(entries => {
   entries.forEach(entry => {
-    if (entry.isIntersecting) {
-      entry.target.classList.add('visible');
-    }
+    if (entry.isIntersecting) entry.target.classList.add('visible');
   });
 }, {threshold: 0.1});
-
 document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-// ======================== INIT ========================
 applyTheme();
 initMermaid();
 renderCmd('');
