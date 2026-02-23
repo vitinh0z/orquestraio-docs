@@ -911,13 +911,13 @@ p{color:var(--text-2);line-height:1.75;}
           API <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="header-dropdown" id="dd-api">
-          <a href="#create"    class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
-          <a href="#methods"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
-          <a href="#routing"   class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
-          <a href="#webhooks"  class="dd-item" onclick="closeDropdowns()">Webhooks</a>
+          <a href="processar-pagamento.html"    class="dd-item" onclick="closeDropdowns()">Processar Pagamento</a>
+          <a href="metodos.html"   class="dd-item" onclick="closeDropdowns()">Métodos de Pagamento</a>
+          <a href="smartrouter.html"   class="dd-item" onclick="closeDropdowns()">SmartRouter</a>
+          <a href="webhooks.html"  class="dd-item" onclick="closeDropdowns()">Webhooks</a>
           <div class="dd-divider"></div>
-          <a href="#errors"    class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
-          <a href="#ratelimit" class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
+          <a href="erros-status.html"    class="dd-item" onclick="closeDropdowns()">Erros &amp; Status</a>
+          <a href="rate-limiting.html" class="dd-item" onclick="closeDropdowns()">Rate Limiting</a>
         </div>
       </div>
       <div class="header-group">
@@ -925,9 +925,9 @@ p{color:var(--text-2);line-height:1.75;}
           Funcionalidades <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="header-dropdown" id="dd-features">
-          <a href="#idempotency" class="dd-item" onclick="closeDropdowns()">Idempotência</a>
-          <a href="#circuit"     class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
-          <a href="#security"    class="dd-item" onclick="closeDropdowns()">Segurança</a>
+          <a href="resiliencia.html" class="dd-item" onclick="closeDropdowns()">Idempotência</a>
+          <a href="resiliencia.html"     class="dd-item" onclick="closeDropdowns()">Circuit Breaker</a>
+          <a href="seguranca.html"    class="dd-item" onclick="closeDropdowns()">Segurança</a>
         </div>
       </div>
       <div class="header-group">
@@ -935,13 +935,13 @@ p{color:var(--text-2);line-height:1.75;}
           Guias <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="m6 9 6 6 6-6"/></svg>
         </button>
         <div class="header-dropdown" id="dd-guides">
-          <a href="#quickstart" class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
-          <a href="#auth"       class="dd-item" onclick="closeDropdowns()">Autenticação</a>
-          <a href="#sandbox"    class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
+          <a href="quickstart.html" class="dd-item" onclick="closeDropdowns()">Primeiros Passos</a>
+          <a href="autenticacao.html"       class="dd-item" onclick="closeDropdowns()">Autenticação</a>
+          <a href="sandbox.html"    class="dd-item" onclick="closeDropdowns()">Sandbox &amp; MOCK</a>
           <a href="#sdks"       class="dd-item" onclick="closeDropdowns()">SDKs &amp; Quickstart</a>
         </div>
       </div>
-      <a href="#changelog" class="header-nav-link">Changelog <span class="badge badge-green" style="font-size:0.56rem;">Novo</span></a>
+      <a href="changelog.html" class="header-nav-link">Changelog <span class="badge badge-green" style="font-size:0.56rem;">Novo</span></a>
     </div>
     <div class="header-right">
       <button class="header-search" onclick="openCmd()" title="Buscar (Ctrl+K)">
@@ -968,26 +968,26 @@ p{color:var(--text-2);line-height:1.75;}
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Inicio</div>
     <a href="#intro" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Introducao</a>
-    <a href="#quickstart" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Primeiros Passos</a>
-    <a href="#auth" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Autenticacao</a>
-    <a href="#glossary" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Glossario</a>
-    <a href="#changelog" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Changelog</a>
+    <a href="quickstart.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Primeiros Passos</a>
+    <a href="autenticacao.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Autenticacao</a>
+    <a href="glossario.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Glossario</a>
+    <a href="changelog.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Changelog</a>
   </div>
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">API</div>
-    <a href="#create" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Processar Pagamento</a>
-    <a href="#methods" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Metodos de Pagamento</a>
-    <a href="#routing" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">SmartRouter</a>
-    <a href="#webhooks" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Webhooks</a>
-    <a href="#errors" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Erros</a>
-    <a href="#ratelimit" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Rate Limiting</a>
+    <a href="processar-pagamento.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Processar Pagamento</a>
+    <a href="metodos.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Metodos de Pagamento</a>
+    <a href="smartrouter.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">SmartRouter</a>
+    <a href="webhooks.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Webhooks</a>
+    <a href="erros-status.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Erros</a>
+    <a href="rate-limiting.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Rate Limiting</a>
   </div>
   <div style="margin-bottom:1rem;">
     <div style="font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.1em;color:var(--text-muted);margin-bottom:0.5rem;padding:0 0.5rem;">Guias</div>
-    <a href="#sandbox" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Sandbox</a>
-    <a href="#idempotency" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Idempotencia</a>
-    <a href="#circuit" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Circuit Breaker</a>
-    <a href="#security" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Seguranca</a>
+    <a href="sandbox.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Sandbox</a>
+    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Idempotencia</a>
+    <a href="resiliencia.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Circuit Breaker</a>
+    <a href="seguranca.html" style="display:block;padding:0.4rem 0.5rem;color:var(--text-3);font-size:0.82rem;text-decoration:none;border-radius:var(--radius);transition:all var(--transition);" onclick="toggleMobileDrawer()">Seguranca</a>
   </div>
 </div>
 
@@ -1006,11 +1006,11 @@ p{color:var(--text-2);line-height:1.75;}
           <h1 class="hero-title">Orquestraio<br>Documentação</h1>
           <p class="hero-lead">Aprenda a integrar e usar o Orquestraio — <span style="color:var(--brand);font-weight:500;">Múltiplos gateways.</span> Uma única API para PIX, boleto e cartão com roteamento inteligente, idempotência e resiliência embutidos.</p>
           <div class="hero-actions">
-            <a href="#create" class="btn btn-brand">
+            <a href="processar-pagamento.html" class="btn btn-brand">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
               Ver endpoints
             </a>
-            <a href="#sandbox" class="btn btn-outline">
+            <a href="sandbox.html" class="btn btn-outline">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
               Testar Sandbox
             </a>
@@ -1028,7 +1028,7 @@ p{color:var(--text-2);line-height:1.75;}
           <p class="hgs-desc">Configure e faça seu primeiro pagamento em minutos.</p>
           <div class="hgs-grid">
             <!-- Row 1 -->
-            <a href="#quickstart" class="hgs-item" title="cURL">
+            <a href="quickstart.html" class="hgs-item" title="cURL">
               <svg viewBox="0 0 24 24" fill="none" stroke="#a0a0a0" stroke-width="1.5" width="28" height="28"><rect x="2" y="3" width="20" height="15" rx="2"/><path d="m7 13 3-3-3-3M13 13h4"/></svg>
             </a>
             <a href="#client-libs" class="hgs-item" title="JavaScript">
@@ -1044,23 +1044,23 @@ p{color:var(--text-2);line-height:1.75;}
               <svg viewBox="0 0 30 18" width="32" height="20"><text x="0" y="14" font-family="Arial" font-weight="bold" font-size="13" fill="#f89820">Java</text></svg>
             </a>
             <!-- Row 2 -->
-            <a href="#auth" class="hgs-item" title="Autenticação">
+            <a href="autenticacao.html" class="hgs-item" title="Autenticação">
               <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5" width="26" height="26"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
             </a>
-            <a href="#webhooks" class="hgs-item" title="Webhooks">
+            <a href="webhooks.html" class="hgs-item" title="Webhooks">
               <svg viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="1.5" width="26" height="26"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
             </a>
-            <a href="#routing" class="hgs-item" title="SmartRouter">
+            <a href="smartrouter.html" class="hgs-item" title="SmartRouter">
               <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="1.5" width="26" height="26"><path d="M9 18 3 12l6-6"/><path d="M21 12H3"/></svg>
             </a>
-            <a href="#idempotency" class="hgs-item" title="Idempotência">
+            <a href="resiliencia.html" class="hgs-item" title="Idempotência">
               <svg viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="1.5" width="26" height="26"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
             </a>
-            <a href="#circuit" class="hgs-item" title="Circuit Breaker">
+            <a href="resiliencia.html" class="hgs-item" title="Circuit Breaker">
               <svg viewBox="0 0 24 24" fill="none" stroke="#fb923c" stroke-width="1.5" width="26" height="26"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
             </a>
           </div>
-          <a href="#quickstart" class="hgs-link">
+          <a href="quickstart.html" class="hgs-link">
             <svg class="hgs-link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 3l1.9 5.8a2 2 0 0 0 1.3 1.3L21 12l-5.8 1.9a2 2 0 0 0-1.3 1.3L12 21l-1.9-5.8a2 2 0 0 0-1.3-1.3L3 12l5.8-1.9a2 2 0 0 0 1.3-1.3L12 3z"/></svg>
             Iniciar com o Orquestraio AI
             <svg class="hgs-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -1072,14 +1072,14 @@ p{color:var(--text-2);line-height:1.75;}
       <div class="hero-products">
         <div class="hero-products-title">Recursos</div>
         <div class="products-grid">
-          <a href="#create" class="product-card">
+          <a href="processar-pagamento.html" class="product-card">
             <div class="product-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg>
               <span class="product-card-title">Pagamentos</span>
             </div>
             <p class="product-card-desc">Processe PIX, boleto e cartão em múltiplos gateways com uma única chamada de API. Roteamento automático e fallback embutido.</p>
           </a>
-          <a href="#routing" class="product-card">
+          <a href="smartrouter.html" class="product-card">
             <div class="product-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
               <span class="product-card-title">SmartRouter</span>
@@ -1088,21 +1088,21 @@ p{color:var(--text-2);line-height:1.75;}
           </a>
         </div>
         <div class="products-grid-3">
-          <a href="#webhooks" class="product-card">
+          <a href="webhooks.html" class="product-card">
             <div class="product-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
               <span class="product-card-title">Webhooks</span>
             </div>
             <p class="product-card-desc">Eventos normalizados de todos os gateways com formato unificado para seu sistema.</p>
           </a>
-          <a href="#idempotency" class="product-card">
+          <a href="resiliencia.html" class="product-card">
             <div class="product-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
               <span class="product-card-title">Idempotência</span>
             </div>
             <p class="product-card-desc">Proteção contra duplicação com Redis TTL 24h e chaves UUID v4 para pagamentos seguros.</p>
           </a>
-          <a href="#circuit" class="product-card">
+          <a href="resiliencia.html" class="product-card">
             <div class="product-card-header">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
               <span class="product-card-title">Circuit Breaker</span>
@@ -1124,7 +1124,7 @@ p{color:var(--text-2);line-height:1.75;}
             <div>
               <div class="section-title">
                 Primeiros passos em 3 minutos
-                <a href="#quickstart" class="permalink" onclick="copyPermalink(event,'quickstart')">#</a>
+                <a href="quickstart.html" class="permalink" onclick="copyPermalink(event,'quickstart')">#</a>
               </div>
               <div class="section-desc">Do zero ao primeiro pagamento aprovado. Siga os 3 passos abaixo — sem configuração de gateway real.</div>
             </div>
@@ -1258,7 +1258,7 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
           </div>
           <div class="callout callout-tip">
             <span class="callout-icon"><svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg></span>
-            <div class="callout-body"><strong>Proximo passo:</strong> Configure um webhook para receber notificações quando o status mudar. Ver seção <a href="#webhooks">Webhooks</a>.</div>
+            <div class="callout-body"><strong>Proximo passo:</strong> Configure um webhook para receber notificações quando o status mudar. Ver seção <a href="webhooks.html">Webhooks</a>.</div>
           </div>
           <div class="last-updated">Atualizado em 22/02/2026 · v0.4.0</div>
           <div class="helpful-widget">
@@ -1284,7 +1284,7 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
             <div>
               <div class="section-title">
                 API Key via header HTTP
-                <a href="#auth" class="permalink" onclick="copyPermalink(event,'auth')">#</a>
+                <a href="autenticacao.html" class="permalink" onclick="copyPermalink(event,'auth')">#</a>
               </div>
               <div class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do tenant. Chaves de produção têm o prefixo <code>Oz_</code>.</div>
             </div>
@@ -1310,20 +1310,20 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
       <!-- RIGHT TOC -->
       <div class="toc" id="toc">
         <div class="toc-label">Nesta pagina</div>
-        <a href="#quickstart" class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
-        <a href="#auth" class="toc-item" onclick="tocNav(event,'auth')">Autenticacao</a>
-        <a href="#glossary" class="toc-item" onclick="tocNav(event,'glossary')">Glossario</a>
-        <a href="#create" class="toc-item" onclick="tocNav(event,'create')">Processar Pagamento</a>
-        <a href="#methods" class="toc-item" onclick="tocNav(event,'methods')">Metodos</a>
-        <a href="#routing" class="toc-item" onclick="tocNav(event,'routing')">SmartRouter</a>
-        <a href="#webhooks" class="toc-item" onclick="tocNav(event,'webhooks')">Webhooks</a>
-        <a href="#errors" class="toc-item" onclick="tocNav(event,'errors')">Erros</a>
-        <a href="#ratelimit" class="toc-item" onclick="tocNav(event,'ratelimit')">Rate Limiting</a>
-        <a href="#idempotency" class="toc-item" onclick="tocNav(event,'idempotency')">Idempotencia</a>
-        <a href="#circuit" class="toc-item" onclick="tocNav(event,'circuit')">Circuit Breaker</a>
-        <a href="#security" class="toc-item" onclick="tocNav(event,'security')">Seguranca</a>
-        <a href="#sandbox" class="toc-item" onclick="tocNav(event,'sandbox')">Sandbox</a>
-        <a href="#changelog" class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
+        <a href="quickstart.html" class="toc-item" onclick="tocNav(event,'quickstart')">Primeiros Passos</a>
+        <a href="autenticacao.html" class="toc-item" onclick="tocNav(event,'auth')">Autenticacao</a>
+        <a href="glossario.html" class="toc-item" onclick="tocNav(event,'glossary')">Glossario</a>
+        <a href="processar-pagamento.html" class="toc-item" onclick="tocNav(event,'create')">Processar Pagamento</a>
+        <a href="metodos.html" class="toc-item" onclick="tocNav(event,'methods')">Metodos</a>
+        <a href="smartrouter.html" class="toc-item" onclick="tocNav(event,'routing')">SmartRouter</a>
+        <a href="webhooks.html" class="toc-item" onclick="tocNav(event,'webhooks')">Webhooks</a>
+        <a href="erros-status.html" class="toc-item" onclick="tocNav(event,'errors')">Erros</a>
+        <a href="rate-limiting.html" class="toc-item" onclick="tocNav(event,'ratelimit')">Rate Limiting</a>
+        <a href="resiliencia.html" class="toc-item" onclick="tocNav(event,'idempotency')">Idempotencia</a>
+        <a href="resiliencia.html" class="toc-item" onclick="tocNav(event,'circuit')">Circuit Breaker</a>
+        <a href="seguranca.html" class="toc-item" onclick="tocNav(event,'security')">Seguranca</a>
+        <a href="sandbox.html" class="toc-item" onclick="tocNav(event,'sandbox')">Sandbox</a>
+        <a href="changelog.html" class="toc-item" onclick="tocNav(event,'changelog')">Changelog</a>
       </div>
 
     </div><!-- content-wrapper -->
