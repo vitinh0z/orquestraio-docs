@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Glossário — Orquestraio Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* =================== CSS VARIABLES =================== */
+:root {
+  --bg:           #07070d;
+  --bg-1:         #0c0c16;
+  --bg-2:         #111120;
+  --bg-3:         #16162a;
+  --border:       rgba(120,80,255,0.10);
+  --border-2:     rgba(120,80,255,0.20);
+  --border-3:     rgba(120,80,255,0.38);
+  --purple:       #6d28d9;
+  --purple-mid:   #7c3aed;
+  --purple-light: #a78bfa;
+  --purple-faint: rgba(109,40,217,0.08);
+  --indigo:       #818cf8;
+  --text:         #e4e2ef;
+  --text-2:       #8e89aa;
+  --text-3:       #524d6e;
+  --emerald:      #34d399;
+  --amber:        #fbbf24;
+  --red:          #f87171;
+  --blue:         #60a5fa;
+  --font-sans:    'Inter', sans-serif;
+  --font-mono:    'JetBrains Mono', monospace;
+  --sidebar-w:    244px;
+  --toc-w:        208px;
+  --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(0,0,0,0.5);
+  --radius:       0px;
+  --transition:   0.15s ease;
+  --topnav-h:     60px;
+}
+
+/* =================== LIGHT THEME =================== */
+[data-theme="light"] {
+  --bg:           #f8f7fd;
+  --bg-1:         #f2f0fa;
+  --bg-2:         #ece9f8;
+  --bg-3:         #e4dff5;
+  --border:       rgba(109,40,217,0.10);
+  --border-2:     rgba(109,40,217,0.20);
+  --border-3:     rgba(109,40,217,0.38);
+  --purple-light: #7c3aed;
+  --purple-faint: rgba(109,40,217,0.06);
+  --text:         #1a1528;
+  --text-2:       #4a4368;
+  --text-3:       #9088b8;
+  --shadow:       0 0 0 1px var(--border), 0 8px 32px rgba(109,40,217,0.08);
+}
+
+/* =================== BASE =================== */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text-2);
+  font-family:var(--font-sans);
+  font-size:14px;
+  line-height:1.75;
+  min-height:100vh;
+  overflow-x:hidden;
+  transition:background var(--transition), color var(--transition);
+}
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:40px 40px;
+  pointer-events:none;z-index:0;
+  opacity:0.6;
+}
+
+/* =================== TOPNAV =================== */
+.topnav{
+  position:fixed;top:0;left:0;right:0;
+  height:var(--topnav-h);
+  background:rgba(7,7,13,0.88);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid var(--border);
+  z-index:500;
+  transition:background var(--transition);
+}
+[data-theme="light"] .topnav{background:rgba(248,247,253,0.9);}
+.topnav-inner{
+  max-width:1200px;margin:0 auto;
+  display:flex;align-items:center;
+  height:100%;padding:0 1.5rem;gap:1rem;
+}
+.topnav-logo{
+  display:flex;align-items:center;gap:0.5rem;
+  text-decoration:none;flex-shrink:0;
+}
+.topnav-logo:hover{text-decoration:none;}
+.topnav-logo-mark{
+  width:26px;height:26px;
+  border:1px solid var(--border-3);
+  background:var(--purple-faint);
+  display:flex;align-items:center;justify-content:center;
+  border-radius:6px;flex-shrink:0;
+}
+.topnav-logo-mark svg{width:13px;height:13px;}
+.topnav-logo-text{font-family:var(--font-mono);font-weight:600;font-size:0.85rem;color:var(--text);letter-spacing:0.02em;}
+.topnav-version{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-3);border:1px solid var(--border);padding:0.05rem 0.3rem;border-radius:3px;margin-left:0.1rem;}
+.topnav-right{display:flex;align-items:center;gap:0.5rem;margin-left:auto;}
+.topnav-icon-btn{
+  width:32px;height:32px;display:flex;align-items:center;justify-content:center;
+  background:none;border:1px solid var(--border);border-radius:6px;
+  color:var(--text-3);cursor:pointer;
+  transition:all var(--transition);text-decoration:none;
+  flex-shrink:0;
+}
+.topnav-icon-btn:hover{color:var(--purple-light);border-color:var(--border-2);text-decoration:none;}
+.topnav-icon-btn svg{width:14px;height:14px;}
+
+/* =================== SIDEBAR =================== */
+.sidebar{
+  position:fixed;
+  top:var(--topnav-h);
+  left:0;
+  bottom:0;
+  width:var(--sidebar-w);
+  background:var(--bg);
+  border-right:1px solid var(--border);
+  overflow-y:auto;
+  overflow-x:hidden;
+  padding:1rem 0 3rem;
+  z-index:400;
+}
+.sidebar::-webkit-scrollbar{width:3px;}
+.sidebar::-webkit-scrollbar-thumb{background:var(--border-2);}
+.sidebar-section{margin-bottom:0.25rem;}
+.sidebar-section-label{
+  font-family:var(--font-mono);font-size:0.58rem;
+  text-transform:uppercase;letter-spacing:0.12em;
+  color:var(--text-3);font-weight:600;
+  padding:0.6rem 1rem 0.25rem;
+}
+.sidebar-item{
+  display:flex;align-items:center;gap:0.45rem;
+  padding:0.26rem 1rem;color:var(--text-3);
+  font-size:0.78rem;text-decoration:none;cursor:pointer;
+  transition:color var(--transition);
+  border-left:2px solid transparent;font-weight:400;
+}
+.sidebar-item:hover{color:var(--text-2);}
+.sidebar-item.active{color:var(--purple-light);border-left-color:var(--purple-mid);background:rgba(124,58,237,0.06);font-weight:500;}
+
+/* =================== LAYOUT =================== */
+.shell{
+  min-height:100vh;
+  position:relative;z-index:1;
+}
+.main{
+  margin-left:var(--sidebar-w);
+  max-width:840px;
+  width:100%;
+  padding:calc(var(--topnav-h) + 2.5rem) 2rem 6rem;
+}
+@media(max-width:900px){
+  .main{margin-left:0;}
+  .sidebar{display:none;}
+}
+
+/* =================== SECTION =================== */
+.section-label{
+  font-family:var(--font-mono);font-size:0.64rem;
+  text-transform:uppercase;letter-spacing:0.1em;
+  color:var(--purple-light);margin-bottom:0.875rem;
+}
+.section-title{
+  font-size:1.15rem;font-weight:600;color:var(--text);
+  letter-spacing:-0.02em;margin-bottom:0.3rem;line-height:1.25;
+}
+.section-desc{font-size:0.865rem;color:var(--text-2);margin-bottom:1.25rem;max-width:560px;line-height:1.75;}
+code{font-family:var(--font-mono);font-size:0.78em;background:rgba(120,80,255,0.09);border:1px solid var(--border-2);padding:0.1em 0.4em;color:var(--purple-light);}
+[data-theme="light"] code{background:rgba(109,40,217,0.07);color:var(--purple-mid);}
+
+/* =================== GLOSSARY =================== */
+.glossary-item{padding:0.8rem 0;border-bottom:1px solid var(--border);display:grid;grid-template-columns:155px 1fr;gap:1rem;align-items:baseline;}
+.glossary-item:last-child{border-bottom:none;}
+.glossary-term{font-family:var(--font-mono);font-size:0.76rem;color:var(--purple-light);font-weight:500;}
+.glossary-def{font-size:0.82rem;color:var(--text-2);line-height:1.65;}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-right">
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Inicio</div>
+    <a href="index.html" class="sidebar-item">Introducao</a>
+    <a href="quickstart.html" class="sidebar-item">Primeiros Passos</a>
+    <a href="autenticacao.html" class="sidebar-item">Autenticacao</a>
+    <a href="glossario.html" class="sidebar-item active">Glossario</a>
+    <a href="changelog.html" class="sidebar-item">Changelog</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">API</div>
+    <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
+    <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
+    <a href="webhooks.html" class="sidebar-item">Webhooks</a>
+    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
+    <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Funcionalidades</div>
+    <a href="resiliencia.html" class="sidebar-item">Resiliencia</a>
+    <a href="seguranca.html" class="sidebar-item">Seguranca</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guias</div>
+    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+  </div>
+</aside>
+
+<div class="shell">
+  <main class="main">
+
+    <div class="section-label">Referencia</div>
+    <h1 class="section-title">Glossário</h1>
+    <p class="section-desc">Termos usados em toda a documentação.</p>
+
+    <div style="border:1px solid var(--border);padding:0 1rem;overflow:hidden;">
+      <div class="glossary-item">
+        <span class="glossary-term">Tenant</span>
+        <span class="glossary-def">Uma empresa ou aplicação cadastrada no Orquestraio. Cada tenant tem sua própria API key, gateways configurados e dados completamente isolados.</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">SmartRouter</span>
+        <span class="glossary-def">Componente que seleciona automaticamente o melhor gateway com base na moeda, método e valor da transação.</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">idempotencyKey</span>
+        <span class="glossary-def">Identificador único por transação (UUID v4 recomendado). Garante que a mesma requisição nunca seja processada duas vezes, mesmo em cenários de retry.</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">Circuit Breaker</span>
+        <span class="glossary-def">Mecanismo que detecta falhas em um gateway e o remove temporariamente das rotas, evitando degradação em cascata.</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">Gateway</span>
+        <span class="glossary-def">Provedor externo de pagamento: Stripe, MercadoPago, PayPal ou MOCK. O Orquestraio é uma camada de abstração sobre eles.</span>
+      </div>
+      <div class="glossary-item">
+        <span class="glossary-term">MOCK</span>
+        <span class="glossary-def">Gateway fake para testes. Simula 300ms de latência, aprova qualquer pagamento exceto amount <code>99.99</code> (força erro).</span>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  const newTheme=isLight?'dark':'light';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('theme',newTheme);
+  document.getElementById('themeIcon').innerHTML=isLight
+    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function applyTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+applyTheme();
+</script>
+
+</body>
+</html>
