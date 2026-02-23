@@ -46,7 +46,7 @@
     <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
     <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
     <a href="webhooks.html" class="sidebar-item active">Webhooks</a>
-    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
+    <a href="erros-status.html" class="sidebar-item">Erros &amp; Status</a>
     <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
   </div>
   <div class="sidebar-section">
@@ -56,7 +56,7 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">Guias</div>
-    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
   </div>
 </aside>
 
@@ -65,6 +65,10 @@
 
     <div class="section-label">API</div>
     <h1 class="section-title">Webhooks</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      5 min de leitura
+    </div>
     <p class="section-desc">O Orquestraio notifica seu backend de forma assíncrona quando o status de um pagamento muda — essencial para PIX e Boleto.</p>
 
     <div class="callout callout-info">
@@ -74,7 +78,7 @@
       <div class="callout-body"><strong>Normalizacao automatica:</strong> Independente do gateway (Stripe, MercadoPago, PayPal), todos os webhooks chegam no mesmo formato. Você implementa uma vez — o Orquestraio traduz o resto.</div>
     </div>
 
-    <h2>Payload Normalizado</h2>
+    <h2 id="payload">Payload Normalizado</h2>
     <div class="codeblock">
       <div class="codeblock-header">
         <div class="lang-tabs"><button class="lang-tab active">JSON</button></div>
@@ -82,6 +86,7 @@
       </div>
       <div class="codeblock-body">
 <div class="tab-pane active"><span class="t-comment">// POST para a URL configurada no seu tenant</span>
+<span class="t-comment">// Header: X-Orquestraio-Signature: sha256=a1b2c3d4...</span>
 <span class="t-punct">{</span>
   <span class="t-key">"event"</span><span class="t-punct">:</span> <span class="t-str">"payment.status_changed"</span><span class="t-punct">,</span>
   <span class="t-key">"paymentId"</span><span class="t-punct">:</span> <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span><span class="t-punct">,</span>
@@ -94,13 +99,121 @@
       </div>
     </div>
 
-    <h2>Implementação</h2>
+    <!-- ── ASSINATURA HMAC ── -->
+    <h2 id="assinatura">Verificação de Assinatura (HMAC-SHA256)</h2>
+
+    <div class="callout callout-danger">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--red)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </span>
+      <div class="callout-body">
+        <strong>Verificação obrigatória em produção.</strong> Sem verificar a assinatura, qualquer pessoa que conheça a URL do seu endpoint pode enviar eventos falsos e acionar lógica crítica de negócio (liberar pedidos, creditar saldo, etc.). Nunca processe um webhook sem validar o header <code>X-Orquestraio-Signature</code>.
+      </div>
+    </div>
+
+    <p>Cada notificação é assinada com <strong>HMAC-SHA256</strong> usando um secret exclusivo por tenant. O header enviado tem o formato:</p>
+
+    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:1rem;overflow-x:auto;margin:1.125rem 0;"><code style="background:none;border:none;padding:0;font-size:0.78rem;line-height:1.8;color:var(--text-2);">X-Orquestraio-Signature: sha256=a1b2c3d4e5f6789abc...</code></pre>
+
+    <p>Para validar: compute <code>HMAC-SHA256(rawBody, webhookSecret)</code> e compare com o valor do header usando comparação em <strong>tempo constante</strong> (evita timing attacks).</p>
+
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs">
+          <button class="lang-tab active" data-tab="sig-js" onclick="switchTab(event)">JavaScript</button>
+          <button class="lang-tab" data-tab="sig-py" onclick="switchTab(event)">Python</button>
+          <button class="lang-tab" data-tab="sig-go" onclick="switchTab(event)">Go</button>
+        </div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active" id="sig-js"><span class="t-key">const</span> crypto = require(<span class="t-str">'crypto'</span>);
+
+<span class="t-key">function</span> verifySignature(rawBody, signatureHeader, secret) {
+  <span class="t-key">const</span> expected = <span class="t-str">'sha256='</span> + crypto
+    .createHmac(<span class="t-str">'sha256'</span>, secret)
+    .update(rawBody) <span class="t-comment">// rawBody = Buffer, antes do JSON.parse</span>
+    .digest(<span class="t-str">'hex'</span>);
+  <span class="t-comment">// timingSafeEqual previne timing attacks</span>
+  <span class="t-key">return</span> crypto.timingSafeEqual(Buffer.from(expected), Buffer.from(signatureHeader));
+}
+
+<span class="t-comment">// Express: use express.raw() ANTES do json() parser</span>
+app.post(<span class="t-str">'/webhooks/orquestraio'</span>, express.raw({type: <span class="t-str">'*/*'</span>}), (req, res) => {
+  <span class="t-key">const</span> sig = req.headers[<span class="t-str">'x-orquestraio-signature'</span>];
+  <span class="t-key">if</span> (!sig || !verifySignature(req.body, sig, process.env.ORQUESTRAIO_WEBHOOK_SECRET)) {
+    <span class="t-key">return</span> res.status(<span class="t-num">401</span>).end();
+  }
+  <span class="t-key">const</span> event = JSON.parse(req.body.toString());
+  <span class="t-key">if</span> (event.event === <span class="t-str">'payment.approved'</span>) fulfillOrder(event.paymentId);
+  res.status(<span class="t-num">200</span>).json({ received: <span class="t-bool">true</span> });
+});</div>
+<div class="tab-pane" id="sig-py">import hmac, hashlib, os
+from flask import request, jsonify, abort
+
+<span class="t-key">def</span> verify_signature(raw_body: bytes, sig_header: str, secret: str) -> bool:
+    expected = <span class="t-str">'sha256='</span> + hmac.new(
+        secret.encode(), raw_body, hashlib.sha256
+    ).hexdigest()
+    <span class="t-comment"># compare_digest previne timing attacks</span>
+    <span class="t-key">return</span> hmac.compare_digest(expected, sig_header)
+
+@app.route(<span class="t-str">'/webhooks/orquestraio'</span>, methods=[<span class="t-str">'POST'</span>])
+<span class="t-key">def</span> webhook():
+    sig = request.headers.get(<span class="t-str">'X-Orquestraio-Signature'</span>, <span class="t-str">''</span>)
+    <span class="t-key">if</span> not verify_signature(
+        request.get_data(), sig, os.environ[<span class="t-str">'ORQUESTRAIO_WEBHOOK_SECRET'</span>]
+    ):
+        abort(<span class="t-num">401</span>)
+    event = request.json
+    <span class="t-key">if</span> event[<span class="t-str">'event'</span>] == <span class="t-str">'payment.approved'</span>:
+        fulfill_order(event[<span class="t-str">'paymentId'</span>])
+    <span class="t-key">return</span> jsonify({<span class="t-str">'received'</span>: <span class="t-bool">True</span>}), <span class="t-num">200</span></div>
+<div class="tab-pane" id="sig-go">import (
+    "crypto/hmac"
+    "crypto/sha256"
+    "crypto/subtle"
+    "encoding/hex"
+    "fmt"
+    "io"
+    "net/http"
+)
+
+func verifySignature(body []byte, sigHeader, secret string) bool {
+    mac := hmac.New(sha256.New, []byte(secret))
+    mac.Write(body)
+    expected := "sha256=" + hex.EncodeToString(mac.Sum(nil))
+    // ConstantTimeCompare previne timing attacks
+    return subtle.ConstantTimeCompare([]byte(expected), []byte(sigHeader)) == 1
+}
+
+func webhookHandler(w http.ResponseWriter, r *http.Request) {
+    body, _ := io.ReadAll(r.Body)
+    sig := r.Header.Get("X-Orquestraio-Signature")
+    if !verifySignature(body, sig, os.Getenv("ORQUESTRAIO_WEBHOOK_SECRET")) {
+        http.Error(w, "Unauthorized", http.StatusUnauthorized)
+        return
+    }
+    // processar evento...
+    w.WriteHeader(http.StatusOK)
+}</div>
+      </div>
+    </div>
+
+    <div class="callout callout-warning">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <div class="callout-body"><strong>Use o body bruto, antes do parse.</strong> Parsear o JSON antes de calcular o HMAC (ex: re-serializar com <code>JSON.stringify</code>) pode alterar a ordem das chaves e invalidar a assinatura. Sempre compute o HMAC sobre o body como bytes recebidos pelo servidor.</div>
+    </div>
+
+    <h2 id="implementacao">Implementação Básica</h2>
     <div class="codeblock">
       <div class="codeblock-header">
         <div class="lang-tabs">
           <button class="lang-tab active" data-tab="wh-js" onclick="switchTab(event)">JavaScript</button>
           <button class="lang-tab" data-tab="wh-py" onclick="switchTab(event)">Python</button>
-          <button class="lang-tab" data-tab="wh-go" onclick="switchTab(event)">Go</button>
+          <button class="lang-tab" data-tab="wh-go2" onclick="switchTab(event)">Go</button>
         </div>
         <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
       </div>
@@ -120,7 +233,7 @@ def webhook():
         <span class="t-key">if</span> data[<span class="t-str">'status'</span>] == <span class="t-str">'APPROVED'</span>:
             fulfill_order(data[<span class="t-str">'paymentId'</span>])
     <span class="t-key">return</span> jsonify({<span class="t-str">'received'</span>: <span class="t-bool">True</span>}), <span class="t-num">200</span></div>
-<div class="tab-pane" id="wh-go">func webhookHandler(w http.ResponseWriter, r *http.Request) {
+<div class="tab-pane" id="wh-go2">func webhookHandler(w http.ResponseWriter, r *http.Request) {
     var evt WebhookEvent
     json.NewDecoder(r.Body).Decode(&evt)
     <span class="t-key">if</span> evt.Status == <span class="t-str">"APPROVED"</span> {
@@ -131,7 +244,7 @@ def webhook():
       </div>
     </div>
 
-    <h2>Eventos Disponíveis</h2>
+    <h2 id="eventos">Eventos Disponíveis</h2>
     <table class="doc-table">
       <thead><tr><th>Evento</th><th>Quando ocorre</th></tr></thead>
       <tbody>
@@ -146,7 +259,7 @@ def webhook():
       <span class="callout-icon">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
       </span>
-      <div class="callout-body"><strong>Timeout e retry:</strong> Seu endpoint deve responder 200 OK em até 5 segundos. Se falhar, o Orquestraio tentará novamente com backoff exponencial (1min, 5min, 15min, 1h).</div>
+      <div class="callout-body"><strong>Timeout e retry:</strong> Seu endpoint deve responder <code>200 OK</code> em até 5 segundos. Se falhar, o Orquestraio tentará novamente com backoff exponencial (1min, 5min, 15min, 1h). Implemente idempotência no seu handler usando <code>paymentId</code> como chave.</div>
     </div>
 
   </main>
@@ -189,6 +302,6 @@ function copyBlock(btn){
   });
 }
 </script>
-
+<script src="shared.js"></script>
 </body>
 </html>
