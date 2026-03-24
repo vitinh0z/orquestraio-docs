@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Autenticação — Orquestraio Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="index.html" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-right">
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Inicio</div>
+    <a href="index.html" class="sidebar-item">Introducao</a>
+    <a href="quickstart.html" class="sidebar-item">Primeiros Passos</a>
+    <a href="autenticacao.html" class="sidebar-item active">Autenticacao</a>
+    <a href="glossario.html" class="sidebar-item">Glossario</a>
+    <a href="changelog.html" class="sidebar-item">Changelog</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">API</div>
+    <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
+    <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
+    <a href="webhooks.html" class="sidebar-item">Webhooks</a>
+    <a href="erros-status.html" class="sidebar-item">Erros &amp; Status</a>
+    <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Funcionalidades</div>
+    <a href="resiliencia.html" class="sidebar-item">Resiliencia</a>
+    <a href="seguranca.html" class="sidebar-item">Seguranca</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guias</div>
+    <a href="sandbox.html" class="sidebar-item">Sandbox &amp; MOCK</a>
+  </div>
+</aside>
+
+<div class="shell">
+  <main class="main">
+
+    <div class="section-label">Autenticacao</div>
+    <h1 class="section-title">API Key via header HTTP</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      4 min de leitura
+    </div>
+    <p class="section-desc">Todas as requisições precisam do header <code>x-api-key</code> com a chave do tenant. Requisições sem header válido retornam <code>401 Unauthorized</code> antes de qualquer processamento.</p>
+
+    <div class="callout callout-warning">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+      </span>
+      <div class="callout-body"><strong>Nunca exponha sua API key no frontend.</strong> Faça todas as chamadas pelo backend. Chaves comprometidas podem ser revogadas no painel sem downtime.</div>
+    </div>
+
+    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:1rem;overflow-x:auto;margin:1.125rem 0;"><code style="background:none;border:none;padding:0;font-size:0.78rem;line-height:1.8;color:var(--text-2);">x-api-key: Oz_live_a1b2c3d4e5f6g7h8i9j0</code></pre>
+
+    <!-- PREFIXOS -->
+    <h2 id="prefixos">Prefixos: <code>Oz_live_</code> vs <code>Oz_test_</code></h2>
+    <p>O prefixo da chave indica o ambiente ao qual ela pertence. Nunca use uma chave de produção em testes — isso gera transações reais e cobranças reais.</p>
+
+    <table class="doc-table">
+      <thead><tr><th>Prefixo</th><th>Ambiente</th><th>Gateways disponíveis</th><th>Gera cobranças?</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>Oz_live_</code></td>
+          <td>Produção</td>
+          <td>Stripe, MercadoPago, PayPal</td>
+          <td><strong style="color:var(--red);">Sim</strong></td>
+        </tr>
+        <tr>
+          <td><code>Oz_test_</code></td>
+          <td>Teste / Staging</td>
+          <td>MOCK, sandboxes dos gateways</td>
+          <td>Não</td>
+        </tr>
+        <tr>
+          <td><code>orquestraio-livre-123</code></td>
+          <td>Desenvolvimento local</td>
+          <td>Somente MOCK</td>
+          <td>Não</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <p>A chave de desenvolvimento <code>orquestraio-livre-123</code> está incluída no <code>data.sql</code> e é carregada automaticamente pelo Docker. Use-a para testes locais com o gateway <code>MOCK</code>.</p>
+
+    <!-- GERAR REVOGAR -->
+    <h2 id="gerenciar">Gerar e Revogar Chaves</h2>
+    <p>API keys são gerenciadas pelo painel de administração do Orquestraio ou diretamente no banco via <code>data.sql</code> em ambiente de desenvolvimento.</p>
+
+    <div style="border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;margin:1.25rem 0;">
+      <div style="display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid var(--border);">
+        <div style="padding:1rem;border-right:1px solid var(--border);">
+          <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:0.5rem;">Gerar nova chave</div>
+          <p style="font-size:0.82rem;margin:0;">Acesse o painel → Configurações → API Keys → <strong>Nova Chave</strong>. O valor completo é exibido <em>uma única vez</em> — copie e armazene com segurança. O Orquestraio guarda apenas o hash.</p>
+        </div>
+        <div style="padding:1rem;">
+          <div style="font-family:var(--font-mono);font-size:0.62rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-3);margin-bottom:0.5rem;">Revogar chave</div>
+          <p style="font-size:0.82rem;margin:0;">Acesse o painel → Configurações → API Keys → <strong>Revogar</strong>. A revogação é <strong>instantânea</strong> — todas as requisições usando aquela chave passam a retornar <code>401</code> imediatamente. Nenhum downtime.</p>
+        </div>
+      </div>
+      <div style="padding:0.875rem 1rem;background:var(--bg-surface);font-size:0.8rem;color:var(--text-2);">
+        <strong>Rotação recomendada:</strong> Troque chaves de produção a cada 90 dias ou imediatamente após qualquer suspeita de comprometimento.
+      </div>
+    </div>
+
+    <!-- ESTADOS -->
+    <h2 id="estados">Estados da Chave e Respostas</h2>
+    <p>Entender a diferença entre <code>401</code> e <code>403</code> ajuda a diagnosticar problemas rapidamente:</p>
+
+    <table class="doc-table">
+      <thead><tr><th>Estado</th><th>HTTP</th><th>Causa</th><th>Ação</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Header ausente</td>
+          <td><code>401</code></td>
+          <td>Nenhum header <code>x-api-key</code> enviado</td>
+          <td>Adicione o header em todas as requisições</td>
+        </tr>
+        <tr>
+          <td>Chave inválida</td>
+          <td><code>401</code></td>
+          <td>Hash SHA-256 não encontrado no banco</td>
+          <td>Verifique se a chave está correta</td>
+        </tr>
+        <tr>
+          <td>Tenant inativo</td>
+          <td><code>403</code></td>
+          <td>Tenant com status <code>INACTIVE</code></td>
+          <td>Entre em contato com o suporte</td>
+        </tr>
+        <tr>
+          <td>Chave revogada</td>
+          <td><code>401</code></td>
+          <td>Chave removida do banco</td>
+          <td>Gere uma nova chave e atualize suas configurações</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="callout callout-tip">
+      <strong>Boas práticas de armazenamento:</strong> Armazene a API key em variável de ambiente (<code>ORQUESTRAIO_API_KEY</code>), nunca no código-fonte ou em arquivos commitados. Em produção, use um secret manager (AWS Secrets Manager, HashiCorp Vault, etc.).
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  const newTheme=isLight?'dark':'light';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('theme',newTheme);
+  document.getElementById('themeIcon').innerHTML=isLight
+    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function applyTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+applyTheme();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
