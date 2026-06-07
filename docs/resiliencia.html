@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
@@ -6,7 +6,7 @@
 <title>Resiliência — Orquestraio Docs</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
 <link rel="stylesheet" href="style.css">
 </head>
@@ -16,7 +16,7 @@
   <div class="topnav-inner">
     <a href="https://orquestraio.com" class="topnav-logo">
       <div class="topnav-logo-mark">
-        <svg viewBox="0 0 24 24" fill="none" stroke="#a78bfa" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
       </div>
       <span class="topnav-logo-text">Orquestraio</span>
       <span class="topnav-version">v0.4</span>
@@ -145,10 +145,10 @@ stateDiagram-v2
       </div>
     </div>
 
-    <div style="margin-top:1.5rem;padding:1rem;background:var(--bg-2);border:1px solid var(--border);">
-      <p style="margin:0;"><strong style="color:var(--text);">CLOSED:</strong> Gateway funcionando normalmente. Todas as requisições são enviadas.</p>
-      <p style="margin:0.5rem 0 0;"><strong style="color:var(--text);">OPEN:</strong> Gateway em falha. Requisições retornam erro imediatamente sem chamar o gateway.</p>
-      <p style="margin:0.5rem 0 0;"><strong style="color:var(--text);">HALF_OPEN:</strong> Gateway em teste. Permite 3 chamadas para verificar se voltou ao normal.</p>
+    <div class="callout callout-info" style="margin-top:1.5rem;display:block;">
+      <p style="margin:0;"><strong>CLOSED</strong> — Gateway funcionando normalmente. Todas as requisições são enviadas.</p>
+      <p style="margin:0.6rem 0 0;"><strong>OPEN</strong> — Gateway em falha. Requisições retornam erro imediatamente sem chamar o gateway.</p>
+      <p style="margin:0.6rem 0 0;"><strong>HALF_OPEN</strong> — Gateway em teste. Permite 3 chamadas para verificar se voltou ao normal.</p>
     </div>
 
     <div class="callout callout-info" style="margin-top:1.5rem;">
@@ -193,20 +193,65 @@ function applyTheme(){
 }
 applyTheme();
 function initMermaid(){
-  const theme=document.documentElement.getAttribute('data-theme')==='light'?'default':'dark';
   if(typeof mermaid==='undefined')return;
-  mermaid.initialize({startOnLoad:false,theme,securityLevel:'loose'});
-  document.querySelectorAll('.mermaid').forEach(el=>{
+  const isLight=document.documentElement.getAttribute('data-theme')==='light';
+  if(isLight){
+    mermaid.initialize({startOnLoad:false,theme:'default',securityLevel:'loose'});
+  } else {
+    mermaid.initialize({
+      startOnLoad:false,
+      theme:'base',
+      securityLevel:'loose',
+      themeVariables:{
+        background:'#07070a',
+        primaryColor:'#1a1030',
+        primaryTextColor:'#e2d9f3',
+        primaryBorderColor:'#6d28d9',
+        lineColor:'#8b5cf6',
+        secondaryColor:'#0f0a1e',
+        tertiaryColor:'#111118',
+        edgeLabelBackground:'#111118',
+        noteBkgColor:'#1a1030',
+        noteTextColor:'#c4b5fd',
+        noteBorderColor:'#6d28d9',
+        activationBkgColor:'#1a1030',
+        activationBorderColor:'#8b5cf6',
+        actorBkg:'#111118',
+        actorBorder:'#6d28d9',
+        actorTextColor:'#e2d9f3',
+        actorLineColor:'#4c1d95',
+        signalColor:'#a78bfa',
+        signalTextColor:'#e2d9f3',
+        labelBoxBkgColor:'#1a1030',
+        labelBoxBorderColor:'#6d28d9',
+        labelTextColor:'#c4b5fd',
+        loopTextColor:'#c4b5fd',
+        stateLabelColor:'#e2d9f3',
+        stateBkg:'#111118',
+        stateFont:'inherit',
+        fillType0:'#1a1030',
+        fillType1:'#0f0a1e',
+        transitionColor:'#8b5cf6',
+        transitionLabelColor:'#c4b5fd',
+        fontFamily:"'DM Sans',sans-serif",
+        fontSize:'14px'
+      }
+    });
+  }
+  document.querySelectorAll('.mermaid').forEach((el,i)=>{
     if(!el.hasAttribute('data-processed')){
-      mermaid.render('mermaid-'+Math.random().toString(36).slice(2),el.textContent).then(result=>{
-        el.innerHTML=result.svg;
-      });
+      const id='mermaid-sv-'+i+'-'+Date.now();
+      mermaid.render(id,el.textContent.trim()).then(result=>{
+        el.innerHTML=result.svg;el.setAttribute('data-processed','true');
+      }).catch(err=>console.warn('Mermaid render error:',err));
     }
   });
 }
 window.addEventListener('load',initMermaid);
 </script>
 
+
+<script src="shared.js"></script>
 </body>
 </html>
 
