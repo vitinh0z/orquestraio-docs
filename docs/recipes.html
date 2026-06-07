@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Recipes — Orquestraio Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.recipe-card{
+  border:1px solid var(--border);border-radius:var(--radius-lg);
+  margin:2.5rem 0;overflow:hidden;
+}
+.recipe-header{
+  display:flex;align-items:center;gap:0.875rem;
+  padding:1.1rem 1.5rem;
+  background:var(--bg-alt);border-bottom:1px solid var(--border);
+}
+.recipe-num{
+  width:28px;height:28px;border-radius:50%;
+  background:var(--brand-faint2);border:1px solid rgba(139,92,246,0.3);
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  font-family:var(--font-mono);font-size:0.7rem;font-weight:700;color:var(--brand);
+}
+.recipe-title{font-family:var(--font-display);font-size:1rem;font-weight:600;color:var(--text);}
+.recipe-tag{font-family:var(--font-mono);font-size:0.6rem;color:var(--text-3);border:1px solid var(--border);padding:0.1rem 0.4rem;border-radius:4px;margin-left:auto;}
+.recipe-body{padding:1.5rem;}
+.recipe-body p{margin-bottom:1rem;}
+.recipe-body h3{font-size:0.85rem;font-weight:600;color:var(--text);margin:1.5rem 0 0.6rem;letter-spacing:-0.01em;}
+.recipe-body ol,.recipe-body ul{padding-left:1.25rem;margin:0.75rem 0 1rem;display:flex;flex-direction:column;gap:0.35rem;}
+.recipe-body li{font-size:0.84rem;color:var(--text-2);line-height:1.65;}
+.scenario-box{
+  display:flex;align-items:flex-start;gap:0.75rem;
+  padding:0.875rem 1rem;
+  background:var(--bg-surface);border:1px solid var(--border);
+  border-radius:var(--radius-md);margin-bottom:1.25rem;
+  font-size:0.83rem;color:var(--text-2);line-height:1.6;
+}
+.scenario-box svg{width:15px;height:15px;flex-shrink:0;margin-top:1px;color:var(--brand);}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="https://orquestraio.com" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-right">
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Inicio</div>
+    <a href="index.html" class="sidebar-item">Introducao</a>
+    <a href="quickstart.html" class="sidebar-item">Primeiros Passos</a>
+    <a href="autenticacao.html" class="sidebar-item">Autenticacao</a>
+    <a href="glossario.html" class="sidebar-item">Glossario</a>
+    <a href="changelog.html" class="sidebar-item">Changelog</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">API</div>
+    <a href="referencia-api.html" class="sidebar-item">Referencia da API</a>
+    <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
+    <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
+    <a href="webhooks.html" class="sidebar-item">Webhooks</a>
+    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
+    <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Funcionalidades</div>
+    <a href="resiliencia.html" class="sidebar-item">Resiliencia</a>
+    <a href="seguranca.html" class="sidebar-item">Seguranca</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guias</div>
+    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="migracao.html" class="sidebar-item">Guia de Migracao</a>
+    <a href="recipes.html" class="sidebar-item active">Recipes</a>
+  </div>
+</aside>
+
+<div class="shell">
+  <main class="main">
+
+    <div class="section-label">Guias</div>
+    <h1 class="section-title">Recipes</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      12 min de leitura
+    </div>
+    <p class="section-desc">Padrões prontos para os cenários mais comuns de integração. Copie, adapte e use em produção.</p>
+
+    <!-- ── RECIPE 1 ── -->
+    <div class="recipe-card" id="ecommerce-pix-fallback">
+      <div class="recipe-header">
+        <div class="recipe-num">01</div>
+        <span class="recipe-title">E-commerce — PIX como primário, cartão como fallback</span>
+        <span class="recipe-tag">E-COMMERCE</span>
+      </div>
+      <div class="recipe-body">
+        <div class="scenario-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <span><strong>Cenário:</strong> Sua loja quer oferecer PIX com desconto. Se o cliente não pagar em 30 minutos, você envia um link de cartão como alternativa. Dois pagamentos distintos, mas apenas um pode ser cobrado.</span>
+        </div>
+
+        <h3>Como funciona</h3>
+        <ol>
+          <li>Crie o pagamento PIX com <code>idempotencyKey</code> vinculado ao <code>orderId</code></li>
+          <li>O Orquestraio retorna <code>status: PENDING</code> com o <code>pixCode</code></li>
+          <li>Se o webhook <code>payment.approved</code> não chegar em 30min, ofereça cartão</li>
+          <li>Crie um segundo pagamento cartão com <strong>uma idempotencyKey diferente</strong></li>
+          <li>Quando um dos dois for aprovado, cancele o outro via webhook</li>
+        </ol>
+
+        <h3>Passo 1 — Criar o pagamento PIX</h3>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-tab="r1-js" onclick="switchTab(event)">JavaScript</button>
+              <button class="lang-tab" data-tab="r1-py" onclick="switchTab(event)">Python</button>
+            </div>
+            <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+          </div>
+          <div class="codeblock-body">
+<div class="tab-pane active" id="r1-js"><span class="t-key">async function</span> createPixPayment(order) {
+  <span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+    method: <span class="t-str">'POST'</span>,
+    headers: {
+      <span class="t-str">'x-api-key'</span>: process.env.OZ_API_KEY,
+      <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>,
+    },
+    body: JSON.stringify({
+      <span class="t-comment">// chave vinculada ao pedido + método</span>
+      idempotencyKey: <span class="t-str">`pix-${order.id}`</span>,
+      amount: order.total,
+      currency: <span class="t-str">'BRL'</span>,
+      paymentMethodRequest: { type: <span class="t-str">'pix'</span> },
+      customer: order.customer,
+      metadata: { orderId: order.id, description: order.description },
+    }),
+  });
+  <span class="t-key">const</span> payment = <span class="t-key">await</span> res.json();
+
+  <span class="t-comment">// Salve pixCode no banco para exibir ao cliente</span>
+  <span class="t-key">await</span> db.orders.update(order.id, {
+    pixPaymentId: payment.paymentId,
+    pixCode: payment.details.pixCode,
+    pixExpiration: payment.details.pixExpiration,
+  });
+
+  <span class="t-comment">// Agendar fallback para cartão em 30min</span>
+  <span class="t-key">await</span> queue.schedule(<span class="t-str">'offer-card-fallback'</span>, {
+    orderId: order.id,
+    pixPaymentId: payment.paymentId,
+  }, { delay: <span class="t-num">30 * 60 * 1000</span> });
+
+  <span class="t-key">return</span> payment;
+}</div>
+<div class="tab-pane" id="r1-py">import requests, os
+
+<span class="t-key">def</span> create_pix_payment(order):
+    res = requests.post(
+        <span class="t-str">"https://api.orquestraio.com/v1/payments"</span>,
+        headers={<span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"OZ_API_KEY"</span>]},
+        json={
+            <span class="t-str">"idempotencyKey"</span>: <span class="t-str">f"pix-{order['id']}"</span>,
+            <span class="t-str">"amount"</span>: order[<span class="t-str">"total"</span>],
+            <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
+            <span class="t-str">"paymentMethodRequest"</span>: {<span class="t-str">"type"</span>: <span class="t-str">"pix"</span>},
+            <span class="t-str">"customer"</span>: order[<span class="t-str">"customer"</span>],
+            <span class="t-str">"metadata"</span>: {<span class="t-str">"orderId"</span>: order[<span class="t-str">"id"</span>]},
+        }
+    ).json()
+
+    <span class="t-comment"># Salve no banco e agende o fallback</span>
+    db.orders.update(order[<span class="t-str">"id"</span>], {
+        <span class="t-str">"pix_payment_id"</span>: res[<span class="t-str">"paymentId"</span>],
+        <span class="t-str">"pix_code"</span>: res[<span class="t-str">"details"</span>][<span class="t-str">"pixCode"</span>],
+    })
+    queue.schedule(<span class="t-str">"offer_card_fallback"</span>, order[<span class="t-str">"id"</span>], delay_minutes=<span class="t-num">30</span>)
+    <span class="t-key">return</span> res</div>
+          </div>
+        </div>
+
+        <h3>Passo 2 — Fallback para cartão (após 30min)</h3>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <div class="lang-tabs"><button class="lang-tab active">JavaScript</button></div>
+            <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+          </div>
+          <div class="codeblock-body">
+<div class="tab-pane active"><span class="t-key">async function</span> offerCardFallback({ orderId, pixPaymentId }) {
+  <span class="t-key">const</span> order = <span class="t-key">await</span> db.orders.findById(orderId);
+
+  <span class="t-comment">// Só age se PIX ainda não foi pago</span>
+  <span class="t-key">if</span> (order.status === <span class="t-str">'paid'</span>) <span class="t-key">return</span>;
+
+  <span class="t-comment">// Envia e-mail/notificação com link de pagamento via cartão</span>
+  <span class="t-key">await</span> email.send(order.customer.email, {
+    template: <span class="t-str">'pix-expired-try-card'</span>,
+    checkoutUrl: <span class="t-str">`https://checkout.suaapp.com/card/${orderId}`</span>,
+  });
+}
+
+<span class="t-comment">// No checkout de cartão — idempotencyKey DIFERENTE do PIX</span>
+<span class="t-key">async function</span> createCardPayment(orderId, cardToken) {
+  <span class="t-key">return</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+    method: <span class="t-str">'POST'</span>,
+    headers: { <span class="t-str">'x-api-key'</span>: process.env.OZ_API_KEY, <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span> },
+    body: JSON.stringify({
+      idempotencyKey: <span class="t-str">`card-${orderId}`</span>, <span class="t-comment">// diferente de "pix-{orderId}"</span>
+      amount: order.total,
+      currency: <span class="t-str">'BRL'</span>,
+      paymentMethodRequest: { type: <span class="t-str">'card_token'</span>, token: cardToken },
+      customer: order.customer,
+      metadata: { orderId },
+    }),
+  }).then(r => r.json());
+}</div>
+          </div>
+        </div>
+
+        <div class="callout callout-info">
+          <span class="callout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </span>
+          <div class="callout-body"><strong>Idempotência:</strong> Use prefixos diferentes (<code>pix-{orderId}</code> vs <code>card-{orderId}</code>) para que o Orquestraio trate como duas transações independentes. Nunca reutilize a mesma chave para métodos diferentes.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RECIPE 2 ── -->
+    <div class="recipe-card" id="saas-recorrente">
+      <div class="recipe-header">
+        <div class="recipe-num">02</div>
+        <span class="recipe-title">SaaS recorrente — cobrança mensal bulletproof</span>
+        <span class="recipe-tag">SAAS</span>
+      </div>
+      <div class="recipe-body">
+        <div class="scenario-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <span><strong>Cenário:</strong> Job cron que cobra todos os planos no dia 1º do mês. O job pode rodar duas vezes por bug, ou um worker pode reprocessar uma mensagem da fila. A cobrança deve ser feita exatamente uma vez por mês por cliente.</span>
+        </div>
+
+        <h3>A chave da idempotência determinística</h3>
+        <p>Gere a <code>idempotencyKey</code> a partir de dados imutáveis do contexto de cobrança. Assim, re-execuções do mesmo job produzem exatamente a mesma chave e o Orquestraio retorna o resultado cacheado sem cobrar de novo.</p>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-tab="r2-js" onclick="switchTab(event)">JavaScript</button>
+              <button class="lang-tab" data-tab="r2-py" onclick="switchTab(event)">Python</button>
+            </div>
+            <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+          </div>
+          <div class="codeblock-body">
+<div class="tab-pane active" id="r2-js"><span class="t-key">async function</span> billSubscription(subscription) {
+  <span class="t-key">const</span> billingMonth = <span class="t-key">new</span> Date().toISOString().slice(<span class="t-num">0</span>, <span class="t-num">7</span>); <span class="t-comment">// "2026-06"</span>
+
+  <span class="t-comment">// Chave determinística: mesma sub + mesmo mês = mesma key</span>
+  <span class="t-key">const</span> idempotencyKey = <span class="t-str">`sub-${subscription.id}-${billingMonth}`</span>;
+
+  <span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+    method: <span class="t-str">'POST'</span>,
+    headers: { <span class="t-str">'x-api-key'</span>: process.env.OZ_API_KEY, <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span> },
+    body: JSON.stringify({
+      idempotencyKey,
+      amount: subscription.plan.price,
+      currency: <span class="t-str">'BRL'</span>,
+      paymentMethodRequest: {
+        type: <span class="t-str">'card_token'</span>,
+        token: subscription.savedCardToken,
+      },
+      customer: subscription.customer,
+      metadata: {
+        orderId: <span class="t-str">`invoice-${subscription.id}-${billingMonth}`</span>,
+        description: <span class="t-str">`${subscription.plan.name} — ${billingMonth}`</span>,
+      },
+    }),
+  });
+
+  <span class="t-key">const</span> payment = <span class="t-key">await</span> res.json();
+
+  <span class="t-comment">// 409 = já cobrado este mês. Trate como sucesso.</span>
+  <span class="t-key">if</span> (res.status === <span class="t-num">409</span>) {
+    console.log(<span class="t-str">`Sub ${subscription.id} já cobrada em ${billingMonth} — idempotência OK`</span>);
+    <span class="t-key">return</span> { alreadyBilled: <span class="t-nil">true</span> };
+  }
+
+  <span class="t-key">if</span> (payment.status === <span class="t-str">'DECLINED'</span>) {
+    <span class="t-key">await</span> handleDecline(subscription, payment.details.declineCode);
+  }
+
+  <span class="t-key">return</span> payment;
+}</div>
+<div class="tab-pane" id="r2-py">import requests, os
+from datetime import datetime
+
+<span class="t-key">def</span> bill_subscription(subscription):
+    billing_month = datetime.now().strftime(<span class="t-str">"%Y-%m"</span>)  <span class="t-comment"># "2026-06"</span>
+
+    <span class="t-comment"># Chave determinística</span>
+    idempotency_key = <span class="t-str">f"sub-{subscription['id']}-{billing_month}"</span>
+
+    r = requests.post(
+        <span class="t-str">"https://api.orquestraio.com/v1/payments"</span>,
+        headers={<span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"OZ_API_KEY"</span>]},
+        json={
+            <span class="t-str">"idempotencyKey"</span>: idempotency_key,
+            <span class="t-str">"amount"</span>: subscription[<span class="t-str">"plan"</span>][<span class="t-str">"price"</span>],
+            <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
+            <span class="t-str">"paymentMethodRequest"</span>: {
+                <span class="t-str">"type"</span>: <span class="t-str">"card_token"</span>,
+                <span class="t-str">"token"</span>: subscription[<span class="t-str">"saved_card_token"</span>],
+            },
+            <span class="t-str">"customer"</span>: subscription[<span class="t-str">"customer"</span>],
+            <span class="t-str">"metadata"</span>: {
+                <span class="t-str">"orderId"</span>: <span class="t-str">f"invoice-{subscription['id']}-{billing_month}"</span>,
+            },
+        }
+    )
+
+    <span class="t-comment"># 409 = já cobrado este mês — trate como sucesso</span>
+    <span class="t-key">if</span> r.status_code == <span class="t-num">409</span>:
+        <span class="t-key">return</span> {<span class="t-str">"already_billed"</span>: <span class="t-nil">True</span>}
+
+    <span class="t-key">return</span> r.json()</div>
+          </div>
+        </div>
+
+        <div class="callout callout-success">
+          <span class="callout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+          </span>
+          <div class="callout-body"><strong>HTTP 409 é seu amigo:</strong> Quando você recebe 409 com <code>IDEMPOTENCY_CONFLICT</code> usando a mesma chave e mesmo payload, significa que o pagamento já existe. Logue e siga em frente — não é erro.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RECIPE 3 ── -->
+    <div class="recipe-card" id="retry-gateway-diferente">
+      <div class="recipe-header">
+        <div class="recipe-num">03</div>
+        <span class="recipe-title">Retry manual com gateway diferente</span>
+        <span class="recipe-tag">RESILIÊNCIA</span>
+      </div>
+      <div class="recipe-body">
+        <div class="scenario-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <span><strong>Cenário:</strong> Você força um gateway específico mas ele recusa o pagamento por razão técnica (timeout, instabilidade). Você quer tentar o mesmo pagamento em outro gateway automaticamente, sem cobrar duas vezes.</span>
+        </div>
+
+        <div class="callout callout-tip">
+          <span class="callout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+          </span>
+          <div class="callout-body"><strong>Prefira o SmartRouter:</strong> Se você omitir <code>metadata.gateway</code>, o Orquestraio já faz esse fallback automaticamente com Circuit Breaker. Use este recipe apenas quando precisar forçar a ordem dos gateways manualmente.</div>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-tab="r3-js" onclick="switchTab(event)">JavaScript</button>
+              <button class="lang-tab" data-tab="r3-py" onclick="switchTab(event)">Python</button>
+            </div>
+            <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+          </div>
+          <div class="codeblock-body">
+<div class="tab-pane active" id="r3-js"><span class="t-key">const</span> GATEWAY_PRIORITY = [<span class="t-str">'STRIPE'</span>, <span class="t-str">'MERCADO_PAGO'</span>, <span class="t-str">'PAYPAL'</span>];
+
+<span class="t-comment">// Códigos que indicam problema no gateway (não no cartão)</span>
+<span class="t-key">const</span> GATEWAY_ERRORS = [<span class="t-str">'gateway_timeout'</span>, <span class="t-str">'processing_error'</span>, <span class="t-str">'gateway_unavailable'</span>];
+
+<span class="t-key">async function</span> payWithFallback(orderData) {
+  <span class="t-key">const</span> baseKey = orderData.idempotencyKey;
+
+  <span class="t-key">for</span> (<span class="t-key">const</span> [i, gateway] <span class="t-key">of</span> GATEWAY_PRIORITY.entries()) {
+    <span class="t-key">const</span> res = <span class="t-key">await</span> fetch(<span class="t-str">'https://api.orquestraio.com/v1/payments'</span>, {
+      method: <span class="t-str">'POST'</span>,
+      headers: { <span class="t-str">'x-api-key'</span>: process.env.OZ_API_KEY, <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span> },
+      body: JSON.stringify({
+        <span class="t-comment">// Sufixo do gateway garante chave única por tentativa</span>
+        idempotencyKey: <span class="t-str">`${baseKey}-${gateway.toLowerCase()}`</span>,
+        ...orderData,
+        metadata: { ...orderData.metadata, gateway },
+      }),
+    });
+
+    <span class="t-key">const</span> payment = <span class="t-key">await</span> res.json();
+
+    <span class="t-key">if</span> (payment.status === <span class="t-str">'APPROVED'</span>) <span class="t-key">return</span> payment;
+
+    <span class="t-comment">// Recusa por problema no gateway → tentar o próximo</span>
+    <span class="t-key">const</span> isGatewayError = GATEWAY_ERRORS.includes(payment.details?.declineCode);
+    <span class="t-key">if</span> (!isGatewayError) {
+      <span class="t-comment">// Recusa por dados do cliente (saldo, fraude) → não adianta tentar outro</span>
+      <span class="t-key">return</span> payment;
+    }
+
+    console.warn(<span class="t-str">`${gateway} falhou com ${payment.details.declineCode}, tentando próximo...`</span>);
+  }
+
+  <span class="t-key">throw new</span> Error(<span class="t-str">'Todos os gateways falharam'</span>);
+}</div>
+<div class="tab-pane" id="r3-py">import requests, os
+
+GATEWAY_PRIORITY = [<span class="t-str">"STRIPE"</span>, <span class="t-str">"MERCADO_PAGO"</span>, <span class="t-str">"PAYPAL"</span>]
+GATEWAY_ERRORS = {<span class="t-str">"gateway_timeout"</span>, <span class="t-str">"processing_error"</span>, <span class="t-str">"gateway_unavailable"</span>}
+
+<span class="t-key">def</span> pay_with_fallback(order_data):
+    base_key = order_data[<span class="t-str">"idempotencyKey"</span>]
+
+    <span class="t-key">for</span> gateway <span class="t-key">in</span> GATEWAY_PRIORITY:
+        payload = {
+            **order_data,
+            <span class="t-str">"idempotencyKey"</span>: <span class="t-str">f"{base_key}-{gateway.lower()}"</span>,
+            <span class="t-str">"metadata"</span>: {**order_data.get(<span class="t-str">"metadata"</span>, {}), <span class="t-str">"gateway"</span>: gateway},
+        }
+        r = requests.post(
+            <span class="t-str">"https://api.orquestraio.com/v1/payments"</span>,
+            headers={<span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"OZ_API_KEY"</span>]},
+            json=payload,
+        ).json()
+
+        <span class="t-key">if</span> r[<span class="t-str">"status"</span>] == <span class="t-str">"APPROVED"</span>:
+            <span class="t-key">return</span> r
+
+        decline_code = r.get(<span class="t-str">"details"</span>, {}).get(<span class="t-str">"declineCode"</span>, <span class="t-str">""</span>)
+        <span class="t-key">if</span> decline_code <span class="t-key">not in</span> GATEWAY_ERRORS:
+            <span class="t-key">return</span> r  <span class="t-comment"># erro do cliente, não do gateway</span>
+
+    <span class="t-key">raise</span> Exception(<span class="t-str">"Todos os gateways falharam"</span>)</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── RECIPE 4 ── -->
+    <div class="recipe-card" id="webhook-sem-duplicacao">
+      <div class="recipe-header">
+        <div class="recipe-num">04</div>
+        <span class="recipe-title">Webhook confiável — processar sem duplicação</span>
+        <span class="recipe-tag">WEBHOOKS</span>
+      </div>
+      <div class="recipe-body">
+        <div class="scenario-box">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+          <span><strong>Cenário:</strong> O Orquestraio (e os gateways upstream) reenviam webhooks em caso de falha de entrega. Seu endpoint pode receber o mesmo evento 2–3 vezes. A lógica de negócio (liberar acesso, enviar NF) deve rodar exatamente uma vez.</span>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <div class="lang-tabs">
+              <button class="lang-tab active" data-tab="r4-js" onclick="switchTab(event)">JavaScript (Express)</button>
+              <button class="lang-tab" data-tab="r4-py" onclick="switchTab(event)">Python (FastAPI)</button>
+            </div>
+            <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+          </div>
+          <div class="codeblock-body">
+<div class="tab-pane active" id="r4-js">app.post(<span class="t-str">'/webhooks/orquestraio'</span>, <span class="t-key">async</span> (req, res) => {
+  <span class="t-comment">// 1. Validar assinatura HMAC antes de qualquer coisa</span>
+  <span class="t-key">const</span> signature = req.headers[<span class="t-str">'x-oz-signature'</span>];
+  <span class="t-key">if</span> (!validateHmac(req.rawBody, signature, process.env.OZ_WEBHOOK_SECRET)) {
+    <span class="t-key">return</span> res.status(<span class="t-num">401</span>).send(<span class="t-str">'Invalid signature'</span>);
+  }
+
+  <span class="t-key">const</span> event = req.body;
+
+  <span class="t-comment">// 2. Checar idempotência: já processamos este evento?</span>
+  <span class="t-key">const</span> alreadyProcessed = <span class="t-key">await</span> db.webhookEvents.exists({
+    eventId: event.eventId,
+  });
+  <span class="t-key">if</span> (alreadyProcessed) {
+    <span class="t-comment">// Retornar 200 sempre — o Orquestraio vai parar de reenviar</span>
+    <span class="t-key">return</span> res.status(<span class="t-num">200</span>).json({ status: <span class="t-str">'already_processed'</span> });
+  }
+
+  <span class="t-comment">// 3. Marcar como processado ANTES de executar lógica</span>
+  <span class="t-key">await</span> db.webhookEvents.insert({ eventId: event.eventId, receivedAt: <span class="t-key">new</span> Date() });
+
+  <span class="t-comment">// 4. Processar o evento</span>
+  <span class="t-key">if</span> (event.type === <span class="t-str">'payment.approved'</span>) {
+    <span class="t-key">await</span> fulfillOrder(event.paymentId, event.metadata?.orderId);
+  } <span class="t-key">else if</span> (event.type === <span class="t-str">'payment.declined'</span>) {
+    <span class="t-key">await</span> notifyCustomerDecline(event.metadata?.orderId);
+  }
+
+  <span class="t-comment">// 5. Sempre responder 200 para o Orquestraio parar de reenviar</span>
+  res.status(<span class="t-num">200</span>).json({ received: <span class="t-nil">true</span> });
+});</div>
+<div class="tab-pane" id="r4-py">from fastapi import Request, HTTPException
+import hmac, hashlib, os
+
+@app.post(<span class="t-str">"/webhooks/orquestraio"</span>)
+<span class="t-key">async def</span> handle_webhook(request: Request):
+    raw_body = <span class="t-key">await</span> request.body()
+    signature = request.headers.get(<span class="t-str">"x-oz-signature"</span>, <span class="t-str">""</span>)
+
+    <span class="t-comment"># 1. Validar assinatura HMAC</span>
+    expected = hmac.new(
+        os.environ[<span class="t-str">"OZ_WEBHOOK_SECRET"</span>].encode(),
+        raw_body, hashlib.sha256
+    ).hexdigest()
+    <span class="t-key">if not</span> hmac.compare_digest(expected, signature):
+        <span class="t-key">raise</span> HTTPException(status_code=<span class="t-num">401</span>)
+
+    event = <span class="t-key">await</span> request.json()
+
+    <span class="t-comment"># 2. Idempotência</span>
+    <span class="t-key">if</span> db.webhook_events.exists(event[<span class="t-str">"eventId"</span>]):
+        <span class="t-key">return</span> {<span class="t-str">"status"</span>: <span class="t-str">"already_processed"</span>}
+
+    <span class="t-comment"># 3. Registrar ANTES de agir</span>
+    db.webhook_events.insert(event[<span class="t-str">"eventId"</span>])
+
+    <span class="t-comment"># 4. Processar</span>
+    <span class="t-key">if</span> event[<span class="t-str">"type"</span>] == <span class="t-str">"payment.approved"</span>:
+        fulfill_order(event[<span class="t-str">"paymentId"</span>])
+    <span class="t-key">elif</span> event[<span class="t-str">"type"</span>] == <span class="t-str">"payment.declined"</span>:
+        notify_decline(event.get(<span class="t-str">"metadata"</span>, {}).get(<span class="t-str">"orderId"</span>))
+
+    <span class="t-comment"># 5. Sempre 200</span>
+    <span class="t-key">return</span> {<span class="t-str">"received"</span>: <span class="t-nil">True</span>}</div>
+          </div>
+        </div>
+
+        <div class="callout callout-warning">
+          <span class="callout-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--amber)" stroke-width="2"><path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3Z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+          </span>
+          <div class="callout-body"><strong>Grave antes de agir:</strong> Registre o <code>eventId</code> no banco <em>antes</em> de executar a lógica de negócio. Se você agir primeiro e a gravação falhar, você pode executar duas vezes. Ver <a href="webhooks.html">Webhooks</a> para o formato completo do evento.</div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  const newTheme=isLight?'dark':'light';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('theme',newTheme);
+  document.getElementById('themeIcon').innerHTML=isLight
+    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function applyTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+applyTheme();
+function switchTab(e){
+  const btn=e.target.closest('.lang-tab');
+  const cb=btn.closest('.codeblock');
+  cb.querySelectorAll('.lang-tab').forEach(t=>t.classList.remove('active'));
+  btn.classList.add('active');
+  const tabId=btn.dataset.tab;
+  cb.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  const pane=document.getElementById(tabId);if(pane)pane.classList.add('active');
+}
+function copyBlock(btn){
+  const cb=btn.closest('.codeblock');
+  const active=cb.querySelector('.tab-pane.active')||cb.querySelector('.tab-pane');
+  navigator.clipboard.writeText(active?active.innerText:'').then(()=>{
+    btn.textContent='Copiado';btn.classList.add('copied');
+    setTimeout(()=>{btn.textContent='Copiar';btn.classList.remove('copied');},2000);
+  });
+}
+</script>
+<script src="shared.js"></script>
+</body>
+</html>

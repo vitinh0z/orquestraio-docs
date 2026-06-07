@@ -42,6 +42,7 @@
   </div>
   <div class="sidebar-section">
     <div class="sidebar-section-label">API</div>
+    <a href="referencia-api.html" class="sidebar-item">Referencia da API</a>
     <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
     <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
     <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
@@ -57,6 +58,8 @@
   <div class="sidebar-section">
     <div class="sidebar-section-label">Guias</div>
     <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href=migracao.html class=sidebar-item>Guia de Migracao</a>
+    <a href=recipes.html class=sidebar-item>Recipes</a>
   </div>
 </aside>
 
@@ -179,16 +182,24 @@ print(res.json()[<span class="t-str">"status"</span>])  <span class="t-comment">
     </div>
 
     <h2>Passo 3 — Interpretar a resposta</h2>
-    <pre style="background:var(--bg-2);border:1px solid var(--border);padding:1rem;overflow-x:auto;margin:1.125rem 0;"><code style="background:none;border:none;padding:0;font-size:0.78rem;line-height:1.8;color:var(--text-2);">{
-  "paymentId": "550e8400-e29b-41d4-a716-446655440000",
-  "status": "APPROVED",
-  "amount": 50.00,
-  "currency": "BRL",
-  "details": {
-    "provider": "MOCK"
+    <div class="codeblock">
+      <div class="codeblock-header">
+        <div class="lang-tabs"><button class="lang-tab active">Resposta 201</button></div>
+        <button class="copy-btn" onclick="copyBlock(this)">Copiar</button>
+      </div>
+      <div class="codeblock-body">
+<div class="tab-pane active">{
+  <span class="t-key">"paymentId"</span>: <span class="t-str">"550e8400-e29b-41d4-a716-446655440000"</span>,
+  <span class="t-key">"status"</span>: <span class="t-ok">"APPROVED"</span>,
+  <span class="t-key">"amount"</span>: <span class="t-num">50.00</span>,
+  <span class="t-key">"currency"</span>: <span class="t-str">"BRL"</span>,
+  <span class="t-key">"details"</span>: {
+    <span class="t-key">"provider"</span>: <span class="t-str">"MOCK"</span>
   },
-  "createdAt": "2026-02-22T15:30:00Z"
-}</code></pre>
+  <span class="t-key">"createdAt"</span>: <span class="t-str">"2026-06-06T15:30:00Z"</span>
+}</div>
+      </div>
+    </div>
 
     <div class="callout callout-tip">
       <span class="callout-icon">

@@ -1,0 +1,385 @@
+﻿<!DOCTYPE html>
+<html lang="pt-BR" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guia de Migração — Orquestraio Docs</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,400&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.25rem 0;}
+@media(max-width:700px){.diff-grid{grid-template-columns:1fr;}}
+.diff-block{border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.diff-header{padding:0.45rem 1rem;font-family:var(--font-mono);font-size:0.65rem;font-weight:600;letter-spacing:0.04em;border-bottom:1px solid var(--border);}
+.diff-before .diff-header{background:rgba(248,113,113,0.08);color:var(--red);}
+.diff-after  .diff-header{background:rgba(139,92,246,0.08);color:var(--purple);}
+.diff-body{padding:1rem 1.25rem;font-family:var(--font-mono);font-size:0.75rem;line-height:1.9;color:#b0aac8;white-space:pre;overflow-x:auto;background:var(--bg-alt);}
+.checklist{list-style:none;margin:1.25rem 0;display:flex;flex-direction:column;gap:0.5rem;}
+.checklist li{display:flex;align-items:flex-start;gap:0.65rem;font-size:0.85rem;color:var(--text-2);padding:0.6rem 0.875rem;background:var(--bg-alt);border:1px solid var(--border);border-radius:var(--radius-md);}
+.checklist li svg{width:14px;height:14px;flex-shrink:0;margin-top:2px;color:var(--brand);}
+.checklist li strong{color:var(--text);}
+.compare-table{width:100%;border-collapse:collapse;margin:1.25rem 0;border:1px solid var(--border);border-radius:var(--radius-md);overflow:hidden;}
+.compare-table th{padding:0.45rem 1rem;font-family:var(--font-mono);font-size:0.6rem;text-transform:uppercase;letter-spacing:0.08em;color:var(--text-muted);font-weight:600;background:var(--bg-surface);border-bottom:1px solid var(--border);text-align:left;}
+.compare-table td{padding:0.65rem 1rem;font-size:0.82rem;color:var(--text-2);border-bottom:1px solid var(--border);vertical-align:top;}
+.compare-table tr:last-child td{border-bottom:none;}
+.compare-table td:first-child{color:var(--text);font-weight:500;white-space:nowrap;}
+.compare-table .compat-yes{color:#34d399;font-family:var(--font-mono);font-size:0.72rem;font-weight:600;}
+.compare-table .compat-change{color:var(--amber);font-family:var(--font-mono);font-size:0.72rem;font-weight:600;}
+</style>
+</head>
+<body>
+
+<nav class="topnav" id="topnav">
+  <div class="topnav-inner">
+    <a href="https://orquestraio.com" class="topnav-logo">
+      <div class="topnav-logo-mark">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M9 3v14M9 3H5M9 3h4M15 3v14M15 3h4"/></svg>
+      </div>
+      <span class="topnav-logo-text">Orquestraio</span>
+      <span class="topnav-version">v0.4</span>
+    </a>
+    <div class="topnav-right">
+      <a href="https://github.com/vitinh0z/orquestraio" class="topnav-icon-btn" target="_blank" rel="noopener" title="GitHub">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg>
+      </a>
+      <button class="topnav-icon-btn" onclick="toggleTheme()" title="Alternar tema">
+        <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+      </button>
+    </div>
+  </div>
+</nav>
+
+<aside class="sidebar">
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Inicio</div>
+    <a href="index.html" class="sidebar-item">Introducao</a>
+    <a href="quickstart.html" class="sidebar-item">Primeiros Passos</a>
+    <a href="autenticacao.html" class="sidebar-item">Autenticacao</a>
+    <a href="glossario.html" class="sidebar-item">Glossario</a>
+    <a href="changelog.html" class="sidebar-item">Changelog</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">API</div>
+    <a href="referencia-api.html" class="sidebar-item">Referencia da API</a>
+    <a href="processar-pagamento.html" class="sidebar-item">Processar Pagamento</a>
+    <a href="metodos-pagamento.html" class="sidebar-item">Metodos de Pagamento</a>
+    <a href="smartrouter.html" class="sidebar-item">SmartRouter</a>
+    <a href="webhooks.html" class="sidebar-item">Webhooks</a>
+    <a href="erros-status.html" class="sidebar-item">Erros & Status</a>
+    <a href="rate-limiting.html" class="sidebar-item">Rate Limiting</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Funcionalidades</div>
+    <a href="resiliencia.html" class="sidebar-item">Resiliencia</a>
+    <a href="seguranca.html" class="sidebar-item">Seguranca</a>
+  </div>
+  <div class="sidebar-section">
+    <div class="sidebar-section-label">Guias</div>
+    <a href="sandbox.html" class="sidebar-item">Sandbox & MOCK</a>
+    <a href="migracao.html" class="sidebar-item active">Guia de Migracao</a>
+    <a href="recipes.html" class="sidebar-item">Recipes</a>
+  </div>
+</aside>
+
+<div class="shell">
+<div class="subpage-toc"></div>
+  <main class="main">
+
+    <div class="section-label">Guias</div>
+    <h1 class="section-title">Guia de Migração</h1>
+    <div class="reading-time-badge">
+      <svg viewBox="0 0 24 24" width="11" height="11" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
+      8 min de leitura
+    </div>
+    <p class="section-desc">Migrando de uma integração direta com Stripe, MercadoPago ou PayPal para o Orquestraio. A mudança é cirúrgica — na maioria dos casos, é um único endpoint diferente.</p>
+
+    <div class="callout callout-success">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+      </span>
+      <div class="callout-body"><strong>Tempo estimado:</strong> 1–2 horas para a migração técnica. Sem downtime necessário — o Orquestraio aceita as mesmas credenciais dos gateways que você já usa.</div>
+    </div>
+
+    <h2>O que muda e o que fica igual</h2>
+
+    <table class="compare-table">
+      <thead><tr><th>Conceito</th><th>Status</th><th>Detalhe</th></tr></thead>
+      <tbody>
+        <tr>
+          <td>Credenciais dos gateways</td>
+          <td><span class="compat-yes">✓ IGUAL</span></td>
+          <td>Suas chaves do Stripe/MercadoPago/PayPal vão para variáveis de ambiente no Orquestraio. Você não precisa gerar novas.</td>
+        </tr>
+        <tr>
+          <td>Lógica de negócio</td>
+          <td><span class="compat-yes">✓ IGUAL</span></td>
+          <td>Sua aplicação continua chamando um único endpoint POST para criar pagamentos.</td>
+        </tr>
+        <tr>
+          <td>Idempotência</td>
+          <td><span class="compat-yes">✓ MELHOR</span></td>
+          <td>Se você já usava <code>Idempotency-Key</code> no Stripe, a lógica é a mesma — agora via campo <code>idempotencyKey</code> no body, com cache Redis de 24h.</td>
+        </tr>
+        <tr>
+          <td>Endpoint de pagamento</td>
+          <td><span class="compat-change">↳ MUDA</span></td>
+          <td>Em vez de chamar <code>api.stripe.com</code> ou <code>api.mercadopago.com</code> diretamente, você chama <code>/v1/payments</code> do Orquestraio.</td>
+        </tr>
+        <tr>
+          <td>Formato do request body</td>
+          <td><span class="compat-change">↳ MUDA</span></td>
+          <td>Schema unificado do Orquestraio — não o schema proprietário de cada gateway.</td>
+        </tr>
+        <tr>
+          <td>Formato da resposta</td>
+          <td><span class="compat-change">↳ MUDA</span></td>
+          <td>Resposta normalizada com <code>status: APPROVED | DECLINED | PENDING</code> independente do gateway.</td>
+        </tr>
+        <tr>
+          <td>SDKs dos gateways (stripe-node, etc.)</td>
+          <td><span class="compat-change">↳ REMOVE</span></td>
+          <td>Você pode remover as dependências dos SDKs individuais. O Orquestraio faz a chamada ao gateway internamente.</td>
+        </tr>
+        <tr>
+          <td>Webhooks</td>
+          <td><span class="compat-change">↳ MUDA</span></td>
+          <td>Configure os webhooks dos gateways para apontar para o Orquestraio, que normaliza e re-entrega para o seu endpoint.</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <h2>Migrando do Stripe</h2>
+    <p>Comparação direta: criação de um PaymentIntent no Stripe vs. o mesmo pagamento via Orquestraio.</p>
+
+    <div class="diff-grid">
+      <div class="diff-block diff-before">
+        <div class="diff-header">— ANTES (Stripe direto · Node.js)</div>
+        <div class="diff-body"><span class="t-key">import</span> Stripe <span class="t-key">from</span> <span class="t-str">'stripe'</span>;
+<span class="t-key">const</span> stripe = <span class="t-key">new</span> Stripe(process.env.STRIPE_SECRET_KEY);
+
+<span class="t-key">const</span> intent = <span class="t-key">await</span> stripe.paymentIntents.create({
+  amount: <span class="t-num">5000</span>,        <span class="t-comment">// centavos</span>
+  currency: <span class="t-str">'brl'</span>,
+  payment_method: <span class="t-str">'pm_card_visa'</span>,
+  confirm: <span class="t-nil">true</span>,
+  idempotencyKey: <span class="t-str">'order-abc-001'</span>,
+});
+
+<span class="t-key">if</span> (intent.status === <span class="t-str">'succeeded'</span>) {
+  <span class="t-comment">// aprovado</span>
+}</div>
+      </div>
+      <div class="diff-block diff-after">
+        <div class="diff-header">+ DEPOIS (Orquestraio · Node.js)</div>
+        <div class="diff-body"><span class="t-comment">// Sem import de SDK</span>
+
+<span class="t-key">const</span> res = <span class="t-key">await</span> fetch(
+  <span class="t-str">'https://api.orquestraio.com/v1/payments'</span>,
+  {
+    method: <span class="t-str">'POST'</span>,
+    headers: {
+      <span class="t-str">'x-api-key'</span>: process.env.OZ_API_KEY,
+      <span class="t-str">'Content-Type'</span>: <span class="t-str">'application/json'</span>,
+    },
+    body: JSON.stringify({
+      idempotencyKey: <span class="t-str">'order-abc-001'</span>,
+      amount: <span class="t-num">50.00</span>,      <span class="t-comment">// reais</span>
+      currency: <span class="t-str">'BRL'</span>,
+      paymentMethodRequest: {
+        type: <span class="t-str">'card_token'</span>,
+        token: <span class="t-str">'pm_card_visa'</span>,
+      },
+      customer: { id: <span class="t-str">'u1'</span>, email: <span class="t-str">'user@ex.com'</span> },
+    }),
+  }
+);
+<span class="t-key">const</span> data = <span class="t-key">await</span> res.json();
+
+<span class="t-key">if</span> (data.status === <span class="t-str">'APPROVED'</span>) {
+  <span class="t-comment">// aprovado</span>
+}</div>
+      </div>
+    </div>
+
+    <div class="callout callout-info">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </span>
+      <div class="callout-body"><strong>Atenção ao amount:</strong> O Stripe usa centavos (inteiro). O Orquestraio usa o valor em reais com decimais (<code>50.00</code>, não <code>5000</code>). Não esqueça de converter.</div>
+    </div>
+
+    <h3>Mapeamento de status (Stripe → Orquestraio)</h3>
+    <table class="doc-table">
+      <thead><tr><th>Stripe status</th><th>Orquestraio status</th></tr></thead>
+      <tbody>
+        <tr><td><code>succeeded</code></td><td><code>APPROVED</code></td></tr>
+        <tr><td><code>requires_payment_method</code></td><td><code>DECLINED</code></td></tr>
+        <tr><td><code>processing</code></td><td><code>PENDING</code></td></tr>
+        <tr><td><code>requires_action</code></td><td><code>PENDING</code></td></tr>
+        <tr><td><code>canceled</code></td><td><code>DECLINED</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <h2>Migrando do MercadoPago</h2>
+    <p>A SDK do MercadoPago tem um schema bem diferente. O Orquestraio normaliza tudo isso para você.</p>
+
+    <div class="diff-grid">
+      <div class="diff-block diff-before">
+        <div class="diff-header">— ANTES (MercadoPago direto · Python)</div>
+        <div class="diff-body">import mercadopago
+
+sdk = mercadopago.SDK(os.environ[<span class="t-str">"MP_ACCESS_TOKEN"</span>])
+
+payment_data = {
+    <span class="t-str">"transaction_amount"</span>: <span class="t-num">50.00</span>,
+    <span class="t-str">"payment_method_id"</span>: <span class="t-str">"pix"</span>,
+    <span class="t-str">"payer"</span>: {
+        <span class="t-str">"email"</span>: <span class="t-str">"user@exemplo.com"</span>,
+        <span class="t-str">"identification"</span>: {
+            <span class="t-str">"type"</span>: <span class="t-str">"CPF"</span>,
+            <span class="t-str">"number"</span>: <span class="t-str">"12345678901"</span>
+        }
+    }
+}
+result = sdk.payment().create(payment_data)
+
+<span class="t-key">if</span> result[<span class="t-str">"status"</span>] == <span class="t-num">201</span>:
+    qr = result[<span class="t-str">"response"</span>][<span class="t-str">"point_of_interaction"</span>] \
+              [<span class="t-str">"transaction_data"</span>][<span class="t-str">"qr_code"</span>]</div>
+      </div>
+      <div class="diff-block diff-after">
+        <div class="diff-header">+ DEPOIS (Orquestraio · Python)</div>
+        <div class="diff-body">import requests, uuid
+
+res = requests.post(
+    <span class="t-str">"https://api.orquestraio.com/v1/payments"</span>,
+    headers={<span class="t-str">"x-api-key"</span>: os.environ[<span class="t-str">"OZ_API_KEY"</span>]},
+    json={
+        <span class="t-str">"idempotencyKey"</span>: str(uuid.uuid4()),
+        <span class="t-str">"amount"</span>: <span class="t-num">50.00</span>,
+        <span class="t-str">"currency"</span>: <span class="t-str">"BRL"</span>,
+        <span class="t-str">"paymentMethodRequest"</span>: {
+            <span class="t-str">"type"</span>: <span class="t-str">"pix"</span>
+        },
+        <span class="t-str">"customer"</span>: {
+            <span class="t-str">"email"</span>: <span class="t-str">"user@exemplo.com"</span>,
+            <span class="t-str">"document"</span>: <span class="t-str">"123.456.789-01"</span>
+        }
+    }
+)
+data = res.json()
+
+<span class="t-key">if</span> data[<span class="t-str">"status"</span>] == <span class="t-str">"APPROVED"</span>:
+    qr = data[<span class="t-str">"details"</span>][<span class="t-str">"pixCode"</span>]
+    <span class="t-comment"># mesmo campo, nome normalizado</span></div>
+      </div>
+    </div>
+
+    <div class="callout callout-tip">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>
+      </span>
+      <div class="callout-body"><strong>Não force o gateway:</strong> Na migração, você pode omitir <code>metadata.gateway</code> e deixar o SmartRouter escolher o MercadoPago automaticamente — ele respeita as regras de roteamento que você configurar.</div>
+    </div>
+
+    <div class="divider"></div>
+
+    <h2>Migrando os Webhooks</h2>
+    <p>Em vez de receber webhooks direto do Stripe ou MercadoPago, você configura o Orquestraio como intermediário. Ele valida a assinatura do gateway, normaliza o evento e re-entrega para o seu endpoint com um formato único.</p>
+
+    <h3>Como configurar</h3>
+    <ol>
+      <li>No dashboard do Stripe: configure o endpoint de webhook para <code>https://api.orquestraio.com/webhooks/stripe</code></li>
+      <li>No MercadoPago: aponte para <code>https://api.orquestraio.com/webhooks/mercadopago</code></li>
+      <li>No Orquestraio: configure o seu endpoint em <code>metadata.webhookUrl</code> ou via painel</li>
+      <li>O Orquestraio entrega eventos com assinatura HMAC — veja <a href="webhooks.html">Webhooks</a></li>
+    </ol>
+
+    <h3>Mapeamento de eventos</h3>
+    <table class="doc-table">
+      <thead><tr><th>Stripe event</th><th>MercadoPago action</th><th>Orquestraio event</th></tr></thead>
+      <tbody>
+        <tr><td><code>payment_intent.succeeded</code></td><td><code>payment.updated (approved)</code></td><td><code>payment.approved</code></td></tr>
+        <tr><td><code>payment_intent.payment_failed</code></td><td><code>payment.updated (rejected)</code></td><td><code>payment.declined</code></td></tr>
+        <tr><td><code>payment_intent.processing</code></td><td><code>payment.created</code></td><td><code>payment.pending</code></td></tr>
+        <tr><td><code>charge.refunded</code></td><td><code>payment.updated (refunded)</code></td><td><code>payment.refunded</code></td></tr>
+      </tbody>
+    </table>
+
+    <div class="divider"></div>
+
+    <h2>Checklist de Migração</h2>
+    <ul class="checklist">
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Credenciais configuradas</strong> — Adicione <code>STRIPE_API_KEY</code>, <code>MP_ACCESS_TOKEN</code> etc. como variáveis de ambiente no servidor do Orquestraio</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>API Key do Orquestraio gerada</strong> — Crie sua <code>Oz_live_...</code> no painel. Em dev, use <code>orquestraio-livre-123</code></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Endpoint atualizado</strong> — Substitua chamadas diretas ao gateway por <code>POST /v1/payments</code></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>amount convertido</strong> — Se usava centavos (Stripe), converta para reais (<code>5000 → 50.00</code>)</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>status normalizado</strong> — Substitua verificações de <code>succeeded</code> / <code>approved</code> por <code>APPROVED</code></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Webhooks redirecionados</strong> — Aponte os webhooks dos gateways para o Orquestraio e atualize seu endpoint receptor</span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>Testado no Sandbox</strong> — Use <code>gateway: "MOCK"</code> para simular APPROVED, DECLINED e PENDING antes de ir a produção. Ver <a href="sandbox.html">Sandbox & MOCK</a></span>
+      </li>
+      <li>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20 6 9 17l-5-5"/></svg>
+        <span><strong>SDKs antigos removidos</strong> — Remova <code>stripe</code>, <code>mercadopago</code> etc. das dependências do projeto</span>
+      </li>
+    </ul>
+
+    <div class="callout callout-info" style="margin-top:2rem;">
+      <span class="callout-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--purple-light)" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      </span>
+      <div class="callout-body"><strong>Dúvidas na migração?</strong> Abra uma issue no <a href="https://github.com/vitinh0z/orquestraio" target="_blank">GitHub</a> com o label <code>migration-help</code>. Respondemos em até 24h.</div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+function toggleTheme(){
+  const html=document.documentElement;
+  const isLight=html.getAttribute('data-theme')==='light';
+  const newTheme=isLight?'dark':'light';
+  html.setAttribute('data-theme',newTheme);
+  localStorage.setItem('theme',newTheme);
+  document.getElementById('themeIcon').innerHTML=isLight
+    ?'<circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>'
+    :'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+}
+function applyTheme(){
+  const saved=localStorage.getItem('theme');
+  if(saved==='light'){
+    document.documentElement.setAttribute('data-theme','light');
+    document.getElementById('themeIcon').innerHTML='<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>';
+  }
+}
+applyTheme();
+</script>
+<script src="shared.js"></script>
+</body>
+</html>
